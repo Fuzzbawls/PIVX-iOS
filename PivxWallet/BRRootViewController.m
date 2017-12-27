@@ -49,8 +49,7 @@
 
 #define BALANCE_TIP_START NSLocalizedString(@"This is your PIVX balance.", nil)
 
-#define BALANCE_TIP NSLocalizedString(@"This is your PIVX balance. PIVX is a currency. "\
-"The exchange rate changes with the market.", nil)
+#define BALANCE_TIP NSLocalizedString(@"This is your PIVX balance. PIVX is a currency. The exchange rate changes with the market.", nil)
 #define MDASH_TIP    NSLocalizedString(@"%@ is for 'mPIV'. %@ = 1 PIV.", nil)
 
 #define BACKUP_DIALOG_TIME_KEY @"BACKUP_DIALOG_TIME"
@@ -257,10 +256,7 @@
                                                            if (jailbroken && manager.wallet.totalReceived > 0) {
                                                                UIAlertController * alert = [UIAlertController
                                                                                             alertControllerWithTitle:NSLocalizedString(@"WARNING", nil)
-                                                                                            message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\n"
-                                                                                                                      "Any 'jailbreak' app can access any other app's keychain data "
-                                                                                                                      "(and steal your PIV). "
-                                                                                                                      "Wipe this wallet immediately and restore on a secure device.", nil)
+                                                                                            message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIV). Wipe this wallet immediately and restore on a secure device.", nil)
                                                                                             preferredStyle:UIAlertControllerStyleAlert];
                                                                UIAlertAction* ignoreButton = [UIAlertAction
                                                                                               actionWithTitle:NSLocalizedString(@"ignore", nil)
@@ -285,9 +281,7 @@
                                                            else if (jailbroken) {
                                                                UIAlertController * alert = [UIAlertController
                                                                                             alertControllerWithTitle:NSLocalizedString(@"WARNING", nil)
-                                                                                            message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\n"
-                                                                                                                      "Any 'jailbreak' app can access any other app's keychain data "
-                                                                                                                      "(and steal your dash).", nil)
+                                                                                            message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIV).", nil)
                                                                                             preferredStyle:UIAlertControllerStyleAlert];
                                                                UIAlertAction* ignoreButton = [UIAlertAction
                                                                                               actionWithTitle:NSLocalizedString(@"ignore", nil)
@@ -482,10 +476,7 @@
     if (jailbroken && manager.wallet.totalReceived + manager.wallet.totalSent > 0) {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:NSLocalizedString(@"WARNING", nil)
-                                     message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\n"
-                                                               "Any 'jailbreak' app can access any other app's keychain data "
-                                                               "(and steal your PIV). "
-                                                               "Wipe this wallet immediately and restore on a secure device.", nil)
+                                     message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIV). Wipe this wallet immediately and restore on a secure device.", nil)
                                      preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction* ignoreButton = [UIAlertAction
                                        actionWithTitle:NSLocalizedString(@"ignore", nil)
@@ -510,9 +501,7 @@
     else if (jailbroken) {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:NSLocalizedString(@"WARNING", nil)
-                                     message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\n"
-                                                               "Any 'jailbreak' app can access any other app's keychain data "
-                                                               "(and steal your PIV).", nil)
+                                     message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIV).", nil)
                                      preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction* ignoreButton = [UIAlertAction
                                        actionWithTitle:NSLocalizedString(@"ignore", nil)
@@ -696,8 +685,7 @@
         if (! manager.passcodeEnabled) {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:NSLocalizedString(@"turn device passcode on", nil)
-                                         message:NSLocalizedString(@"\nA device passcode is needed to safeguard your wallet. Go to settings and "
-                                                                   "turn passcode on to continue.", nil)
+                                         message:NSLocalizedString(@"\nA device passcode is needed to safeguard your wallet. Go to settings and turn passcode on to continue.", nil)
                                          preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* closeButton = [UIAlertAction
                                           actionWithTitle:NSLocalizedString(@"close app", nil)
@@ -867,16 +855,11 @@
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:NSLocalizedString(@"WARNING", nil)
                                      message:[NSString stringWithFormat:@"\n%@\n\n%@\n\n%@\n",
-                                              [NSLocalizedString(@"\nDO NOT let anyone see your recovery\n"
-                                                                 "phrase or they can spend your PIVX.\n", nil)
+                                              [NSLocalizedString(@"\nDO NOT let anyone see your recovery\nphrase or they can spend your PIVX.\n", nil)
                                                stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]],
-                                              [NSLocalizedString(@"\nNEVER type your recovery phrase into\n"
-                                                                 "password managers or elsewhere.\n"
-                                                                 "Other devices may be infected.\n", nil)
+                                              [NSLocalizedString(@"\nNEVER type your recovery phrase into\npassword managers or elsewhere.\nOther devices may be infected.\n", nil)
                                                stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]],
-                                              [NSLocalizedString(@"\nDO NOT take a screenshot.\n"
-                                                                 "Screenshots are visible to other apps\n"
-                                                                 "and devices.\n", nil)
+                                              [NSLocalizedString(@"\nDO NOT take a screenshot.\nScreenshots are visible to other apps\nand devices.\n", nil)
                                                stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]]]
                                      preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction* cancelButton = [UIAlertAction
@@ -1185,8 +1168,7 @@
     [defs setDouble:now forKey:BACKUP_DIALOG_TIME_KEY];
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:(first) ? NSLocalizedString(@"you received PIVX!", nil) : NSLocalizedString(@"IMPORTANT", nil)
-                                 message:[NSString stringWithFormat:NSLocalizedString(@"\n%@\n\nif you ever lose your phone, you will need it to "
-                                                                                      "recover your wallet", nil),
+                                 message:[NSString stringWithFormat:NSLocalizedString(@"\n%@\n\nif you ever lose your phone, you will need it to recover your wallet", nil),
                                           (first) ? NSLocalizedString(@"next, write down your recovery phrase", nil) :
                                           NSLocalizedString(@"WRITE DOWN YOUR RECOVERY PHRASE", nil)]
                                  preferredStyle:UIAlertControllerStyleAlert];

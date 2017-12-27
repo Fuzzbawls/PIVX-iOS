@@ -69,10 +69,9 @@
         [BREventManager saveEvent:@"scan:camera_denied"];
         NSString * titleString = [NSString stringWithFormat:NSLocalizedString(@"%@ is not allowed to access the camera", nil), NSBundle.mainBundle.infoDictionary[@"CFBundleDisplayName"]];
         UIAlertController * cameraAlert = [UIAlertController
-                                     alertControllerWithTitle:titleString
-                                                                                 message:[NSString stringWithFormat:NSLocalizedString(@"\nallow camera access in\n"
-                                                                                                                                      "Settings->Privacy->Camera->%@", nil),
-                                                                                          NSBundle.mainBundle.infoDictionary[@"CFBundleDisplayName"]]
+                                            alertControllerWithTitle:titleString
+                                            message:[NSString stringWithFormat:NSLocalizedString(@"\nallow camera access in\nSettings->Privacy->Camera->%@", nil),
+                                                NSBundle.mainBundle.infoDictionary[@"CFBundleDisplayName"]]
                                      preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction* okButton = [UIAlertAction
                                     actionWithTitle:NSLocalizedString(@"ok", nil)

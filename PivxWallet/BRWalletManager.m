@@ -1605,8 +1605,7 @@ typedef BOOL (^PinVerificationBlock)(NSString * _Nonnull currentPin,BRWalletMana
                      
                      if (feeAmount + self.wallet.minOutputAmount > balance) {
                          completion(nil, 0, [NSError errorWithDomain:@"PivxWallet" code:417 userInfo:@{NSLocalizedDescriptionKey:
-                                                                                                           NSLocalizedString(@"transaction fees would cost more than the funds available on this "
-                                                                                                                             "private key (due to tiny \"dust\" deposits)",nil)}]);
+                                                                                                           NSLocalizedString(@"transaction fees would cost more than the funds available on this private key (due to tiny \"dust\" deposits)",nil)}]);
                          return;
                      }
                      

@@ -859,8 +859,7 @@ static const char *dns_seeds[] = {
                 [[BREventManager sharedEventManager] saveEvent:@"peer_manager:tx_rejected_rescan"];
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"transaction rejected", nil)
-                                             message:NSLocalizedString(@"Your wallet may be out of sync.\n"
-                                                                       "This can often be fixed by rescanning the blockchain.", nil)
+                                             message:NSLocalizedString(@"Your wallet may be out of sync.\nThis can often be fixed by rescanning the blockchain.", nil)
                                              preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction* cancelButton = [UIAlertAction
                                            actionWithTitle:NSLocalizedString(@"cancel", nil)

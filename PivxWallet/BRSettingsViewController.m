@@ -161,8 +161,7 @@
         fmt.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"Mdjma" options:0 locale:[NSLocale currentLocale]];
     }
 
-   return [NSString stringWithFormat:NSLocalizedString(@"rate: %@ = %@\nupdated: %@\nblock #%d of %d\n"
-                                                       "connected peers: %d\ndl peer: %@", NULL),
+   return [NSString stringWithFormat:NSLocalizedString(@"rate: %@ = %@\nupdated: %@\nblock #%d of %d\nconnected peers: %d\ndl peer: %@", NULL),
            @"1 PIVX",
            [manager localCurrencyStringForDashAmount:DUFFS],
            [fmt stringFromDate:[NSDate dateWithTimeIntervalSinceReferenceDate:manager.secureTime]].lowercaseString,
@@ -490,8 +489,7 @@ _switch_cell:
             return nil;
             
         case 3:
-            return NSLocalizedString(@"rescan blockchain if you think you may have missing transactions, "
-                                     "or are having trouble sending (rescanning can take several minutes)", nil);
+            return NSLocalizedString(@"rescan blockchain if you think you may have missing transactions, or are having trouble sending (rescanning can take several minutes)", nil);
     }
     
     return nil;
@@ -584,16 +582,11 @@ _switch_cell:
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:NSLocalizedString(@"WARNING", nil)
                                  message:[NSString stringWithFormat:@"\n%@\n\n%@\n\n%@\n",
-                                          [NSLocalizedString(@"\nDO NOT let anyone see your recovery\n"
-                                                             "phrase or they can spend your PIV.\n", nil)
+                                          [NSLocalizedString(@"\nDO NOT let anyone see your recovery\nphrase or they can spend your PIV.\n", nil)
                                            stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]],
-                                          [NSLocalizedString(@"\nNEVER type your recovery phrase into\n"
-                                                             "password managers or elsewhere.\n"
-                                                             "Other devices may be infected.\n", nil)
+                                          [NSLocalizedString(@"\nNEVER type your recovery phrase into\npassword managers or elsewhere.\nOther devices may be infected.\n", nil)
                                            stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]],
-                                          [NSLocalizedString(@"\nDO NOT take a screenshot.\n"
-                                                             "Screenshots are visible to other apps\n"
-                                                             "and devices.\n", nil)
+                                          [NSLocalizedString(@"\nDO NOT take a screenshot.\nScreenshots are visible to other apps\nand devices.\n", nil)
                                            stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]]]
                                  preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* cancelButton = [UIAlertAction

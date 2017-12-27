@@ -51,12 +51,10 @@
     [s replaceCharactersInRange:[s.string rangeOfString:@"WARNING"] withString:NSLocalizedString(@"WARNING", nil)];
     [s replaceCharactersInRange:[s.string rangeOfString:@"\nDO NOT let anyone see your recovery\n"
                                  "phrase or they can spend your PIV.\n"]
-                     withString:NSLocalizedString(@"\nDO NOT let anyone see your recovery\n"
-                                                  "phrase or they can spend your PIV.\n", nil)];
+                     withString:NSLocalizedString(@"\nDO NOT let anyone see your recovery\nphrase or they can spend your PIV.\n", nil)];
     [s replaceCharactersInRange:[s.string rangeOfString:@"\nNEVER type your recovery phrase into\n"
                                  "password managers or elsewhere.\nOther devices may be infected.\n"]
-                     withString:NSLocalizedString(@"\nNEVER type your recovery phrase into\npassword managers or elsewhere.\n"
-                                                  "Other devices may be infected.\n", nil)];
+                     withString:NSLocalizedString(@"\nNEVER type your recovery phrase into\npassword managers or elsewhere.\nOther devices may be infected.\n", nil)];
     self.warningLabel.attributedText = s;
     //self.generateButton.superview.backgroundColor = [UIColor clearColor];
 }
@@ -104,8 +102,7 @@
         [BREventManager saveEvent:@"welcome:passcode_disabled"];
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:NSLocalizedString(@"turn device passcode on", nil)
-                                     message:NSLocalizedString(@"\nA device passcode is needed to safeguard your wallet. Go to settings and turn "
-                                                               "passcode on to continue.", nil)
+                                     message:NSLocalizedString(@"\nA device passcode is needed to safeguard your wallet. Go to settings and turn passcode on to continue.", nil)
                                      preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction* okButton = [UIAlertAction
                                    actionWithTitle:NSLocalizedString(@"ok", nil)

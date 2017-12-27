@@ -47,10 +47,8 @@
 #import "BRBIP32Sequence.h"
 #import "pivxwallet-Swift.h"
 
-#define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their PIVX address. "\
-"You can send a payment to anyone with an address.", nil)
-#define CLIPBOARD_TIP NSLocalizedString(@"PIVX addresses can also be copied to the clipboard. "\
-"A PIVX address always starts with 'D' or '6'.", nil)
+#define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their PIVX address.\nYou can send a payment to anyone with an address.", nil)
+#define CLIPBOARD_TIP NSLocalizedString(@"PIVX addresses can also be copied to the clipboard.\nA PIVX address always starts with 'D' or '6'.", nil)
 
 #define LOCK @"\xF0\x9F\x94\x92" // unicode lock symbol U+1F512 (utf-8)
 #define REDX @"\xE2\x9D\x8C"     // unicode cross mark U+274C, red x emoji (utf-8)
@@ -585,9 +583,9 @@ static NSString *sanitizeString(NSString *s)
             self.associatedShapeshift = shapeshift;
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:NSLocalizedString(@"WARNING", nil)
-                                         message:NSLocalizedString(@"\nADDRESS ALREADY USED\nPIVX addresses are intended for single use only\n\n"
-                                                                   "re-use reduces privacy for both you and the recipient and can result in loss if "
-                                                                   "the recipient doesn't directly control the address", nil)
+                                         message:NSLocalizedString(@"\nADDRESS ALREADY USED\nPIVX addresses are intended for single use only\n\n
+                                                                    re-use reduces privacy for both you and the recipient and can result in loss if
+                                                                    the recipient doesn't directly control the address", nil)
                                          preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* cancelButton = [UIAlertAction
                                            actionWithTitle:@"cancel"
@@ -1252,9 +1250,8 @@ static NSString *sanitizeString(NSString *s)
                 
                 for (NSNumber *amt in tx.outputAmounts) amount += amt.unsignedLongLongValue;
                 self.sweepTx = tx;
-                
-                NSString *alertFmt = NSLocalizedString(@"Send %@ (%@) from this private key into your wallet? "
-                                                       "The pivx network will receive a fee of %@ (%@).", nil);
+
+                NSString *alertFmt = NSLocalizedString(@"Send %@ (%@) from this private key into your wallet?\nThe pivx network will receive a fee of %@ (%@).", nil);
                 NSString *alertMsg = [NSString stringWithFormat:alertFmt, [manager stringForDashAmount:amount],
                                       [manager localCurrencyStringForDashAmount:amount], [manager stringForDashAmount:fee],
                                       [manager localCurrencyStringForDashAmount:fee]];
@@ -1733,8 +1730,8 @@ static NSString *sanitizeString(NSString *s)
                 failureBlock();
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"shapeshift failed", nil)
-                                             message:[NSString stringWithFormat:NSLocalizedString(@"The amount you wanted to shapeshift is too low, "
-                                                                                                  @"please input a value over %@", nil),[manager stringForDashAmount:[DSShapeshiftManager sharedInstance].min / .97]]
+                                             message:[NSString stringWithFormat:NSLocalizedString(@"The amount you wanted to shapeshift is too low, please input a value over %@", nil),
+                                                                                                    [manager stringForDashAmount:[DSShapeshiftManager sharedInstance].min / .97]]
                                              preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction* okButton = [UIAlertAction
                                            actionWithTitle:NSLocalizedString(@"ok", nil)
@@ -1748,8 +1745,8 @@ static NSString *sanitizeString(NSString *s)
                 failureBlock();
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"shapeshift failed", nil)
-                                             message:[NSString stringWithFormat:NSLocalizedString(@"The amount you wanted to shapeshift is too high, "
-                                                                                                  @"please input a value under %@", nil),[manager stringForDashAmount:[DSShapeshiftManager sharedInstance].limit / 1.03]]
+                                             message:[NSString stringWithFormat:NSLocalizedString(@"The amount you wanted to shapeshift is too high, please input a value under %@", nil),
+                                                                                                    [manager stringForDashAmount:[DSShapeshiftManager sharedInstance].limit / 1.03]]
                                              preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction* okButton = [UIAlertAction
                                            actionWithTitle:NSLocalizedString(@"ok", nil)
