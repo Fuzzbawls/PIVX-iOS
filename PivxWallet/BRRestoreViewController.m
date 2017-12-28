@@ -53,14 +53,14 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+
     // TODO: create secure versions of keyboard and UILabel and use in place of UITextView
     // TODO: autocomplete based on 4 letter prefixes of mnemonic words
-    
+
     [Utils changeStatusBackgroundColorWithColor:UIColor.whiteColor];
     [[self.navigationController navigationBar] setBackgroundColor:UIColor.whiteColor];
     self.textView.layer.cornerRadius = 5.0;
-    
+
     self.keyboardObserver =
         [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardWillShowNotification object:nil queue:nil
         usingBlock:^(NSNotification *note) {
@@ -71,13 +71,13 @@
                  [self.view layoutIfNeeded];
              } completion:nil];
         }];
-    
+
     self.resignActiveObserver =
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification object:nil
         queue:nil usingBlock:^(NSNotification *note) {
             self.textView.text = nil;
         }];
-    
+
     self.textView.layer.borderColor = [UIColor colorWithWhite:0.0 alpha:0.25].CGColor;
     self.textView.layer.borderWidth = 0.5;
     UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 1, 100)];
@@ -101,14 +101,14 @@
     [backButton setTintColor: UIColor.blackColor];
 
     self.navigationItem.leftBarButtonItem = backButton;
-    
+
     [self.textView becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     self.textView.text = nil;
-    
+
     [super viewWillDisappear:animated];
 }
 
@@ -128,7 +128,7 @@
 - (void)wipeWithPhrase:(NSString *)phrase
 {
     [BREventManager saveEvent:@"restore:wipe"];
-    
+
     @autoreleasepool {
         BRWalletManager *manager = [BRWalletManager sharedInstance];
         BRPeerManager *peerManager = [BRPeerManager sharedInstance];
@@ -163,7 +163,7 @@
                                              actionWithTitle:NSLocalizedString(@"ok", nil)
                                              style:UIAlertActionStyleCancel
                                              handler:^(UIAlertAction * action) {
-                                                 
+
                                              }];
                 [actionSheet addAction:okButton];
                 [self presentViewController:actionSheet animated:YES completion:nil];
@@ -246,14 +246,14 @@
 
 - (void)wipeWallet
 {
-    
+
     [[BRWalletManager sharedInstance] setSeedPhrase:nil];
     self.textView.text = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:WALLET_NEEDS_BACKUP_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
     UIViewController *p = self.navigationController.presentingViewController.presentingViewController;
-    
+
     if (! p) {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@""
@@ -269,7 +269,7 @@
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
-    
+
     [p dismissViewControllerAnimated:NO completion:^{
         [p presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"NewWalletNav"] animated:NO
                       completion:nil];
@@ -281,9 +281,9 @@
     self.textView.text = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:WALLET_NEEDS_BACKUP_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
     UIViewController *p = self.navigationController.presentingViewController.presentingViewController;
-    
+
     if (! p) {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@""
@@ -299,7 +299,7 @@
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
-    
+
     [p dismissViewControllerAnimated:NO completion:^{
         [p presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"NewWalletNav"] animated:NO
                       completion:nil];
@@ -311,7 +311,7 @@
 - (IBAction)cancel:(id)sender
 {
     [BREventManager saveEvent:@"restore:cancel"];
-    
+
     if (self.navigationController.presentingViewController) {
         [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
@@ -324,7 +324,7 @@
 {
     static NSCharacterSet *invalid = nil;
     static dispatch_once_t onceToken = 0;
-    
+
     dispatch_once(&onceToken, ^{
         NSMutableCharacterSet *set = [NSMutableCharacterSet letterCharacterSet];
 
@@ -333,15 +333,15 @@
     });
 
     if (! [text isEqual:@"\n"]) return YES; // not done entering phrase
-    
+
     @autoreleasepool {  // @autoreleasepool ensures sensitive data will be deallocated immediately
         BRWalletManager *manager = [BRWalletManager sharedInstance];
         NSString *phrase = [manager.mnemonic cleanupPhrase:textView.text], *incorrect = nil;
         BOOL isLocal = YES, noWallet = manager.noWallet;
-        
+
         if (! [textView.text hasPrefix:@"watch"] && ! [phrase isEqual:textView.text]) textView.text = phrase;
         phrase = [manager.mnemonic normalizePhrase:phrase];
-        
+
         NSArray *a = CFBridgingRelease(CFStringCreateArrayBySeparatingStrings(SecureAllocator(), (CFStringRef)phrase,
                                                                               CFSTR(" ")));
 
@@ -361,19 +361,19 @@
 
             [[NSManagedObject context] performBlockAndWait:^{
                 int32_t n = 0;
-                
+
                 for (NSString *s in [textView.text componentsSeparatedByCharactersInSet:[NSCharacterSet
                                      alphanumericCharacterSet].invertedSet]) {
                     if (! [s isValidBitcoinAddress]) continue;
-                    
+
                     BRAddressEntity *e = [BRAddressEntity managedObject];
-                    
+
                     e.address = s;
                     e.index = n++;
                     e.internal = NO;
                 }
             }];
-            
+
             [NSManagedObject saveContext];
             textView.text = nil;
             [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -437,7 +437,7 @@
             [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         }
     }
-    
+
     return NO;
 }
 

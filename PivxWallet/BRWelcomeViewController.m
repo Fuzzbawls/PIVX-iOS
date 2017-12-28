@@ -83,7 +83,7 @@
         if (! [BRWalletManager sharedInstance].noWallet) { // sanity check
             [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
         }
-        
+
     });
 }
 
@@ -92,9 +92,9 @@
 - (IBAction)start:(id)sender
 {
     [BREventManager saveEvent:@"welcome:new_wallet"];
-    
+
     UIViewController *c = [self.storyboard instantiateViewControllerWithIdentifier:@"GenerateViewController"];
-    
+
     [self.navigationController pushViewController:c animated:YES];
 }
 

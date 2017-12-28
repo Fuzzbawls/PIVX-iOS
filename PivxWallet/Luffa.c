@@ -1064,7 +1064,7 @@ luffa5(sph_luffa512_context *sc, const void *data, size_t len)
     unsigned char *buf;
     size_t ptr;
     DECL_STATE5
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     if (len < (sizeof sc->buf) - ptr) {
@@ -1073,11 +1073,11 @@ luffa5(sph_luffa512_context *sc, const void *data, size_t len)
         sc->ptr = ptr;
         return;
     }
-    
+
     READ_STATE5(sc);
     while (len > 0) {
         size_t clen;
-        
+
         clen = (sizeof sc->buf) - ptr;
         if (clen > len)
             clen = len;
@@ -1103,7 +1103,7 @@ luffa5_close(sph_luffa512_context *sc, unsigned ub, unsigned n, void *dst)
     unsigned z;
     int i;
     DECL_STATE5
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     out = dst;
@@ -1147,7 +1147,7 @@ void
 sph_luffa512_init(void *cc)
 {
     sph_luffa512_context *sc;
-    
+
     sc = cc;
     memcpy(sc->V, V_INIT, sizeof(sc->V));
     sc->ptr = 0;
@@ -1174,5 +1174,3 @@ sph_luffa512_close(void *cc, void *dst)
 {
     sph_luffa512_addbits_and_close(cc, 0, 0, dst);
 }
-
-

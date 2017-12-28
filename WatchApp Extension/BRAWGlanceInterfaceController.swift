@@ -46,7 +46,7 @@ fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 class BRAWGlanceInterfaceController: WKInterfaceController {
-    
+
     @IBOutlet var setupWalletContainer: WKInterfaceGroup!
     @IBOutlet var balanceAmountLabel: WKInterfaceLabel!
     @IBOutlet var balanceInLocalCurrencyLabel: WKInterfaceLabel!
@@ -58,7 +58,7 @@ class BRAWGlanceInterfaceController: WKInterfaceController {
         // Configure interface objects here.
         updateUI()
     }
-    
+
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
@@ -67,18 +67,18 @@ class BRAWGlanceInterfaceController: WKInterfaceController {
         NotificationCenter.default.addObserver(
             self, selector: #selector(BRAWGlanceInterfaceController.updateUI), name: NSNotification.Name(rawValue: BRAWWatchDataManager.ApplicationDataDidUpdateNotification), object: nil)
     }
-    
+
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
         BRAWWatchDataManager.sharedInstance.destoryTimer()
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc func updateUI() {
         // when local currency rate is no avaliable, use empty string
         updateContainerVisibility()
-        
+
         if (BRAWWatchDataManager.sharedInstance.balanceInLocalCurrency?.characters.count <= 2) {
             balanceInLocalCurrencyLabel.setHidden(true)
         } else {
@@ -88,11 +88,11 @@ class BRAWGlanceInterfaceController: WKInterfaceController {
         balanceInLocalCurrencyLabel.setText(BRAWWatchDataManager.sharedInstance.balanceInLocalCurrency)
         lastTransactionLabel.setText(BRAWWatchDataManager.sharedInstance.lastestTransction)
     }
-    
+
     func shouldShowSetupWalletInterface()->Bool {
         return false;
     }
-    
+
     func updateContainerVisibility() {
         switch BRAWWatchDataManager.sharedInstance.walletStatus {
             case .unknown:

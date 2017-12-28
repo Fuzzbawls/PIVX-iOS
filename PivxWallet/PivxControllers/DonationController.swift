@@ -12,12 +12,12 @@ class DonationController: BaseController {
 
     @IBOutlet weak var donateButton: UIButton!
     @IBOutlet weak var amountTextField: UITextField!
-    
+
     let DONATE_ADDRESS:String = "DLwFC1qQbUzFZJg1vnvdAXBunRPh6anceK";
     let TESTNET_DONATE_ADDRESS:String = "y8SemF44YSoWA9Aqre3Z3kHZLp7KBzdBNd";
-    
+
     var address:String!;
-    
+
     override func setup(){
         donateButton.border(cornerRadius: 5, color: K.color.purple_r85g71b108)
         if(Utils.isTestnet){
@@ -26,7 +26,7 @@ class DonationController: BaseController {
             self.address = DONATE_ADDRESS;
         }
     }
-    
+
     override func setupNavigationBar() {
         super.setupNavigationBar()
         navigationItem.title = "Donations"

@@ -25,35 +25,35 @@
 import XCTest
 
 class BreadWalletUISnapshot: XCTestCase {
-    
+
     override func setUp() {
         super.setUp()
-        
+
         continueAfterFailure = false
-        
+
         let app = XCUIApplication()
         setupSnapshot(app)
         app.launch()
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testTakeScreenshots() {
         if (_SNAPSHOT) {
             let app = XCUIApplication()
             snapshot("1")
-            
+
             app.children(matching: .window).element(boundBy: 0).tap()
             snapshot("3")
-            
+
             app.pageIndicators.element(boundBy: 0).tap()
             snapshot("2")
-            
+
             app.navigationBars.buttons["burger"].tap()
             snapshot("4")
         }
     }
-    
+
 }

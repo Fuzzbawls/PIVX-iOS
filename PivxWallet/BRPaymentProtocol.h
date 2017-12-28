@@ -103,4 +103,3 @@ refundToAmounts:(NSArray *)amounts refundToScripts:(NSArray *)scripts memo:(NSSt
 - (instancetype)initWithPayment:(BRPaymentProtocolPayment *)payment andMemo:(NSString *)memo;
 
 @end
-

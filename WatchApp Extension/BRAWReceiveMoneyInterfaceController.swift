@@ -33,12 +33,12 @@ class BRAWReceiveMoneyInterfaceController: WKInterfaceController, WCSessionDeleg
     @IBOutlet var qrCodeImage: WKInterfaceImage!
     @IBOutlet var qrCodeButton: WKInterfaceButton!
     var customQR: UIImage?
-    
+
     @available(watchOSApplicationExtension 2.2, *)
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        
+
     }
-    
+
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
     }
@@ -58,7 +58,7 @@ class BRAWReceiveMoneyInterfaceController: WKInterfaceController, WCSessionDeleg
         super.didDeactivate()
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc func txReceive(_ notification: Notification?) {
         print("receive view controller received notification: \(String(describing: notification))")
         if let userData = (notification as NSNotification?)?.userInfo,
@@ -69,7 +69,7 @@ class BRAWReceiveMoneyInterfaceController: WKInterfaceController, WCSessionDeleg
                             style: .cancel, handler: { self.dismiss() })])
         }
     }
-    
+
     @objc func updateReceiveUI() {
         if BRAWWatchDataManager.sharedInstance.receiveMoneyQRCodeImage == nil {
             loadingIndicator.setHidden(false)
@@ -85,14 +85,14 @@ class BRAWReceiveMoneyInterfaceController: WKInterfaceController, WCSessionDeleg
             qrCodeButton.setBackgroundImage(qrImg)
         }
     }
-    
+
     @IBAction func qrCodeTap(_ sender: AnyObject?) {
         let ctx = BRAWKeypadModel(delegate: self)
         self.presentController(withName: "Keypad", context: ctx)
     }
-    
+
     // - MARK: Keypad delegate
-    
+
     func keypadDidFinish(_ stringValueBits: String) {
         qrCodeButton.setHidden(true)
         loadingIndicator.setHidden(false)
@@ -105,6 +105,6 @@ class BRAWReceiveMoneyInterfaceController: WKInterfaceController, WCSessionDeleg
         }
         self.dismiss()
     }
-    
-    
+
+
 }

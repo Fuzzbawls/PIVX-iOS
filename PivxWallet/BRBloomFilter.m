@@ -43,22 +43,22 @@ static uint32_t murmur3_32(const void *data, size_t len, uint32_t seed)
 {
     uint32_t h = seed, k = 0;
     size_t i, count = len/4;
-    
+
     for (i = 0; i < count; i++) {
         k = CFSwapInt32LittleToHost(((uint32_t *)data)[i])*C1;
         k = rol32(k, 15)*C2;
         h ^= k;
         h = rol32(h, 13)*5 + 0xe6546b64;
     }
-    
+
     k = 0;
-    
+
     switch (len & 3) {
         case 3: k ^= ((uint8_t *)data)[i*4 + 2] << 16; // fall through
         case 2: k ^= ((uint8_t *)data)[i*4 + 1] << 8; // fall through
         case 1: k ^= ((uint8_t *)data)[i*4], k *= C1, h ^= rol32(k, 15)*C2;
     }
-    
+
     h ^= len;
     fmix32(h);
     return h;
@@ -105,7 +105,7 @@ static uint32_t murmur3_32(const void *data, size_t len, uint32_t seed)
 - (instancetype)initWithFullMatch
 {
     if (! (self = [self init])) return nil;
-    
+
     self.filter = [NSMutableData dataWithBytes:"\xFF" length:1];
     self.hashFuncs = 0;
     _tweak = 0;
@@ -137,10 +137,10 @@ flags:(uint8_t)flags
 - (BOOL)containsData:(NSData *)data
 {
     const uint8_t *b = self.filter.bytes;
-    
+
     for (uint32_t i = 0; i < self.hashFuncs; i++) {
         uint32_t idx = [self hash:data hashNum:i];
-        
+
         if (! (b[idx >> 3] & (1 << (7 & idx)))) return NO;
     }
 
@@ -187,7 +187,7 @@ flags:(uint8_t)flags
 - (NSData *)toData
 {
     NSMutableData *d = [NSMutableData data];
-    
+
     [d appendVarInt:self.length];
     [d appendData:self.filter];
     [d appendUInt32:self.hashFuncs];

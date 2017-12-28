@@ -50,7 +50,7 @@
 - (instancetype)initWithString:(NSString *)string
 {
     if (! (self = [super init])) return nil;
-    
+
     self.string = string;
     return self;
 }
@@ -82,7 +82,7 @@
     NSString *s = [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
                    stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
     NSURL *url = [NSURL URLWithString:s];
-    
+
     if (! url || ! url.scheme) {
         if ([s isValidBitcoinAddress] || [s isValidBitcoinPrivateKey]) {
             url = [NSURL URLWithString:[NSString stringWithFormat:@"bitcoin://%@", s]];
@@ -100,20 +100,20 @@
     } else {
         self.scheme = @"pivx";
     }
-    
+
     if ([url.scheme isEqualToString:@"pivx"] || [url.scheme isEqualToString:@"bitcoin"]) {
         self.paymentAddress = url.host;
-    
+
         //TODO: correctly handle unknown but required url arguments (by reporting the request invalid)
         for (NSString *arg in [url.query componentsSeparatedByString:@"&"]) {
             NSArray *pair = [arg componentsSeparatedByString:@"="]; // if more than one '=', then pair[1] != value
 
             if (pair.count < 2) continue;
-        
+
             NSString *value = [[[arg substringFromIndex:[pair[0] length] + 1]
                                 stringByReplacingOccurrencesOfString:@"+" withString:@" "]
                                stringByRemovingPercentEncoding];
-            
+
             BOOL require = FALSE;
             NSString * key = pair[0];
             if ([key hasPrefix:@"req-"] && key.length > 4) {
@@ -159,10 +159,10 @@
     NSMutableString *s = [NSMutableString stringWithFormat:@"%@:",self.scheme];
     NSMutableArray *q = [NSMutableArray array];
     NSMutableCharacterSet *charset = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
-    
+
     [charset removeCharactersInString:@"&="];
     if (self.paymentAddress) [s appendString:self.paymentAddress];
-    
+
     if (self.amount > 0) {
         [q addObject:[@"amount=" stringByAppendingString:[(id)[NSDecimalNumber numberWithUnsignedLongLong:self.amount]
                                                           decimalNumberByMultiplyingByPowerOf10:-8].stringValue]];
@@ -172,7 +172,7 @@
         [q addObject:[@"label=" stringByAppendingString:[self.label
          stringByAddingPercentEncodingWithAllowedCharacters:charset]]];
     }
-    
+
     if (self.message.length > 0) {
         [q addObject:[@"message=" stringByAppendingString:[self.message
          stringByAddingPercentEncodingWithAllowedCharacters:charset]]];
@@ -182,16 +182,16 @@
         [q addObject:[@"r=" stringByAppendingString:[self.r
          stringByAddingPercentEncodingWithAllowedCharacters:charset]]];
     }
-    
+
     if (self.wantsInstant) {
         [q addObject:@"IS=1"];
     }
-    
+
     if (q.count > 0) {
         [s appendString:@"?"];
         [s appendString:[q componentsJoinedByString:@"&"]];
     }
-    
+
     return s;
 }
 
@@ -227,7 +227,7 @@
         BOOL valid = ([self.paymentAddress isValidBitcoinAddress] || (self.r && [NSURL URLWithString:self.r])) ? YES : NO;
         if (!valid) {
             NSLog(@"Not a valid bitcoin request");
-            
+
         }
         return valid;
     } else {
@@ -250,14 +250,14 @@
         [script appendBitcoinScriptPubKeyForAddress:self.paymentAddress];
     }
     if (script.length == 0) return nil;
-    
+
     BRPaymentProtocolDetails *details =
         [[BRPaymentProtocolDetails alloc] initWithNetwork:network outputAmounts:@[@(self.amount)]
          outputScripts:@[script] time:0 expires:0 memo:self.message paymentURL:nil merchantData:nil];
     BRPaymentProtocolRequest *request =
         [[BRPaymentProtocolRequest alloc] initWithVersion:1 pkiType:@"none" certs:(name ? @[name] : nil) details:details
          signature:nil callbackScheme:self.callbackScheme];
-    
+
     return request;
 }
 
@@ -286,14 +286,14 @@ completion:(void (^)(BRPaymentProtocolRequest *req, NSError *error))completion
             completion(nil, error);
             return;
         }
-    
+
         BRPaymentProtocolRequest *request = nil;
         NSString *network = @"main";
-        
+
 #if DASH_TESTNET
         network = @"test";
 #endif
-        
+
         if ([response.MIMEType.lowercaseString isEqual:[NSString stringWithFormat:@"application/%@-paymentrequest",scheme]] && data.length <= 50000) {
             request = [BRPaymentProtocolRequest requestWithData:data];
         }
@@ -305,7 +305,7 @@ completion:(void (^)(BRPaymentProtocolRequest *req, NSError *error))completion
                 break;
             }
         }
-        
+
         if (! request) {
             NSLog(@"unexpected response from %@:\n%@", req.URL.host,
                   [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
@@ -328,13 +328,13 @@ completion:(void (^)(BRPaymentProtocolACK *ack, NSError *error))completion
     NSURL *u = [NSURL URLWithString:paymentURL];
     NSMutableURLRequest *req = (u) ? [NSMutableURLRequest requestWithURL:u
                                       cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:timeout] : nil;
-    
+
     if (! req) {
         if (completion) {
             completion(nil, [NSError errorWithDomain:@"DashWallet" code:417
                              userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"bad payment URL", nil)}]);
         }
-        
+
         return;
     }
 
@@ -349,9 +349,9 @@ completion:(void (^)(BRPaymentProtocolACK *ack, NSError *error))completion
             if (completion) completion(nil, error);
             return;
         }
-        
+
         BRPaymentProtocolACK *ack = nil;
-        
+
         if ([response.MIMEType.lowercaseString isEqual:[NSString stringWithFormat:@"application/%@-paymentack",scheme]] && data.length <= 50000) {
             ack = [BRPaymentProtocolACK ackWithData:data];
         }

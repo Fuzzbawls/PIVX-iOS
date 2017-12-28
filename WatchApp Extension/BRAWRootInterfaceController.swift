@@ -52,7 +52,7 @@ class BRAWRootInterfaceController: WKInterfaceController {
         super.didDeactivate()
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc func updateUI() {
         switch BRAWWatchDataManager.sharedInstance.walletStatus {
         case .unknown:
@@ -66,7 +66,7 @@ class BRAWRootInterfaceController: WKInterfaceController {
                 withNames: ["BRAWBalanceInterfaceController","BRAWReceiveMoneyInterfaceController"], contexts: [])
         }
     }
-    
+
     @objc func txReceive(_ notification: Notification?) {
         print("root view controller received notification: \(String(describing: notification))")
         if let userData = (notification as NSNotification?)?.userInfo,

@@ -86,7 +86,7 @@
 + (instancetype)sharedEventManager
 {
     static id _sharedEventMgr;
-    
+
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         // determine if user is in sample group. it's inside the dispatch_once so it happens
@@ -99,11 +99,11 @@
             [defs setBool:isInSample forKey:IS_IN_SAMPLE_GROUP];
             [defs setBool:YES forKey:HAS_DETERMINED_SAMPLE_GROUP];
         }
-        
+
         // allocate the singleton
         _sharedEventMgr = [[self alloc] init];
     });
-    
+
     return _sharedEventMgr;
 }
 
@@ -198,14 +198,14 @@
                        });
         return; // no need to run if the user isn't in sample group or has already been asked for permission
     }
-    
+
     // grab a blurred image for the background
     UIGraphicsBeginImageContext(viewController.view.bounds.size);
     [viewController.view drawViewHierarchyInRect:viewController.view.bounds afterScreenUpdates:NO];
     UIImage *bgImg = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     UIImage *blurredBgImg = [bgImg blurWithRadius:3];
-    
+
     // display the popup
 //    __weak BREventConfirmView *eventConfirmView =
 //        [[NSBundle mainBundle] loadNibNamed:@"BREventConfirmView" owner:nil options:nil][0];
@@ -263,7 +263,7 @@
         [attrs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             safeDict[[key description]] = [obj description];
         }];
-        
+
         // we push a 4-tuple into the buffer consisting of (current_time, event_name, event_attributes)
         long long currentTimeMillis = (long long)([NSDate date].timeIntervalSince1970 * 1000.0);
         NSArray *tuple = @[self.sessionId, @(currentTimeMillis), evtName, attrs];
@@ -303,7 +303,7 @@
         // create the event-data directory if it does not exist
         NSError *error;
         NSString *dataDir = [self _unsentDataDirectory];
-        
+
         if (![[NSFileManager defaultManager] fileExistsAtPath:dataDir]) {
             if (![[NSFileManager defaultManager] createDirectoryAtPath:dataDir withIntermediateDirectories:NO
                                                             attributes:nil error:&error]) {
@@ -318,7 +318,7 @@
         NSString *baseName = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuid);
         CFRelease(uuid);
         NSString *fullPath = [dataDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.json", baseName]];
-        
+
         // now write to disk
         NSOutputStream *os = [[NSOutputStream alloc] initToFileAtPath:fullPath append:NO];
         [os open];
@@ -326,7 +326,7 @@
             NSLog(@"Unable to write JSON for events file: %@", error);
         }
         [os close];
-        
+
         // empty the buffer if we can't write JSON data, it's likely an unrecoverable error anyway
         [self._buffer removeAllObjects];
     }];
@@ -345,7 +345,7 @@
 //            NSLog(@"Unable to read contents of event data directory: %@", error);
 //            return; // bail here as this is likely unrecoverable
 //        }
-//        
+//
 //        [files enumerateObjectsUsingBlock:^(id baseName, NSUInteger idx, BOOL *stop) {
 //            // perform upload
 //            [self.myQueue addOperationWithBlock:^{
@@ -360,7 +360,7 @@
 //                    NSLog(@"Unable to read json event file %@: %@", fileName, readError);
 //                    return; // bail out here as we likely cant recover from this error
 //                }
-//                
+//
 //                // 2: transform it into the json data the server expects
 //                NSDictionary *eventDump = [self _eventTupleArrayToDictionary:inArray];
 //                NSError *serializeErr = nil;
@@ -369,12 +369,12 @@
 //                    NSLog(@"Unable to jsonify event dump %@", serializeErr);
 //                    return; // bail out as who knows why this will fail
 //                }
-//                
+//
 //                // 3. send off the request and await response
 //                NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:EVENT_SERVER_URL];
 //                req.HTTPMethod = @"POST";
 //                [req setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//                
+//
 //                NSURLSessionConfiguration *seshConf = [NSURLSessionConfiguration defaultSessionConfiguration];
 //                NSURLSession *urlSesh = [NSURLSession sessionWithConfiguration:seshConf];
 //                NSURLSessionUploadTask *uploadTask =
@@ -390,7 +390,7 @@
 //                                   fileName, (long)httpResponse.statusCode,
 //                                   [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 //                         }
-//                         
+//
 //                         // 4. remove the file from disk since we no longer need it
 //                         [self.myQueue addOperationWithBlock:^{
 //                             NSError *removeErr = nil;
@@ -416,7 +416,7 @@
             NSLog(@"Unable to read contents of event data directory: %@", error);
             return; // bail here as this is likely unrecoverable
         }
-        
+
         [files enumerateObjectsUsingBlock:^(id baseName, NSUInteger idx, BOOL *stop) {
             NSString *fileName = [[self _unsentDataDirectory] stringByAppendingPathComponent:
                                   [NSString stringWithFormat:@"/%@", baseName]];

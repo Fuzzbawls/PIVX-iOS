@@ -43,10 +43,10 @@ func snapshot(_ name: String, waitForLoadingIndicator: Bool = false) {
 }
 
 class Snapshot: NSObject {
-    
+
     class func setLanguage(_ app: XCUIApplication) {
         let path = "/tmp/language.txt"
-        
+
         do {
             let locale = try NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) as String
             deviceLanguage = locale.substring(to: locale.characters.index(locale.startIndex, offsetBy: 2, limitedBy:locale.endIndex)!)
@@ -55,12 +55,12 @@ class Snapshot: NSObject {
             print("Couldn't detect/set language...")
         }
     }
-    
+
     class func setLaunchArguments(_ app: XCUIApplication) {
         let path = "/tmp/snapshot-launch_arguments.txt"
-        
+
         app.launchArguments += ["-FASTLANE_SNAPSHOT", "YES"]
-        
+
         do {
             let launchArguments = try NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) as String
             let regex = try NSRegularExpression(pattern: "(\\\".+?\\\"|\\S+)", options: [])
@@ -73,21 +73,21 @@ class Snapshot: NSObject {
             print("Couldn't detect/set launch_arguments...")
         }
     }
-    
+
     class func snapshot(_ name: String, waitForLoadingIndicator: Bool = false) {
         if waitForLoadingIndicator {
             waitForLoadingIndicatorToDisappear()
         }
-        
+
         print("snapshot: \(name)") // more information about this, check out https://github.com/krausefx/snapshot
-        
+
         sleep(1) // Waiting for the animation to be finished (kind of)
         XCUIDevice.shared.orientation = .unknown
     }
-    
+
     class func waitForLoadingIndicatorToDisappear() {
         let query = XCUIApplication().statusBars.children(matching: .other).element(boundBy: 1).children(matching: .other)
-        
+
         while query.count > 4 {
             sleep(1)
             print("Number of Elements in Status Bar: \(query.count)... waiting for status bar to disappear")

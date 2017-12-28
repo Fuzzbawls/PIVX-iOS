@@ -12,7 +12,7 @@ class ContactAddress: NSObject {
     var name:String = ""
     var descriptionContact:String = ""
     var address:String = ""
-    
+
     override func setValue(_ value: Any?, forKey key: String) {
         if key == "name" {
             if let unwrappedValue = value as? String {
@@ -32,12 +32,12 @@ class ContactAddress: NSObject {
     override init() {
         super.init()
     }
-    
+
     init(dictionary:[String:AnyObject]){
         super.init()
         setValuesForKeys(dictionary)
     }
-    
+
     func toDictionary()->[String:AnyObject] {
         var dictionary:[String:AnyObject] = [:]
         dictionary["name"] = name as AnyObject

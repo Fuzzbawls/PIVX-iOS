@@ -54,7 +54,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    
+
     if (self._userDefaultsKey)
         self.theSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:self._userDefaultsKey];
 }

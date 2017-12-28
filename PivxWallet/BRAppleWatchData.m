@@ -46,7 +46,7 @@
         _transactions = [decoder decodeObjectForKey:AW_DATA_TRANSACTIONS];
         _hasWallet = [[decoder decodeObjectForKey:AW_DATA_HAS_WALLET] boolValue];
     }
-    
+
     return self;
 }
 

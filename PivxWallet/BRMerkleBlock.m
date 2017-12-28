@@ -61,7 +61,7 @@
 inline static int ceil_log2(int x)
 {
     int r = (x & (x - 1)) ? 1 : 0;
-    
+
     while ((x >>= 1) != 0) r++;
     return r;
 }
@@ -69,7 +69,7 @@ inline static int ceil_log2(int x)
 @interface BRMerkleBlock ()
 
 @property (nonatomic, assign) UInt256 blockHash;
-    
+
 @end
 
 @implementation BRMerkleBlock
@@ -89,7 +89,7 @@ inline static int ceil_log2(int x)
     NSMutableData *d = [NSMutableData data]; // NSMutableData
 
     //NSLog(@"############################");
-    
+
     _version = [message UInt32AtOffset:off];
     off += sizeof(uint32_t);
     _prevBlock = [message hashAtOffset:off];
@@ -118,7 +118,7 @@ inline static int ceil_log2(int x)
     }else{
         _zerocoinAccumulator = UINT256_ZERO;
     }
-    
+
     _totalTransactions = [message UInt32AtOffset:off];
     //NSLog(@"Total txs %d",_totalTransactions);
     off += sizeof(uint32_t);
@@ -128,27 +128,27 @@ inline static int ceil_log2(int x)
     off += len;
     _flags = [message dataAtOffset:off length:&l];
     _height = BLOCK_UNKNOWN_HEIGHT;
-    
+
     [d appendUInt32:_version];
     [d appendBytes:&_prevBlock length:sizeof(_prevBlock)];
     [d appendBytes:&_merkleRoot length:sizeof(_merkleRoot)];
     [d appendUInt32:_timestamp];
     [d appendUInt32:_target];
     [d appendUInt32:_nonce];
-    
+
     if(![ self isZerocoin ]){
         _blockHash = d.x11;
     }else{
         [d appendBytes:&_zerocoinAccumulator length:sizeof(_zerocoinAccumulator)];
         _blockHash = d.SHA256_2;
     }
-    
+
 
     //NSLog(@"Received block hash %@",[NSData dataWithUInt256:_blockHash].hexString);
     //NSString* s = [NSData dataWithUInt256: *(const UInt256 *)((const char *)[NSData dataWithUInt256:_blockHash].reverse.bytes)].hexString;
     //NSLog(@"Received block hash %@",s);
-    
-    
+
+
     return self;
 }
 
@@ -157,7 +157,7 @@ merkleRoot:(UInt256)merkleRoot timestamp:(uint32_t)timestamp target:(uint32_t)ta
 totalTransactions:(uint32_t)totalTransactions hashes:(NSData *)hashes flags:(NSData *)flags height:(uint32_t)height
 {
     if (! (self = [self init])) return nil;
-    
+
     _blockHash = blockHash;
     _version = version;
     _prevBlock = prevBlock;
@@ -170,7 +170,7 @@ totalTransactions:(uint32_t)totalTransactions hashes:(NSData *)hashes flags:(NSD
     _flags = flags;
     _height = height;
     _zerocoinAccumulator = zerocoinAccumulator;
-    
+
     return self;
 }
 
@@ -200,17 +200,17 @@ totalTransactions:(uint32_t)totalTransactions hashes:(NSData *)hashes flags:(NSD
             [d appendBytes:&r length:sizeof(r)];
             return uint256_obj(d.SHA256_2);
         }];
-    
+
     [root getValue:&merkleRoot];
     if (_totalTransactions > 0 && ! uint256_eq(merkleRoot, _merkleRoot)) return NO; // merkle root check failed
-    
+
     // check if timestamp is too far in future
     //TODO: use estimated network time instead of system time (avoids timejacking attacks and misconfigured time)
     if (_timestamp > [NSDate timeIntervalSinceReferenceDate] + NSTimeIntervalSince1970 + MAX_TIME_DRIFT){
         NSLog(@"Error on Check if timestamp is too far in future, on block: %@",[NSData dataWithUInt256:_blockHash].hexString);
         return NO;
     }
-    
+
     // check if proof-of-work target is out of range
     if (target == 0 || target & 0x00800000u || size > maxsize || (size == maxsize && target > maxtarget)){
         NSLog(@"Error on Check if proof-of-work target is out of range on block: %@",[NSData dataWithUInt256:_blockHash].hexString);
@@ -219,7 +219,7 @@ totalTransactions:(uint32_t)totalTransactions hashes:(NSData *)hashes flags:(NSD
 
     if (size > 3) *(uint32_t *)&t.u8[size - 3] = CFSwapInt32HostToLittle(target);
     else t.u32[0] = CFSwapInt32HostToLittle(target >> (3 - size)*8);
-    
+
     // TODO Furszy check this..
     // print block hash to check if it's good.
     //NSLog(@"Received block hash %@",[NSData dataWithUInt256:_blockHash].hexString);
@@ -230,21 +230,21 @@ totalTransactions:(uint32_t)totalTransactions hashes:(NSData *)hashes flags:(NSD
     //        return NO;
     //    }
     //}
-    
+
     return YES;
 }
 
 - (NSData *)toData
 {
     NSMutableData *d = [NSMutableData data];
-    
+
     [d appendUInt32:_version];
     [d appendBytes:&_prevBlock length:sizeof(_prevBlock)];
     [d appendBytes:&_merkleRoot length:sizeof(_merkleRoot)];
     [d appendUInt32:_timestamp];
     [d appendUInt32:_target];
     [d appendUInt32:_nonce];
-    
+
     if (_totalTransactions > 0) {
         [d appendUInt32:_totalTransactions];
         [d appendVarInt:_hashes.length/sizeof(UInt256)];
@@ -252,7 +252,7 @@ totalTransactions:(uint32_t)totalTransactions hashes:(NSData *)hashes flags:(NSD
         [d appendVarInt:_flags.length];
         [d appendData:_flags];
     }
-    
+
     return d;
 }
 
@@ -264,7 +264,7 @@ totalTransactions:(uint32_t)totalTransactions hashes:(NSData *)hashes flags:(NSD
         NSLog(@"looking for %@",[NSData dataWithUInt256:txHash].hexString);
         if (uint256_eq(txHash, [_hashes hashAtOffset:i])) return YES;
     }
-    
+
     return NO;
 }
 
@@ -286,7 +286,7 @@ totalTransactions:(uint32_t)totalTransactions hashes:(NSData *)hashes flags:(NSD
         } :^id (id left, id right) {
             return [left arrayByAddingObjectsFromArray:right];
         }];
-    
+
     return txHashes;
 }
 
@@ -439,22 +439,22 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
 -(int32_t)darkGravityWaveTargetWithPreviousBlocks:(NSMutableDictionary *)previousBlocks {
     /* current difficulty formula, darkcoin - based on DarkGravity v3, original work done by evan duffield, modified for iOS */
     BRMerkleBlock *previousBlock = previousBlocks[uint256_obj(self.prevBlock)];
-    
+
     int32_t nActualTimespan = 0;
     int64_t lastBlockTime = 0;
     uint32_t blockCount = 0;
     UInt256 sumTargets = UINT256_ZERO;
-    
+
     if (uint256_is_zero(_prevBlock) || previousBlock.height == 0 || previousBlock.height < DGW_PAST_BLOCKS_MIN) {
         // This is the first block or the height is < PastBlocksMin
         // Return minimal required work. (1e0ffff0)
         return MAX_PROOF_OF_WORK;
     }
-    
+
     BRMerkleBlock *currentBlock = previousBlock;
     // loop over the past n blocks, where n == PastBlocksMax
     for (blockCount = 1; currentBlock && currentBlock.height > 0 && blockCount<=DGW_PAST_BLOCKS_MAX; blockCount++) {
-        
+
         // Calculate average difficulty based on the blocks we iterate over in this for loop
         if(blockCount <= DGW_PAST_BLOCKS_MIN) {
             UInt256 currentTarget = setCompact(currentBlock.target);
@@ -466,7 +466,7 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
                 sumTargets = add(sumTargets,currentTarget);
             }
         }
-        
+
         // If this is the second iteration (LastBlockTime was set)
         if(lastBlockTime > 0){
             // Calculate time difference between previous block and current block
@@ -477,34 +477,34 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
         }
         // Set lastBlockTime to the block time for the block in current iteration
         lastBlockTime = currentBlock.timestamp;
-        
+
         if (previousBlock == NULL) { assert(currentBlock); break; }
         currentBlock = previousBlocks[uint256_obj(currentBlock.prevBlock)];
     }
     UInt256 blockCount256 = ((UInt256) { .u64 = { blockCount, 0, 0, 0 } });
     // darkTarget is the difficulty
     UInt256 darkTarget = divide(sumTargets,blockCount256);
-    
+
     // nTargetTimespan is the time that the CountBlocks should have taken to be generated.
     uint32_t nTargetTimespan = (blockCount - 1)* (60 * 2.5);
-    
+
     // Limit the re-adjustment to 3x or 0.33x
     // We don't want to increase/decrease diff too much.
     if (nActualTimespan < nTargetTimespan/3.0f)
         nActualTimespan = nTargetTimespan/3.0f;
     if (nActualTimespan > nTargetTimespan*3.0f)
         nActualTimespan = nTargetTimespan*3.0f;
-    
+
     // Calculate the new difficulty based on actual and target timespan.
     darkTarget = divide(multiplyThis32(darkTarget,nActualTimespan),((UInt256) { .u64 = { nTargetTimespan, 0, 0, 0 } }));
-    
+
     int32_t compact = getCompact(darkTarget);
-    
+
     // If calculated difficulty is lower than the minimal diff, set the new difficulty to be the minimal diff.
     if (compact > MAX_PROOF_OF_WORK){
         compact = MAX_PROOF_OF_WORK;
     }
-    
+
     // Return the new diff.
     return compact;
 }
@@ -514,21 +514,21 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
 - (id)_walk:(int *)hashIdx :(int *)flagIdx :(int)depth :(id (^)(id, BOOL))leaf :(id (^)(id, id))branch
 {
     if ((*flagIdx)/8 >= _flags.length || (*hashIdx + 1)*sizeof(UInt256) > _hashes.length) return leaf(nil, NO);
-    
+
     BOOL flag = (((const uint8_t *)_flags.bytes)[*flagIdx/8] & (1 << (*flagIdx % 8)));
-    
+
     (*flagIdx)++;
-    
+
     if (! flag || depth == ceil_log2(_totalTransactions)) {
         UInt256 hash = [_hashes hashAtOffset:(*hashIdx)*sizeof(UInt256)];
-        
+
         (*hashIdx)++;
         return leaf(uint256_obj(hash), flag);
     }
-    
+
     id left = [self _walk:hashIdx :flagIdx :depth + 1 :leaf :branch];
     id right = [self _walk:hashIdx :flagIdx :depth + 1 :leaf :branch];
-    
+
     return branch(left, right);
 }
 

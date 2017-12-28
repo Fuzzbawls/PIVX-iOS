@@ -37,18 +37,18 @@
 {
     static id singleton = nil;
     static dispatch_once_t onceToken = 0;
-    
+
     dispatch_once(&onceToken, ^{
         singleton = [self new];
     });
-    
+
     return singleton;
 }
 
 - (NSData *)httpBodyForParamsDictionary:(NSDictionary *)paramDictionary
 {
     NSMutableArray *parameterArray = [NSMutableArray array];
-    
+
     [paramDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
         if ([obj isKindOfClass:[NSString class]]) {
             NSString *param = [NSString stringWithFormat:@"%@=%@", key, [obj stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
@@ -58,9 +58,9 @@
             [parameterArray addObject:param];
         }
     }];
-    
+
     NSString *string = [parameterArray componentsJoinedByString:@"&"];
-    
+
     return [string dataUsingEncoding:NSUTF8StringEncoding];
 }
 
@@ -77,24 +77,24 @@
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
-    
+
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DSShapeshiftEntity" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
-    
+
     // Set the batch size to a suitable number.
     [fetchRequest setFetchBatchSize:12];
-    
+
     // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"expiresAt" ascending:NO];
     NSArray *sortDescriptors = @[sortDescriptor];
-    
+
     [fetchRequest setSortDescriptors:sortDescriptors];
-    
+
     NSPredicate *filterPredicate = [self shapeshiftsNeedingInfo];
     [fetchRequest setPredicate:filterPredicate];
-    
+
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
     NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
@@ -106,12 +106,12 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    
+
     return aFetchedResultsController;
 }
 
 -(NSFetchedResultsController*)shapeshiftFetchedResultsController {
-    
+
     if (_shapeshiftFetchedResultsController != nil)
     {
         return _shapeshiftFetchedResultsController;
@@ -121,13 +121,13 @@
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    
+
 }
 
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    
+
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
@@ -141,8 +141,8 @@
 
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    
-    
+
+
 }
 
 #pragma mark - Shapeshift Helper calls
@@ -162,7 +162,7 @@
 /*
  url: shapeshift.io/marketinfo/dash_btc
  method: GET
- 
+
  Success Output:
  {
  "pair"     : "dash_btc",
@@ -198,7 +198,7 @@
             return;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+
             self.lastMarketInfoCheck = [NSDate date];
             self.rate = [dictionary[@"rate"] doubleValue];
             if (dictionary[@"limit"])
@@ -296,9 +296,9 @@
  destTag    = (Optional) Destination tag that you want appended to a Ripple payment to you
  rsAddress  = (Optional) For new NXT accounts to be funded, you supply this on NXT payment to you
  apiKey     = (Optional) Your affiliate PUBLIC KEY, for volume tracking, affiliate payments, split-shifts, etc...
- 
+
  example data: {"withdrawal":"AAAAAAAAAAAAA", "pair":"btc_ltc", returnAddress:"BBBBBBBBBBB"}
- 
+
  Success Output:
  {
  deposit: [Deposit Address (or memo field if input coin is BTS / BITUSD)],
@@ -314,12 +314,12 @@
 
 -(void)POST_ShiftWithAddress:(NSString*)withdrawalAddress returnAddress:(NSString*)returnAddress completionBlock:(void (^)(NSDictionary *shiftInfo, NSError *error))completionBlock {
     NSDictionary *params = @{@"withdrawal": withdrawalAddress, @"pair": @"dash_btc", @"returnAddress":returnAddress,@"apiKey":SHAPESHIFT_PUBLIC_KEY};
-    
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://shapeshift.io/shift"] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[self httpBodyForParamsDictionary:params]];
-    
+
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError) {
                                if (((((NSHTTPURLResponse*)response).statusCode /100) != 2) || connectionError) {
@@ -360,7 +360,7 @@
  data required:
  email    = the address for receipt email to be sent to
  txid       = the transaction id of the transaction TO the user (ie the txid for the withdrawal NOT the deposit)
- 
+
  Success Output:
  {"email":
  {
@@ -373,7 +373,7 @@
 
 -(void)POST_RequestEmailReceiptOfShapeshiftWithOutputTransactionId:(NSString*)shapeshiftOutputTransactionId toEmailAddress:(NSString*)validEmailAddress completionBlock:(void (^)(NSDictionary *shiftInfo, NSError *error))completionBlock {
     NSDictionary *params = @{@"email":validEmailAddress,@"txid": shapeshiftOutputTransactionId};
-    
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://shapeshift.io/mail"] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:@"POST"];
@@ -409,9 +409,9 @@
                                dispatch_async(dispatch_get_main_queue(), ^{
                                    completionBlock(dictionary[@"success"],nil);
                                });
-                               
+
                            }] resume];
-    
+
 }
 
 
@@ -420,12 +420,12 @@
  url: shapeshift.io/sendamount
  method: POST
  data type: JSON
- 
+
  //1. Send amount request
- 
- 
+
+
  Data required:
- 
+
  amount          = the amount to be sent to the withdrawal address
  withdrawal      = the address for coin to be sent to
  pair            = what coins are being exchanged in the form [input coin]_[output coin]  ie ltc_btc
@@ -433,13 +433,13 @@
  destTag         = (Optional) Destination tag that you want appended to a Ripple payment to you
  rsAddress       = (Optional) For new NXT accounts to be funded, supply this on NXT payment to you
  apiKey          = (Optional) Your affiliate PUBLIC KEY, for volume tracking, affiliate payments, split-shifts, etc...
- 
+
  example data {"amount":123, "withdrawal":"123ABC", "pair":"ltc_btc", returnAddress:"BBBBBBB"}
- 
- 
+
+
  Success Output:
- 
- 
+
+
  {
  success:
  {
@@ -453,13 +453,13 @@
  apiPubKey: [public API attached to this shift, if one was given]
  }
  }
- 
+
  */
 ////////////////////////////////////////////////////////////////////
 
 -(void)POST_SendAmount:(NSNumber*)amount withAddress:(NSString*)withdrawalAddress returnAddress:(NSString*)returnAddress completionBlock:(void (^)(NSDictionary *shiftInfo, NSError *error))completionBlock {
     NSDictionary *params = @{@"amount":amount,@"withdrawal": withdrawalAddress, @"pair": @"dash_btc", @"returnAddress":returnAddress,@"apiKey":SHAPESHIFT_PUBLIC_KEY};
-    
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://shapeshift.io/sendamount"] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:@"POST"];
@@ -495,7 +495,7 @@
                                dispatch_async(dispatch_get_main_queue(), ^{
                                    completionBlock(dictionary[@"success"],nil);
                                });
-                               
+
                            }] resume];
 }
 
@@ -505,27 +505,27 @@
  method: POST
  data type: JSON
  data required: address  = The deposit address associated with the pending transaction
- 
+
  Example data : {address : "1HB5XMLmzFVj8ALj6mfBsbifRoD4miY36v"}
- 
+
  Success Output:
- 
+
  {  success  : " Pending Transaction cancelled "  }
- 
+
  Error Output:
- 
+
  {  error  : {errorMessage}  }
  */
 ////////////////////////////////////////////////////////////////////
 
 -(void)POST_CancelShiftToAddress:(NSString*)withdrawalAddress completionBlock:(void (^)(NSDictionary *shiftInfo, NSError *error))completionBlock {
     NSDictionary *params = @{@"address": withdrawalAddress};
-    
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://shapeshift.io/shift"] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[self httpBodyForParamsDictionary:params]];
-    
+
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError) {
                                if (((((NSHTTPURLResponse*)response).statusCode /100) != 2) || connectionError) {
@@ -554,7 +554,7 @@
                                        completionBlock(dictionary,nil);
                                    }
                                });
-                               
+
                            }] resume];
 }
 

@@ -46,7 +46,7 @@
 static NSString *dateFormat(NSString *template)
 {
     NSString *format = [NSDateFormatter dateFormatFromTemplate:template options:0 locale:[NSLocale currentLocale]];
-    
+
     format = [format stringByReplacingOccurrencesOfString:@", " withString:@" "];
     format = [format stringByReplacingOccurrencesOfString:@" a" withString:@"a"];
     format = [format stringByReplacingOccurrencesOfString:@"hh" withString:@"h"];
@@ -90,8 +90,8 @@ static NSString *dateFormat(NSString *template)
 //                                        self.navigationController.view.frame.size.height -
 //                                        self.wallpaper.frame.size.height/2);
 //    [self.navigationController.view insertSubview:self.wallpaper atIndex:0];
-    
-    
+
+
     self.navigationController.delegate = self;
     self.moreTx = YES;
 }
@@ -103,16 +103,16 @@ static NSString *dateFormat(NSString *template)
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     //UIColor *color = [UIColor rgb:85 green:71 blue:108 alpha:1];
     self.view.backgroundColor = UIColor.whiteColor;
     self.tableView.backgroundColor = UIColor.whiteColor;
     BRWalletManager *manager = [BRWalletManager sharedInstance];
-    
+
 #if SNAPSHOT
     BRTransaction *tx = [[BRTransaction alloc] initWithInputHashes:@[uint256_obj(UINT256_ZERO)] inputIndexes:@[@(0)]
                          inputScripts:@[[NSData data]] outputAddresses:@[@""] outputAmounts:@[@(0)]];
-    
+
     manager.localCurrencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
     self.tableView.showsVerticalScrollIndicator = NO;
     self.moreTx = YES;
@@ -133,7 +133,7 @@ static NSString *dateFormat(NSString *template)
     if (! manager.didAuthenticate) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             self.transactions = manager.wallet.allTransactions;
-           
+
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
             });
@@ -184,7 +184,7 @@ static NSString *dateFormat(NSString *template)
                 [self.tableView reloadData];
             }];
     }
-    
+
     if (! self.syncStartedObserver) {
         self.syncStartedObserver =
             [[NSNotificationCenter defaultCenter] addObserverForName:BRPeerManagerSyncStartedNotification object:nil
@@ -198,7 +198,7 @@ static NSString *dateFormat(NSString *template)
                 }
             }];
     }
-    
+
     if (! self.syncFinishedObserver) {
         self.syncFinishedObserver =
             [[NSNotificationCenter defaultCenter] addObserverForName:BRPeerManagerSyncFinishedNotification object:nil
@@ -207,7 +207,7 @@ static NSString *dateFormat(NSString *template)
                 else [self updateTitleView];
             }];
     }
-    
+
     if (! self.syncFailedObserver) {
         self.syncFailedObserver =
             [[NSNotificationCenter defaultCenter] addObserverForName:BRPeerManagerSyncFailedNotification object:nil
@@ -268,7 +268,7 @@ static NSString *dateFormat(NSString *template)
         if (self.syncFailedObserver) [[NSNotificationCenter defaultCenter] removeObserver:self.syncFailedObserver];
         self.syncFailedObserver = nil;
         self.wallpaper.clipsToBounds = YES;
-        
+
         //self.buyController = nil;
     }
 
@@ -290,7 +290,7 @@ static NSString *dateFormat(NSString *template)
 {
     static uint32_t height = 0;
     uint32_t h = [BRPeerManager sharedInstance].lastBlockHeight;
-    
+
     if (h > height) height = h;
     return height;
 }
@@ -307,7 +307,7 @@ static NSString *dateFormat(NSString *template)
     else {
         if (transactions.count <= 5) self.moreTx = NO;
         _transactions = (self.moreTx) ? [transactions subarrayWithRange:NSMakeRange(0, 5)] : [transactions copy];
-    
+
         if (! [BRWalletManager sharedInstance].didAuthenticate) {
             for (BRTransaction *tx in _transactions) {
                 if (tx.blockHeight == TX_UNCONFIRMED ||
@@ -321,7 +321,7 @@ static NSString *dateFormat(NSString *template)
 }
 
 - (void)setBackgroundForCell:(UITableViewCell *)cell tableView:(UITableView *)tableView indexPath:(NSIndexPath *)path
-{    
+{
     [cell viewWithTag:100].hidden = (path.row > 0);
     [cell viewWithTag:101].hidden = (path.row + 1 < [self tableView:tableView numberOfRowsInSection:path.section]);
 }
@@ -331,14 +331,14 @@ static NSString *dateFormat(NSString *template)
     static NSDateFormatter *monthDayHourFormatter = nil;
     static NSDateFormatter *yearMonthDayHourFormatter = nil;
     static dispatch_once_t onceToken;
-    
+
     dispatch_once(&onceToken, ^{ // BUG: need to watch for NSCurrentLocaleDidChangeNotification
         monthDayHourFormatter = [NSDateFormatter new];
         monthDayHourFormatter.dateFormat = dateFormat(@"Mdjmma");
         yearMonthDayHourFormatter = [NSDateFormatter new];
         yearMonthDayHourFormatter.dateFormat = dateFormat(@"yyMdja");
     });
-    
+
     NSString *date = self.txDates[uint256_obj(tx.txHash)];
     NSTimeInterval now = [[BRPeerManager sharedInstance] timestampForBlockHeight:TX_UNCONFIRMED];
     NSTimeInterval year = [NSDate timeIntervalSinceReferenceDate] - 364*24*60*60;
@@ -347,7 +347,7 @@ static NSString *dateFormat(NSString *template)
 
     NSTimeInterval txTime = (tx.timestamp > 1) ? tx.timestamp : now;
     NSDateFormatter *desiredFormatter = (txTime > year) ? monthDayHourFormatter : yearMonthDayHourFormatter;
-    
+
     date = [desiredFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceReferenceDate:txTime]];
     if (tx.blockHeight != TX_UNCONFIRMED) self.txDates[uint256_obj(tx.txHash)] = date;
     return date;
@@ -368,19 +368,19 @@ static NSString *dateFormat(NSString *template)
 {
 
     BRWalletManager *manager = [BRWalletManager sharedInstance];
-    
+
     if (sender) [BREventManager saveEvent:@"tx_history:unlock"];
     if (! manager.didAuthenticate) {
         [manager authenticateWithPrompt:nil andTouchId:YES alertIfLockout:YES completion:^(BOOL authenticated, BOOL cancelled) {
             if (authenticated) {
                 if (sender) [BREventManager saveEvent:@"tx_history:unlock_success"];
-                
+
                 [self updateTitleView];
                 [self.navigationItem setRightBarButtonItem:nil animated:(sender) ? YES : NO];
-                
+
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     self.transactions = manager.wallet.allTransactions;
-                    
+
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (sender && self.transactions.count > 0) {
                             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0]
@@ -406,10 +406,10 @@ static NSString *dateFormat(NSString *template)
     //nav.view.alpha = 0.0;
 
 
-    
+
     [Utils showScanController];
-    
-    
+
+
     //[nav dismissViewControllerAnimated:NO completion:^{
         //[(id)((BRRootViewController *)nav.viewControllers.firstObject).sendViewController scanQR:nil];
         //[UIView animateWithDuration:0.1 delay:1.5 options:0 animations:^{ nav.view.alpha = 1.0; } completion:nil];
@@ -431,24 +431,24 @@ static NSString *dateFormat(NSString *template)
     [BREventManager saveEvent:@"tx_history:more"];
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     NSUInteger txCount = self.transactions.count;
-    
+
     if (! manager.didAuthenticate) {
         [self unlock:sender];
         return;
     }
-    
+
     [self.tableView beginUpdates];
     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:txCount inSection:0]]
      withRowAnimation:UITableViewRowAnimationFade];
     self.moreTx = NO;
     self.transactions = manager.wallet.allTransactions;
-    
+
     NSMutableArray *transactions = [NSMutableArray arrayWithCapacity:self.transactions.count];
-    
+
     while (txCount == 0 || txCount < self.transactions.count) {
         [transactions addObject:[NSIndexPath indexPathForRow:txCount++ inSection:0]];
     }
-    
+
     [self.tableView insertRowsAtIndexPaths:transactions withRowAnimation:UITableViewRowAnimationTop];
     [self.tableView endUpdates];
 }
@@ -531,7 +531,7 @@ static NSString *dateFormat(NSString *template)
                 cell.textLabel.text = (indexPath.row > 0) ? NSLocalizedString(@"more...", nil) :
                                       NSLocalizedString(@"transaction history", nil);
                 cell.imageView.image = nil;
-                
+
                 if (indexPath.row == 0) {
                     EmptyTableCell *tran = [tableView dequeueReusableCellWithIdentifier:self.emptyIdentifier forIndexPath:indexPath];
                     [tran configureWithTitle:@"YOUR WALLET IS LOCKED" image:@"imgWalletLocked"];
@@ -600,7 +600,7 @@ static NSString *dateFormat(NSString *template)
                     unconfirmedLabel.hidden = YES;
                     sentLabel.hidden = NO;
                 }
-                
+
                 if (sent > 0 && received == sent) {
                     textLabel.attributedText = [manager attributedStringForDashAmount:sent];
                     localCurrencyLabel.text = [NSString stringWithFormat:@"(%@)",
@@ -641,7 +641,7 @@ static NSString *dateFormat(NSString *template)
                 return tran;
                 //cell = [tableView dequeueReusableCellWithIdentifier:noTxIdent];
             }
-            
+
             break;
 
         case 1:
@@ -653,7 +653,7 @@ static NSString *dateFormat(NSString *template)
                     cell.textLabel.text = NSLocalizedString(@"Buy PIV", nil);
                     cell.imageView.image = [UIImage imageNamed:@"dash-buy-blue-small"];
                     break;
-                    
+
                 case 1:
                     cell.textLabel.text = NSLocalizedString(@"import private key", nil);
                     cell.imageView.image = [UIImage imageNamed:@"icScan"];
@@ -665,10 +665,10 @@ static NSString *dateFormat(NSString *template)
                     cell.imageView.image = [UIImage imageNamed:@"icSettings"];
                     break;
             }
-            
+
             break;
     }
-    
+
     [self setBackgroundForCell:cell tableView:tableView indexPath:indexPath];
     return cell;
 }
@@ -680,12 +680,12 @@ static NSString *dateFormat(NSString *template)
     if (self.transactions.count == 0) {
         return [[UIScreen mainScreen] bounds].size.height - 154;
     }
-    
+
     switch (indexPath.section) {
         case 0: return (self.moreTx && indexPath.row >= self.transactions.count) ? 44.0 : TRANSACTION_CELL_HEIGHT;
         case 1: return 44.0;
     }
-    
+
     return 44.0;
 }
 
@@ -698,7 +698,7 @@ static NSString *dateFormat(NSString *template)
     CGRect r = [sectionTitle boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 20.0, CGFLOAT_MAX)
                 options:NSStringDrawingUsesLineFragmentOrigin
                 attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} context:nil];
-    
+
     return r.size.height + 22.0 + 10.0;
 }
 
@@ -708,7 +708,7 @@ static NSString *dateFormat(NSString *template)
                                                          [self tableView:tableView heightForHeaderInSection:section])];
     UILabel *l = [UILabel new];
     CGRect r = CGRectMake(15.0, 0.0, v.frame.size.width - 20.0, v.frame.size.height - 22.0);
-    
+
     l.text = [self tableView:tableView titleForHeaderInSection:section];
     l.backgroundColor = [UIColor clearColor];
     l.font = [UIFont systemFontOfSize:13];
@@ -764,7 +764,7 @@ static NSString *dateFormat(NSString *template)
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
                     //[self showBuy];
                     break;
-                    
+
                 case 1: // import private key
                     [BREventManager saveEvent:@"tx_history:import_priv_key"];
                     [self scanQR:nil];

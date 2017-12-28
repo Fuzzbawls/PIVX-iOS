@@ -252,7 +252,7 @@
                                                                    ([(id)[UIApplication sharedApplication].delegate registerForPushNotifications]);
                                                                }
                                                            }
-                                                           
+
                                                            if (jailbroken && manager.wallet.totalReceived > 0) {
                                                                UIAlertController * alert = [UIAlertController
                                                                                             alertControllerWithTitle:NSLocalizedString(@"WARNING", nil)
@@ -262,7 +262,7 @@
                                                                                               actionWithTitle:NSLocalizedString(@"ignore", nil)
                                                                                               style:UIAlertActionStyleCancel
                                                                                               handler:^(UIAlertAction * action) {
-                                                                                                  
+
                                                                                               }];
                                                                UIAlertAction* wipeButton = [UIAlertAction
                                                                                             actionWithTitle:NSLocalizedString(@"wipe", nil)

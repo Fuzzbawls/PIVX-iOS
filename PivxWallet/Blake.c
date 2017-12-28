@@ -394,7 +394,7 @@ blake64(sph_blake_big_context *sc, const void *data, size_t len)
     unsigned char *buf;
     size_t ptr;
     BLAKE_DECL_STATE64
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     if (len < (sizeof sc->buf) - ptr) {
@@ -403,11 +403,11 @@ blake64(sph_blake_big_context *sc, const void *data, size_t len)
         sc->ptr = ptr;
         return;
     }
-    
+
     BLAKE_READ_STATE64(sc);
     while (len > 0) {
         size_t clen;
-        
+
         clen = (sizeof sc->buf) - ptr;
         if (clen > len)
             clen = len;
@@ -439,7 +439,7 @@ blake64_close(sph_blake_big_context *sc,
     unsigned z;
     sph_u64 th, tl;
     unsigned char *out;
-    
+
     ptr = sc->ptr;
     bit_len = ((unsigned)ptr << 3) + n;
     z = 0x80 >> n;
@@ -510,5 +510,3 @@ sph_blake512_close(void *cc, void *dst)
 }
 
 #endif
-
-

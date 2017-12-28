@@ -923,7 +923,7 @@ jh_core(sph_jh_context *sc, const void *data, size_t len)
     unsigned char *buf;
     size_t ptr;
     JH_DECL_STATE
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     if (len < (sizeof sc->buf) - ptr) {
@@ -932,11 +932,11 @@ jh_core(sph_jh_context *sc, const void *data, size_t len)
         sc->ptr = ptr;
         return;
     }
-    
+
     JH_READ_STATE(sc);
     while (len > 0) {
         size_t clen;
-        
+
         clen = (sizeof sc->buf) - ptr;
         if (clen > len)
             clen = len;
@@ -974,7 +974,7 @@ jh_close(sph_jh_context *sc, unsigned ub, unsigned n,
 #else
     sph_u32 l0, l1, l2, l3;
 #endif
-    
+
     z = 0x80 >> n;
     buf[0] = ((ub & -z) | z) & 0xFF;
     if (sc->ptr == 0 && n == 0) {

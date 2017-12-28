@@ -9,20 +9,20 @@
 import UIKit
 
 class EmptyCell: UITableViewHeaderFooterView {
-    
+
     @IBOutlet weak var thumbImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
 
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-    
+
     func cofigureWith(title:String, name:String) {
-    
+
         titleLabel.text = title
         thumbImageView.image = UIImage(named: name)
-        
+
     }
 
 }

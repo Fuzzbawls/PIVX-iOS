@@ -84,7 +84,7 @@
     uint32_t h = [[BRPeerManager sharedInstance] lastBlockHeight];
     if (h > 20) height = h - 20; //only care about shapeshifts in last 20 blocks
     NSArray * shapeshiftsInProgress = [DSShapeshiftEntity objectsMatching:@"(shapeshiftStatus == %@ || shapeshiftStatus == %@) && transaction.blockHeight > %@",@(eShapeshiftAddressStatus_NoDeposits), @(eShapeshiftAddressStatus_Received),@(height)];
-    
+
     return shapeshiftsInProgress;
 }
 
@@ -151,4 +151,3 @@
 }
 
 @end
-

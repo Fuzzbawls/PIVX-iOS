@@ -852,7 +852,7 @@ static const char *dns_seeds[] = {
             [self setBlockHeight:TX_UNCONFIRMED andTimestamp:0 forTxHashes:@[hash]];
         }
     }
-    
+
     if (notify) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (rescan) {

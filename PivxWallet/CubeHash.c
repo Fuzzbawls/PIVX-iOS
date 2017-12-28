@@ -434,7 +434,7 @@ cubehash_core(sph_cubehash_context *sc, const void *data, size_t len)
     unsigned char *buf;
     size_t ptr;
     DECL_STATE
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     if (len < (sizeof sc->buf) - ptr) {
@@ -443,11 +443,11 @@ cubehash_core(sph_cubehash_context *sc, const void *data, size_t len)
         sc->ptr = ptr;
         return;
     }
-    
+
     READ_STATE(sc);
     while (len > 0) {
         size_t clen;
-        
+
         clen = (sizeof sc->buf) - ptr;
         if (clen > len)
             clen = len;
@@ -474,7 +474,7 @@ cubehash_close(sph_cubehash_context *sc, unsigned ub, unsigned n,
     unsigned z;
     int i;
     DECL_STATE
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     z = 0x80 >> n;
@@ -521,6 +521,3 @@ sph_cubehash512_close(void *cc, void *dst)
 {
     sph_cubehash512_addbits_and_close(cc, 0, 0, dst);
 }
-
-
-

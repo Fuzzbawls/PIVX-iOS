@@ -274,7 +274,7 @@ static void
 echo_big_compress(sph_echo_big_context *sc)
 {
     ECHO_DECL_STATE_BIG
-    
+
     ECHO_COMPRESS_BIG(sc);
 }
 
@@ -284,7 +284,7 @@ echo_big_core(sph_echo_big_context *sc,
 {
     unsigned char *buf;
     size_t ptr;
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     if (len < (sizeof sc->buf) - ptr) {
@@ -293,10 +293,10 @@ echo_big_core(sph_echo_big_context *sc,
         sc->ptr = ptr;
         return;
     }
-    
+
     while (len > 0) {
         size_t clen;
-        
+
         clen = (sizeof sc->buf) - ptr;
         if (clen > len)
             clen = len;
@@ -334,7 +334,7 @@ echo_big_close(sph_echo_big_context *sc, unsigned ub, unsigned n,
     sph_u32 *VV;
 #endif
     unsigned k;
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     elen = ((unsigned)ptr << 3) + n;
@@ -399,4 +399,3 @@ sph_echo512_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
     echo_big_close(cc, ub, n, dst, 16);
 }
-

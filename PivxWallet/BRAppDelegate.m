@@ -63,7 +63,7 @@
 
     UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
     UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor whiteColor];
-    
+
 //    UIImage * tabBarImage = [[UIImage imageNamed:@"tab-bar-dash"]
 //     resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0) resizingMode:UIImageResizingModeStretch];
 //    [[UINavigationBar appearance] setBackgroundImage:tabBarImage forBarMetrics:UIBarMetricsDefault];
@@ -88,7 +88,7 @@
 
     // start the event manager
     [[BREventManager sharedEventManager] up];
-    
+
     [BRWalletManager sharedInstance];
 
     //TODO: bitcoin protocol/payment protocol over multipeer connectivity
@@ -105,22 +105,22 @@
     //      https://github.com/cetuscetus/btctool/blob/bip/bip-xxxx.mediawiki
 
     [BRPhoneWCSessionManager sharedInstance];
-    
+
     [DSShapeshiftManager sharedInstance];
-    
+
     // observe balance and create notifications
     [self setupBalanceNotification:application];
     [self setupPreferenceDefaults];
-    
+
 
     SlideMenuController *controller = [Utils toHome];
-    
+
     #if DASH_TESTNET
         [Utils setIsTestnet];
     #endif
-    
+
     _window.rootViewController = controller;
-    [_window makeKeyAndVisible];    
+    [_window makeKeyAndVisible];
     return YES;
 }
 
@@ -172,10 +172,10 @@ annotation:(id)annotation
 
         [alert addAction:okButton];
         [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alert animated:YES completion:nil];
-        
+
         return NO;
     }
-    
+
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC/10), dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:BRURLNotification object:nil userInfo:@{@"url":url}];
@@ -242,7 +242,7 @@ performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionH
 
     // sync events to the server
     [[BREventManager sharedEventManager] sync];
-    
+
 //    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"has_alerted_buy_dash"] == NO &&
 //        [WKWebView class] && [[BRAPIClient sharedClient] featureEnabled:BRFeatureFlagsBuyDash] &&
 //        [UIApplication sharedApplication].applicationIconBadgeNumber == 0) {
@@ -253,9 +253,9 @@ performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionH
 - (void)setupBalanceNotification:(UIApplication *)application
 {
     BRWalletManager *manager = [BRWalletManager sharedInstance];
-    
+
     self.balance = UINT64_MAX; // this gets set in applicationDidBecomActive:
-    
+
     self.balanceObserver =
         [[NSNotificationCenter defaultCenter] addObserverForName:BRWalletBalanceChangedNotification object:nil queue:nil
         usingBlock:^(NSNotification * _Nonnull note) {
@@ -264,18 +264,18 @@ performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionH
                 NSString *noteText = [NSString stringWithFormat:NSLocalizedString(@"received %@ (%@)", nil),
                                       [manager stringForDashAmount:manager.wallet.balance - self.balance],
                                       [manager localCurrencyStringForDashAmount:manager.wallet.balance - self.balance]];
-                
+
                 NSLog(@"local notifications enabled=%d", send);
-                
+
                 // send a local notification if in the background
                 if (application.applicationState == UIApplicationStateBackground ||
                     application.applicationState == UIApplicationStateInactive) {
-                    
+
                     if (send) {
                         UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
                         content.body = noteText;
                         content.sound = [UNNotificationSound soundNamed:@"coinflip"];
-                        
+
                         // 4. update application icon badge number
                         content.badge = [NSNumber numberWithInteger:([UIApplication sharedApplication].applicationIconBadgeNumber + 1)];
                         // Deliver the notification in five seconds.
@@ -294,18 +294,18 @@ performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionH
                         }];
                     }
                 }
-                
+
                 // send a custom notification to the watch if the watch app is up
                 [[BRPhoneWCSessionManager sharedInstance] notifyTransactionString:noteText];
             }
-            
+
             self.balance = manager.wallet.balance;
         }];
 }
 
 - (void)setupPreferenceDefaults {
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-    
+
     // turn on local notifications by default
     if (! [defs boolForKey:USER_DEFAULTS_LOCAL_NOTIFICATIONS_SWITCH_KEY]) {
         NSLog(@"enabling local notifications by default");
@@ -318,11 +318,11 @@ performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionH
     BOOL hasNotification = [UNNotificationSettings class] != nil;
     NSString *userDefaultsKey = @"has_asked_for_push";
     BOOL hasAskedForPushNotification = [[NSUserDefaults standardUserDefaults] boolForKey:userDefaultsKey];
-    
+
     if (hasAskedForPushNotification && hasNotification) {
         UNAuthorizationOptions options = (UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert);
         [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:options completionHandler:^(BOOL granted, NSError * _Nullable error) {
-            
+
         }];
     }
 }

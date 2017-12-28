@@ -51,7 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     if ([[self.extensionContext class] instancesRespondToSelector:@selector(widgetLargestAvailableDisplayMode)]) {
         self.extensionContext.widgetLargestAvailableDisplayMode = NCWidgetDisplayModeExpanded;
         self.addressLabel.textColor = self.sendLabel.textColor = self.receiveLabel.textColor =
@@ -64,7 +64,7 @@
         [self.scanButton setImage:[UIImage imageNamed:@"scanbutton-dark"] forState:UIControlStateNormal];
         self.scanOverlay.image = [UIImage imageNamed:@"scanbutton-dark"];
     }
-    
+
     [self updateReceiveMoneyUI];
 }
 
@@ -81,7 +81,7 @@
     [self.bubbleView popOut];
     self.bubbleView = nil;
     if (! completionHandler) return;
-    
+
     // Perform any setup necessary in order to update the view.
     NSData *data = [self.appGroupUserDefault objectForKey:APP_GROUP_REQUEST_DATA_KEY];
 
@@ -116,7 +116,7 @@
 - (void)updateReceiveMoneyUI
 {
     self.qrCodeData = [self.appGroupUserDefault objectForKey:APP_GROUP_REQUEST_DATA_KEY];
-    
+
     if (self.qrCodeData && self.qrImage.bounds.size.width > 0) {
         if ([[self.extensionContext class] instancesRespondToSelector:@selector(widgetLargestAvailableDisplayMode)]) {
             self.qrOverlay.image =
@@ -163,7 +163,7 @@
                                 [(UITapGestureRecognizer *)sender locationInView:self.bubbleView.superview])) {
             [UIPasteboard generalPasteboard].string = self.addressLabel.text;
         }
-    
+
         [self.bubbleView popOut];
         self.bubbleView = nil;
     }

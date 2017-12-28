@@ -44,7 +44,7 @@
 {
     [self.managedObjectContext performBlockAndWait:^{
         UInt256 txHash = tx.txHash;
-    
+
         self.txHash = [NSData dataWithBytes:&txHash length:sizeof(txHash)];
         self.n = (int32_t)index;
         self.address = (tx.outputAddresses[index] == [NSNull null]) ? nil : tx.outputAddresses[index];
@@ -52,7 +52,7 @@
         self.value = [tx.outputAmounts[index] longLongValue];
         self.shapeshiftOutboundAddress = [BRTransaction shapeshiftOutboundAddressForScript:self.script];
     }];
-    
+
     return self;
 }
 

@@ -1,7 +1,7 @@
 /**
  Copyright (c) 2014-present, Facebook, Inc.
  All rights reserved.
- 
+
  This source code is licensed under the BSD-style license found in the
  LICENSE file in the root directory of this source tree. An additional grant
  of patent rights can be found in the PATENTS file in the same directory.
@@ -36,7 +36,7 @@ static CGFloat FBShimmeringLayerDragCoefficient(void)
 static void FBShimmeringLayerAnimationApplyDragCoefficient(CAAnimation *animation)
 {
   CGFloat k = FBShimmeringLayerDragCoefficient();
-  
+
   if (k != 0 && k != 1) {
     animation.speed = 1 / k;
   }
@@ -261,7 +261,7 @@ static CAAnimation *shimmer_slide_finish(CAAnimation *a)
   _contentLayer.anchorPoint = CGPointMake(0.5, 0.5);
   _contentLayer.bounds = r;
   _contentLayer.position = CGPointMake(CGRectGetMidX(r), CGRectGetMidY(r));
-  
+
   if (nil != _maskLayer) {
     [self _updateMaskLayout];
   }
@@ -271,7 +271,7 @@ static CAAnimation *shimmer_slide_finish(CAAnimation *a)
 {
   CGRect oldBounds = self.bounds;
   [super setBounds:bounds];
- 
+
   if (!CGRectEqualToRect(oldBounds, bounds)) {
     [self _updateShimmering];
   }
@@ -290,7 +290,7 @@ static CAAnimation *shimmer_slide_finish(CAAnimation *a)
 
   self.maskLayer = nil;
   _contentLayer.mask = nil;
-  
+
   [CATransaction setDisableActions:disableActions];
 }
 
@@ -340,7 +340,7 @@ static CAAnimation *shimmer_slide_finish(CAAnimation *a)
   // compute how far the shimmering goes
   CGFloat fullShimmerLength = length * 3.0f + extraDistance;
   CGFloat travelDistance = length * 2.0f + extraDistance;
-  
+
   // position the gradient for the desired width
   CGFloat highlightOutsideLength = (1.0 - _shimmeringHighlightLength) / 2.0;
   _maskLayer.locations = @[@(highlightOutsideLength),
@@ -349,7 +349,7 @@ static CAAnimation *shimmer_slide_finish(CAAnimation *a)
 
   CGFloat startPoint = (length + extraDistance) / fullShimmerLength;
   CGFloat endPoint = travelDistance / fullShimmerLength;
-  
+
   // position for the start of the animation
   _maskLayer.anchorPoint = CGPointZero;
   if (_shimmeringDirection == FBShimmerDirectionDown ||
@@ -429,13 +429,13 @@ static CAAnimation *shimmer_slide_finish(CAAnimation *a)
 
       _maskLayer.fadeLayer.opacity = 0.0;
       [_maskLayer.fadeLayer removeAllAnimations];
-      
+
       [CATransaction setDisableActions:innerDisableActions];
     }
 
     // begin slide animation
     CAAnimation *slideAnimation = [_maskLayer animationForKey:kFBShimmerSlideAnimationKey];
-    
+
     // compute shimmer duration
     CGFloat length = 0.0f;
     if (_shimmeringDirection == FBShimmerDirectionDown ||
@@ -445,7 +445,7 @@ static CAAnimation *shimmer_slide_finish(CAAnimation *a)
       length = CGRectGetWidth(_contentLayer.bounds);
     }
     CFTimeInterval animationDuration = (length / _shimmeringSpeed) + _shimmeringPauseDuration;
-    
+
     if (slideAnimation != nil) {
       // ensure existing slide animation repeats
       [_maskLayer addAnimation:shimmer_slide_repeat(slideAnimation, animationDuration, _shimmeringDirection) forKey:kFBShimmerSlideAnimationKey];
@@ -458,7 +458,7 @@ static CAAnimation *shimmer_slide_finish(CAAnimation *a)
         _shimmeringBeginTime = CACurrentMediaTime() + fadeOutAnimation.duration;
       }
       slideAnimation.beginTime = _shimmeringBeginTime;
-      
+
       [_maskLayer addAnimation:slideAnimation forKey:kFBShimmerSlideAnimationKey];
     }
   }

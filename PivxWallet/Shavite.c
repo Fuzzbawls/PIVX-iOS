@@ -87,34 +87,34 @@ AES_ROUND_NOKEY_LE(t0, t1, t2, t3, x0, x1, x2, x3); \
  * This is the code needed to match the "reference implementation" as
  * published on Nov 23rd, 2009, instead of the published specification.
  *
- 
+
  #define AES_BIG_ENDIAN   1
  #include "aes_helper.c"
- 
+
  static const sph_u32 IV224[] = {
 	C32(0xC4C67795), C32(0xC0B1817F), C32(0xEAD88924), C32(0x1ABB1BB0),
 	C32(0xE0C29152), C32(0xBDE046BA), C32(0xAEEECF99), C32(0x58D509D8)
  };
- 
+
  static const sph_u32 IV256[] = {
 	C32(0x3EECF551), C32(0xBF10819B), C32(0xE6DC8559), C32(0xF3E23FD5),
 	C32(0x431AEC73), C32(0x79E3F731), C32(0x98325F05), C32(0xA92A31F1)
  };
- 
+
  static const sph_u32 IV384[] = {
 	C32(0x71F48510), C32(0xA903A8AC), C32(0xFE3216DD), C32(0x0B2D2AD4),
 	C32(0x6672900A), C32(0x41032819), C32(0x15A7D780), C32(0xB3CAB8D9),
 	C32(0x34EF4711), C32(0xDE019FE8), C32(0x4D674DC4), C32(0xE056D96B),
 	C32(0xA35C016B), C32(0xDD903BA7), C32(0x8C1B09B4), C32(0x2C3E9F25)
  };
- 
+
  static const sph_u32 SHAVITE_IV512[] = {
 	C32(0xD5652B63), C32(0x25F1E6EA), C32(0xB18F48FA), C32(0xA1EE3A47),
 	C32(0xC8B67B07), C32(0xBDCE48D3), C32(0xE3937B78), C32(0x05DB5186),
 	C32(0x613BE326), C32(0xA11FA303), C32(0x90C833D4), C32(0x79CEE316),
 	C32(0x1E1AF00F), C32(0x2829B165), C32(0x23B25F80), C32(0x21E11499)
  };
- 
+
  #define AES_ROUND_NOKEY(x0, x1, x2, x3)   do { \
  sph_u32 t0 = (x0); \
  sph_u32 t1 = (x1); \
@@ -122,7 +122,7 @@ AES_ROUND_NOKEY_LE(t0, t1, t2, t3, x0, x1, x2, x3); \
  sph_u32 t3 = (x3); \
  AES_ROUND_NOKEY_BE(t0, t1, t2, t3, x0, x1, x2, x3); \
 	} while (0)
- 
+
  */
 
 #define KEY_EXPAND_ELT(k0, k1, k2, k3)   do { \
@@ -148,7 +148,7 @@ c512(sph_shavite_big_context *sc, const void *msg)
     sph_u32 rk[448];
     size_t u;
     int r, s;
-    
+
 #if SPH_LITTLE_ENDIAN
     memcpy(rk, msg, 128);
 #else
@@ -167,7 +167,7 @@ c512(sph_shavite_big_context *sc, const void *msg)
     for (;;) {
         for (s = 0; s < 4; s ++) {
             sph_u32 x0, x1, x2, x3;
-            
+
             x0 = rk[u - 31];
             x1 = rk[u - 30];
             x2 = rk[u - 29];
@@ -189,7 +189,7 @@ c512(sph_shavite_big_context *sc, const void *msg)
                 rk[443] ^= SPH_T32(~sc->count2);
             }
             u += 4;
-            
+
             x0 = rk[u - 31];
             x1 = rk[u - 30];
             x2 = rk[u - 29];
@@ -222,7 +222,7 @@ c512(sph_shavite_big_context *sc, const void *msg)
             u += 4;
         }
     }
-    
+
     p0 = sc->h[0x0];
     p1 = sc->h[0x1];
     p2 = sc->h[0x2];
@@ -268,7 +268,7 @@ l1 ^= x1; \
 l2 ^= x2; \
 l3 ^= x3; \
 } while (0)
-        
+
 #define WROT(a, b, c, d)   do { \
 sph_u32 t = d; \
 d = c; \
@@ -276,15 +276,15 @@ c = b; \
 b = a; \
 a = t; \
 } while (0)
-        
+
         C512_ELT(p0, p1, p2, p3, p4, p5, p6, p7);
         C512_ELT(p8, p9, pA, pB, pC, pD, pE, pF);
-        
+
         WROT(p0, p4, p8, pC);
         WROT(p1, p5, p9, pD);
         WROT(p2, p6, pA, pE);
         WROT(p3, p7, pB, pF);
-        
+
 #undef C512_ELT
 #undef WROT
     }
@@ -322,7 +322,7 @@ c512(sph_shavite_big_context *sc, const void *msg)
     sph_u32 rk10, rk11, rk12, rk13, rk14, rk15, rk16, rk17;
     sph_u32 rk18, rk19, rk1A, rk1B, rk1C, rk1D, rk1E, rk1F;
     int r;
-    
+
     p0 = sc->h[0x0];
     p1 = sc->h[0x1];
     p2 = sc->h[0x2];
@@ -420,7 +420,7 @@ c512(sph_shavite_big_context *sc, const void *msg)
     p9 ^= x1;
     pA ^= x2;
     pB ^= x3;
-    
+
     for (r = 0; r < 3; r ++) {
         /* round 1, 5, 9 */
         KEY_EXPAND_ELT(rk00, rk01, rk02, rk03);
@@ -906,12 +906,12 @@ shavite_big_core(sph_shavite_big_context *sc, const void *data, size_t len)
 {
     unsigned char *buf;
     size_t ptr;
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     while (len > 0) {
         size_t clen;
-        
+
         clen = (sizeof sc->buf) - ptr;
         if (clen > len)
             clen = len;
@@ -945,7 +945,7 @@ shavite_big_close(sph_shavite_big_context *sc,
     size_t ptr, u;
     unsigned z;
     sph_u32 count0, count1, count2, count3;
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     count0 = (sc->count0 += (ptr << 3) + n);
@@ -1008,4 +1008,3 @@ sph_shavite512_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
     shavite_big_close(cc, ub, n, dst, 16);
     shavite_big_init(cc, SHAVITE_IV512);
 }
-

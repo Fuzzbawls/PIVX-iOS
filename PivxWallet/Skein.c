@@ -796,7 +796,7 @@ skein_small_core(sph_skein_small_context *sc, const void *data, size_t len)
     size_t ptr, clen;
     unsigned first;
     DECL_STATE_SMALL
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     clen = (sizeof sc->buf) - ptr;
@@ -810,9 +810,9 @@ skein_small_core(sph_skein_small_context *sc, const void *data, size_t len)
         data = (const unsigned char *)data + clen;
         len -= clen;
     }
-    
+
 #if SPH_SMALL_FOOTPRINT_SKEIN
-    
+
     READ_STATE_SMALL(sc);
     first = (bcount == 0) << 7;
     for (;;) {
@@ -828,9 +828,9 @@ skein_small_core(sph_skein_small_context *sc, const void *data, size_t len)
     WRITE_STATE_SMALL(sc);
     sc->ptr = len;
     memcpy(buf, data, len);
-    
+
 #else
-    
+
     /*
      * Unrolling the loop yields a slight performance boost, while
      * keeping the code size aorund 24 kB on 32-bit x86.
@@ -858,7 +858,7 @@ skein_small_core(sph_skein_small_context *sc, const void *data, size_t len)
     WRITE_STATE_SMALL(sc);
     sc->ptr = len;
     memcpy(sc->buf, data, len);
-    
+
 #endif
 }
 #endif
@@ -880,7 +880,7 @@ skein_big_core(sph_skein_big_context *sc, const void *data, size_t len)
     size_t ptr;
     unsigned first;
     SKEIN_DECL_STATE_BIG
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     if (len <= (sizeof sc->buf) - ptr) {
@@ -889,12 +889,12 @@ skein_big_core(sph_skein_big_context *sc, const void *data, size_t len)
         sc->ptr = ptr;
         return;
     }
-    
+
     SKEIN_READ_STATE_BIG(sc);
     first = (bcount == 0) << 7;
     do {
         size_t clen;
-        
+
         if (ptr == sizeof sc->buf) {
             bcount ++;
             UBI_BIG(96 + first, 0);
@@ -924,16 +924,16 @@ skein_small_close(sph_skein_small_context *sc, unsigned ub, unsigned n,
     unsigned et;
     int i;
     DECL_STATE_SMALL
-    
+
     if (n != 0) {
         unsigned z;
         unsigned char x;
-        
+
         z = 0x80 >> n;
         x = ((ub & -z) | z) & 0xFF;
         skein_small_core(sc, &x, 1);
     }
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     READ_STATE_SMALL(sc);
@@ -948,7 +948,7 @@ skein_small_close(sph_skein_small_context *sc, unsigned ub, unsigned n,
             ptr = 8;
         }
     }
-    
+
     sph_enc64le_aligned(buf +  0, h0);
     sph_enc64le_aligned(buf +  8, h1);
     sph_enc64le_aligned(buf + 16, h2);
@@ -969,22 +969,22 @@ skein_big_close(sph_skein_big_context *sc, unsigned ub, unsigned n,
     size_t u;
 #endif
     SKEIN_DECL_STATE_BIG
-    
+
     /*
      * Add bit padding if necessary.
      */
     if (n != 0) {
         unsigned z;
         unsigned char x;
-        
+
         z = 0x80 >> n;
         x = ((ub & -z) | z) & 0xFF;
         skein_big_core(sc, &x, 1);
     }
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
-    
+
     /*
      * At that point, if ptr == 0, then the message was empty;
      * otherwise, there is between 1 and 64 bytes (inclusive) which
@@ -1009,9 +1009,9 @@ skein_big_close(sph_skein_big_context *sc, unsigned ub, unsigned n,
             ptr = 8;
         }
     }
-    
+
 #if SPH_SMALL_FOOTPRINT_SKEIN
-    
+
     /*
      * We use a temporary buffer because we must support the case
      * where output size is not a multiple of 64 (namely, a 224-bit
@@ -1020,9 +1020,9 @@ skein_big_close(sph_skein_big_context *sc, unsigned ub, unsigned n,
     for (u = 0; u < out_len; u += 8)
         sph_enc64le_aligned(buf + u, h[u >> 3]);
     memcpy(dst, buf, out_len);
-    
+
 #else
-    
+
     sph_enc64le_aligned(buf +  0, h0);
     sph_enc64le_aligned(buf +  8, h1);
     sph_enc64le_aligned(buf + 16, h2);
@@ -1032,7 +1032,7 @@ skein_big_close(sph_skein_big_context *sc, unsigned ub, unsigned n,
     sph_enc64le_aligned(buf + 48, h6);
     sph_enc64le_aligned(buf + 56, h7);
     memcpy(dst, buf, out_len);
-    
+
 #endif
 }
 
@@ -1071,5 +1071,3 @@ sph_skein512_close(void *cc, void *dst)
 {
     sph_skein512_addbits_and_close(cc, 0, 0, dst);
 }
-
-

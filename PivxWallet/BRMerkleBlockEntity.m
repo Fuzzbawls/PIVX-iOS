@@ -68,7 +68,7 @@
 - (BRMerkleBlock *)merkleBlock
 {
     __block BRMerkleBlock *block = nil;
-    
+
     [self.managedObjectContext performBlockAndWait:^{
         NSData *blockHash = self.blockHash, *prevBlock = self.prevBlock, *merkleRoot = self.merkleRoot;
         NSLog(@"%@",self.zerocoinAccumulator.hexString);
@@ -76,13 +76,13 @@
         UInt256 hash = (blockHash.length == sizeof(UInt256)) ? *(const UInt256 *)blockHash.bytes : UINT256_ZERO,
                 prev = (prevBlock.length == sizeof(UInt256)) ? *(const UInt256 *)prevBlock.bytes : UINT256_ZERO,
         root = (merkleRoot.length == sizeof(UInt256)) ? *(const UInt256 *)merkleRoot.bytes : UINT256_ZERO;
-        
+
         UInt256 zerocoinAcc = (zerocoinAccumulator!=nil && zerocoinAccumulator.length == sizeof(UInt256)) ? *(const UInt256 *)zerocoinAccumulator.bytes : UINT256_ZERO;
-        
+
         block = [[BRMerkleBlock alloc] initWithBlockHash:hash version:self.version prevBlock:prev merkleRoot:root
                                                timestamp:self.timestamp + NSTimeIntervalSince1970 target:self.target nonce:self.nonce zerocoinAccumulator:zerocoinAcc totalTransactions:self.totalTransactions hashes:self.hashes flags:self.flags height:self.height];
     }];
-    
+
     return block;
 }
 

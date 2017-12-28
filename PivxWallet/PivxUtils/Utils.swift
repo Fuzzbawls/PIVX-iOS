@@ -32,7 +32,7 @@ class ReceiveController: UIViewController {
 }
 
 class Utils: NSObject {
-    
+
     static var isTestnet:Bool = false;
 
     @objc static func configureNavigationBar(){
@@ -44,7 +44,7 @@ class Utils: NSObject {
         UINavigationBar.appearance().backgroundColor = K.color.purple_r85g71b108
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
     }
-    
+
     static func getTopController()->UIViewController?{
         if var topController = UIApplication.shared.keyWindow?.rootViewController {
             while let presentedViewController = topController.presentedViewController {
@@ -54,7 +54,7 @@ class Utils: NSObject {
         }
         return nil
     }
-    
+
     @objc static func showMailController(messageBody:String, delegate:MFMailComposeViewControllerDelegate) {
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
@@ -64,16 +64,16 @@ class Utils: NSObject {
             mail.setMessageBody(messageBody, isHTML: false)
             let top = Utils.getTopController()
             top?.present(mail, animated: true, completion: nil)
-            
+
         } else {
             Utils.showAlertController(title: nil, message: "Sorry, you don't have any configured email account. Please add it and try again.")
         }
     }
-    
+
     @objc static func setIsTestnet()->Void{
         isTestnet = true;
      }
-    
+
     @objc static func toHome()->SlideMenuController{
         let menuController = MenuController(nibName: "Menu", bundle: nil)
         let homeController = RootController.shared
@@ -82,11 +82,11 @@ class Utils: NSObject {
         navigationController.removeRightGestures()
         return navigationController
     }
-    
+
     @objc static func changeStatusBackgroundColor(color:UIColor = K.color.purple_r85g71b108){
         UIApplication.shared.statusBarView?.backgroundColor = color
     }
-    
+
     static func showAlertController(title:String?, message:String?){
         if var topController = UIApplication.shared.keyWindow?.rootViewController {
             while let presentedViewController = topController.presentedViewController {
@@ -97,13 +97,13 @@ class Utils: NSObject {
             topController.present(alert, animated: true, completion: nil)
         }
     }
-    
+
    @objc static func openLeftMenu(){
         if let root = UIApplication.shared.keyWindow?.rootViewController as? SlideMenuController {
             root.openLeft()
         }
     }
-    
+
     @objc static func showScanController(){
         if let root = UIApplication.shared.keyWindow?.rootViewController as? SlideMenuController {
             guard let menu = root.leftViewController as? MenuController else { return }
@@ -115,7 +115,7 @@ class Utils: NSObject {
             }
         }
     }
-    
+
     @objc static func showAmountController(){
         if let root = UIApplication.shared.keyWindow?.rootViewController as? SlideMenuController {
             guard let menu = root.leftViewController as? MenuController else { return }
@@ -124,18 +124,18 @@ class Utils: NSObject {
             let when = DispatchTime.now() + 0.2 // change 2 to desired number of seconds
             DispatchQueue.main.asyncAfter(deadline: when, qos: .background) {
                 controller.toSend()
-                
+
             }
         }
     }
-    
+
     @objc static func toRootController(){
         if let root = UIApplication.shared.keyWindow?.rootViewController as? SlideMenuController {
             guard let menu = root.leftViewController as? MenuController else { return }
             menu.tappedMyWalletButton(UIButton())
         }
     }
-    
+
     @objc static func deviceType()->String{
         if UIDevice().userInterfaceIdiom == .phone {
             switch UIScreen.main.nativeBounds.height {
@@ -155,6 +155,6 @@ class Utils: NSObject {
         }
         return ""
     }
-    
-    
+
+
 }

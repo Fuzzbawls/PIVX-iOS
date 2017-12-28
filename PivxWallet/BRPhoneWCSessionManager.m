@@ -60,7 +60,7 @@
             self.session.delegate = self;
             [self.session activateSession];
             [self sendApplicationContext];
-            
+
             self.balanceObserver =
                 [[NSNotificationCenter defaultCenter] addObserverForName:BRWalletBalanceChangedNotification object:nil
                 queue:nil usingBlock:^(NSNotification * _Nonnull note) {
@@ -80,7 +80,7 @@
                 }];
         }
     }
-    
+
     return self;
 }
 
@@ -111,7 +111,7 @@
             errorHandler:^(NSError *_Nonnull error) {
                 NSLog(@"got an error sending a balance update notification to watch");
             }];
-        
+
         NSLog(@"sent a balance update notification to watch: %@", msg);
     }
 }
@@ -135,7 +135,7 @@
                     NSLog(@"watch triggered background fetch completed with result %lu", (unsigned long)result);
                 }];
             break;
-            
+
         case AWSessionRquestDataTypeQRCodeBits: {
             BRWalletManager *manager = [BRWalletManager sharedInstance];
             BRPaymentRequest *req = [BRPaymentRequest requestWithString:manager.wallet.receiveAddress];
@@ -145,11 +145,11 @@
 
             NSUserDefaults *defs = [[NSUserDefaults alloc] initWithSuiteName:APP_GROUP_ID];
             UIImage *image = nil;
-            
+
             if ([req.data isEqual:[defs objectForKey:APP_GROUP_REQUEST_DATA_KEY]]) {
                 image = [UIImage imageWithData:[defs objectForKey:APP_GROUP_QR_IMAGE_KEY]];
             }
-            
+
             if (! image && req.data) {
                 image = [UIImage imageWithQRCodeData:req.data color:[CIColor colorWithRed:0.0 green:0.0 blue:0.0]];
             }
@@ -158,7 +158,7 @@
             replyHandler(image ? @{AW_QR_CODE_BITS_KEY: UIImagePNGRepresentation(image)} : @{});
             break;
         }
-        
+
         default: replyHandler(@{});
         }
     }
@@ -168,17 +168,17 @@
 }
 
 - (void)session:(nonnull WCSession *)session activationDidCompleteWithState:(WCSessionActivationState)activationState error:(nullable NSError *)error {
-    
+
 }
 
 
 - (void)sessionDidBecomeInactive:(nonnull WCSession *)session {
-    
+
 }
 
 
 - (void)sessionDidDeactivate:(nonnull WCSession *)session {
-    
+
 }
 
 
@@ -210,7 +210,7 @@
     NSArray *transactions = manager.wallet.recentTransactions;
     UIImage *qrCodeImage = self.qrCode;
     BRAppleWatchData *appleWatchData = [[BRAppleWatchData alloc] init];
-    
+
     appleWatchData.balance = [manager stringForDashAmount:manager.wallet.balance];
     appleWatchData.balanceInLocalCurrency = [manager localCurrencyStringForDashAmount:manager.wallet.balance];
 #if SNAPSHOT
@@ -221,11 +221,11 @@
     appleWatchData.transactions = [[self recentTransactionListFromTransactions:transactions] copy];
     appleWatchData.receiveMoneyQRCodeImage = qrCodeImage;
     appleWatchData.hasWallet = ! manager.noWallet;
-    
+
     if (transactions.count > 0) {
         appleWatchData.lastestTransction = [self lastTransactionStringFromTransaction:transactions[0]];
     }
-    
+
     return appleWatchData;
 }
 
@@ -234,7 +234,7 @@
     if (transaction) {
         NSString *timeDescriptionString = [self timeDescriptionStringFrom:transaction.transactionDate];
         NSString *transactionTypeString;
-        
+
         if (timeDescriptionString == nil) {
             timeDescriptionString = transaction.dateText;
         }
@@ -254,7 +254,7 @@
                                  : @"",
                              timeDescriptionString];
     }
-    
+
     return @"no transaction";
 }
 
@@ -263,7 +263,7 @@
     if (date) {
         NSDate *now = [NSDate date];
         NSTimeInterval secondsSinceTransaction = [now timeIntervalSinceDate:date];
-        
+
         if (secondsSinceTransaction < 60) {
             return @"just now";
         }
@@ -274,7 +274,7 @@
             return [NSString stringWithFormat:@"%@ hours ago", @((NSInteger)(secondsSinceTransaction / 60 / 60))];
         }
     }
-    
+
     return nil;
 }
 
@@ -284,7 +284,7 @@
     NSData *req = [BRPaymentRequest requestWithString:manager.wallet.receiveAddress].data;
     NSUserDefaults *defs = [[NSUserDefaults alloc] initWithSuiteName:APP_GROUP_ID];
     UIImage *image = nil;
-    
+
     if ([req isEqual:[defs objectForKey:APP_GROUP_REQUEST_DATA_KEY]]) {
         image = [UIImage imageWithData:[defs objectForKey:APP_GROUP_QR_IMAGE_KEY]];
     }
@@ -292,7 +292,7 @@
     if (! image && req) {
         image = [UIImage imageWithQRCodeData:req color:[CIColor colorWithRed:0.0 green:0.0 blue:0.0]];
     }
-    
+
     return [image resize:CGSizeMake(150, 150) withInterpolationQuality:kCGInterpolationNone];
 }
 
@@ -301,14 +301,14 @@
 - (NSArray *)recentTransactionListFromTransactions:(NSArray *)transactions
 {
     NSMutableArray *transactionListData = [[NSMutableArray alloc] init];
-    
+
     for (BRTransaction *transaction in transactions) {
         [transactionListData addObject:[BRAppleWatchTransactionData appleWatchTransactionDataFrom:transaction]];
     }
 
 #if SNAPSHOT
     BRWalletManager *manager = [BRWalletManager sharedInstance];
-    
+
     [transactionListData removeAllObjects];
 
     for (int i = 0; i < 6; i++) {

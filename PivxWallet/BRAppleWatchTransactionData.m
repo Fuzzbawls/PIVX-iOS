@@ -41,20 +41,20 @@
         _dateText = [decoder decodeObjectForKey:AW_TRANSACTION_DATA_DATE_KEY];
         _type = [[decoder decodeObjectForKey:AW_TRANSACTION_DATA_TYPE_KEY] intValue];
     }
-    
+
     return self;
 }
 
 + (instancetype)appleWatchTransactionDataFrom:(BRTransaction *)transaction
 {
     BRAppleWatchTransactionData *appleWatchTransactionData;
-    
+
     if (transaction) {
         appleWatchTransactionData = [BRAppleWatchTransactionData new];
         appleWatchTransactionData.amountText = transaction.amountText;
         appleWatchTransactionData.amountTextInLocalCurrency = transaction.localCurrencyTextForAmount;
         appleWatchTransactionData.dateText = transaction.dateText;
-        
+
         switch (transaction.transactionType) {
             case BRTransactionTypeSent: appleWatchTransactionData.type = BRAWTransactionTypeSent; break;
             case BRTransactionTypeReceive: appleWatchTransactionData.type = BRAWTransactionTypeReceive; break;
@@ -62,7 +62,7 @@
             case BRTransactionTypeInvalid: appleWatchTransactionData.type = BRAWTransactionTypeInvalid; break;
         }
     }
-    
+
     return appleWatchTransactionData;
 }
 

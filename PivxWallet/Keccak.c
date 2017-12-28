@@ -1535,7 +1535,7 @@ static void
 keccak_init(sph_keccak_context *kc, unsigned out_size)
 {
     int i;
-    
+
 #if SPH_KECCAK_64
     for (i = 0; i < 25; i ++)
         kc->u.wide[i] = 0;
@@ -1549,7 +1549,7 @@ keccak_init(sph_keccak_context *kc, unsigned out_size)
     kc->u.wide[17] = SPH_C64(0xFFFFFFFFFFFFFFFF);
     kc->u.wide[20] = SPH_C64(0xFFFFFFFFFFFFFFFF);
 #else
-    
+
     for (i = 0; i < 50; i ++)
         kc->u.narrow[i] = 0;
     /*
@@ -1580,20 +1580,20 @@ keccak_core(sph_keccak_context *kc, const void *data, size_t len, size_t lim)
     unsigned char *buf;
     size_t ptr;
     KECCAK_DECL_STATE
-    
+
     buf = kc->buf;
     ptr = kc->ptr;
-    
+
     if (len < (lim - ptr)) {
         memcpy(buf + ptr, data, len);
         kc->ptr = ptr + len;
         return;
     }
-    
+
     KECCAK_READ_STATE(kc);
     while (len > 0) {
         size_t clen;
-        
+
         clen = (lim - ptr);
         if (clen > len)
             clen = len;
@@ -1831,6 +1831,3 @@ sph_keccak512_close(void *cc, void *dst)
 {
     sph_keccak512_addbits_and_close(cc, 0, 0, dst);
 }
-
-
-

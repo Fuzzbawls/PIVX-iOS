@@ -38,16 +38,16 @@ class BRAWBalanceInterfaceController: WKInterfaceController {
             transactionHeaderContainer.setHidden(true) // hide header as default
         }
     }
-    
+
     var showBalanceLoadingIndicator = false {
         didSet{
             self.balanceTextContainer.setHidden(showBalanceLoadingIndicator)
             self.balanceLoadingIndicator.setHidden(!showBalanceLoadingIndicator)
         }
     }
-    
+
     // MARK: View life cycle
-    
+
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         updateBalance()
@@ -63,13 +63,13 @@ class BRAWBalanceInterfaceController: WKInterfaceController {
         NotificationCenter.default.addObserver(
             self, selector: #selector(BRAWBalanceInterfaceController.txReceive(_:)), name: NSNotification.Name(rawValue: BRAWWatchDataManager.WalletTxReceiveNotification), object: nil)
     }
-    
+
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc func txReceive(_ notification: Notification?) {
         print("balance view controller received notification: \(String(describing: notification))")
         if let userData = (notification as NSNotification?)?.userInfo,
@@ -80,13 +80,13 @@ class BRAWBalanceInterfaceController: WKInterfaceController {
                             style: .cancel, handler: { self.dismiss() })])
         }
     }
-    
+
     // MARK: UI update
     @objc func updateUI() {
         updateBalance()
         updateTransactionList()
     }
-    
+
     func updateBalance() {
         if let balanceInLocalizationString = BRAWWatchDataManager.sharedInstance.balanceInLocalCurrency as String? {
             if (BRAWWatchDataManager.sharedInstance.balanceAttributedString() != nil){
@@ -98,7 +98,7 @@ class BRAWBalanceInterfaceController: WKInterfaceController {
             showBalanceLoadingIndicator = true;
         }
     }
-    
+
     func updateTransactionList() {
         transactionList = BRAWWatchDataManager.sharedInstance.transactionHistory
         let currentTableRowCount = table.numberOfRows
@@ -120,7 +120,7 @@ class BRAWBalanceInterfaceController: WKInterfaceController {
             }
         }
     }
-    
+
     func updateRow(_ rowControl: BRAWTransactionRowControl, transaction: BRAppleWatchTransactionData) {
         let localCurrencyAmount
             = (transaction.amountTextInLocalCurrency.characters.count > 2) ? transaction.amountTextInLocalCurrency : " "

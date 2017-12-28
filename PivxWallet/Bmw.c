@@ -394,7 +394,7 @@ compress_big(const unsigned char *data, const sph_u64 h[16], sph_u64 dh[16])
 #define M(x)    sph_dec64le_aligned(data + 8 * (x))
 #else
     sph_u64 mv[16];
-    
+
     mv[ 0] = sph_dec64le_aligned(data +   0);
     mv[ 1] = sph_dec64le_aligned(data +   8);
     mv[ 2] = sph_dec64le_aligned(data +  16);
@@ -415,9 +415,9 @@ compress_big(const unsigned char *data, const sph_u64 h[16], sph_u64 dh[16])
 #endif
 #define H(x)    (h[x])
 #define dH(x)   (dh[x])
-    
+
     FOLDb;
-    
+
 #undef M
 #undef H
 #undef dH
@@ -449,7 +449,7 @@ bmw64(sph_bmw_big_context *sc, const void *data, size_t len)
     size_t ptr;
     sph_u64 htmp[16];
     sph_u64 *h1, *h2;
-    
+
     sc->bit_count += (sph_u64)len << 3;
     buf = sc->buf;
     ptr = sc->ptr;
@@ -457,7 +457,7 @@ bmw64(sph_bmw_big_context *sc, const void *data, size_t len)
     h2 = htmp;
     while (len > 0) {
         size_t clen;
-        
+
         clen = (sizeof sc->buf) - ptr;
         if (clen > len)
             clen = len;
@@ -467,7 +467,7 @@ bmw64(sph_bmw_big_context *sc, const void *data, size_t len)
         ptr += clen;
         if (ptr == sizeof sc->buf) {
             sph_u64 *ht;
-            
+
             compress_big(buf, h1, h2);
             ht = h1;
             h1 = h2;
@@ -488,7 +488,7 @@ bmw64_close(sph_bmw_big_context *sc, unsigned ub, unsigned n,
     size_t ptr, u, v;
     unsigned z;
     sph_u64 h1[16], h2[16], *h;
-    
+
     buf = sc->buf;
     ptr = sc->ptr;
     z = 0x80 >> n;

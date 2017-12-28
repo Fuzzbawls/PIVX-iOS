@@ -9,13 +9,13 @@
 import UIKit
 
 @objc class SetupController: BaseController {
-    
+
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var pageControl: UIPageControl!
     var currentPage = 0
-    
+
     override func setup() {
         scrollView.delegate = self
         scrollView.isPagingEnabled = true
@@ -28,7 +28,7 @@ import UIKit
         let step2 = Bundle.main.loadNibNamed("Step2View", owner: self, options: nil)?.first as? UIView,
         let step3 = Bundle.main.loadNibNamed("Step3View", owner: self, options: nil)?.first as? UIView,
         let step4 = Bundle.main.loadNibNamed("Step4View", owner: self, options: nil)?.first as? UIView else { return }
-        
+
         containerView.addSubview(step1)
         containerView.addSubview(step2)
         containerView.addSubview(step3)
@@ -38,11 +38,11 @@ import UIKit
         step3.anchor(containerView.topAnchor, left: step2.rightAnchor, bottom: containerView.bottomAnchor, right: nil, topConstant: 0, leftConstant: 0, bottomConstant: 120, rightConstant: 0, widthConstant: K.main.width, heightConstant: 0)
         step4.anchor(containerView.topAnchor, left: step3.rightAnchor, bottom: containerView.bottomAnchor, right: nil, topConstant: 0, leftConstant: 0, bottomConstant: 120, rightConstant: 0, widthConstant: K.main.width, heightConstant: 0)
     }
-    
+
     override func setupNavigationBar() {
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
-    
+
     func toGenerate(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "BRWelcomeController")
@@ -64,7 +64,7 @@ import UIKit
 }
 
 extension SetupController:UIScrollViewDelegate {
-    
+
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView){
         let pageWidth:CGFloat = scrollView.frame.width
         let currentPage:CGFloat = floor((scrollView.contentOffset.x-pageWidth/2)/pageWidth)+1

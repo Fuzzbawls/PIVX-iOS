@@ -55,24 +55,24 @@ typedef struct {
 } sph_groestl_big_context;
 
 
-    
+
 
 #define SPH_GROESTL_64   1
-    
+
 #if !SPH_64
 #undef SPH_GROESTL_64
 #endif
-    
+
 #ifdef _MSC_VER
 #pragma warning (disable: 4146)
 #endif
-    
+
     /*
      * The internal representation may use either big-endian or
      * little-endian. Using the platform default representation speeds up
      * encoding and decoding between bytes and the matrix columns.
      */
-    
+
 #undef USE_LE
 #if SPH_GROESTL_LITTLE_ENDIAN
 #define USE_LE   1
@@ -81,9 +81,9 @@ typedef struct {
 #elif SPH_LITTLE_ENDIAN
 #define USE_LE   1
 #endif
-    
+
 #if USE_LE
-    
+
 #define C32e(x)     ((SPH_C32(x) >> 24) \
 | ((SPH_C32(x) >>  8) & SPH_C32(0x0000FF00)) \
 | ((SPH_C32(x) <<  8) & SPH_C32(0x00FF0000)) \
@@ -94,15 +94,15 @@ typedef struct {
 #define B32_1(x)    (((x) >> 8) & 0xFF)
 #define B32_2(x)    (((x) >> 16) & 0xFF)
 #define B32_3(x)    ((x) >> 24)
-    
+
 #define R32u(u, d)   SPH_T32(((u) << 16) | ((d) >> 16))
 #define R32d(u, d)   SPH_T32(((u) >> 16) | ((d) << 16))
-    
+
 #define PC32up(j, r)   ((sph_u32)((j) + (r)))
 #define PC32dn(j, r)   0
 #define QC32up(j, r)   SPH_C32(0xFFFFFFFF)
 #define QC32dn(j, r)   (((sph_u32)(r) << 24) ^ SPH_T32(~((sph_u32)(j) << 24)))
-    
+
 #if SPH_64
 #define C64e(x)     ((SPH_C64(x) >> 56) \
 | ((SPH_C64(x) >> 40) & SPH_C64(0x000000000000FF00)) \
@@ -126,9 +126,9 @@ typedef struct {
 #define PC64(j, r)  ((sph_u64)((j) + (r)))
 #define QC64(j, r)  (((sph_u64)(r) << 56) ^ SPH_T64(~((sph_u64)(j) << 56)))
 #endif
-    
+
 #else
-    
+
 #define C32e(x)     SPH_C32(x)
 #define dec32e_aligned   sph_dec32be_aligned
 #define enc32e           sph_enc32be
@@ -136,15 +136,15 @@ typedef struct {
 #define B32_1(x)    (((x) >> 16) & 0xFF)
 #define B32_2(x)    (((x) >> 8) & 0xFF)
 #define B32_3(x)    ((x) & 0xFF)
-    
+
 #define R32u(u, d)   SPH_T32(((u) >> 16) | ((d) << 16))
 #define R32d(u, d)   SPH_T32(((u) << 16) | ((d) >> 16))
-    
+
 #define PC32up(j, r)   ((sph_u32)((j) + (r)) << 24)
 #define PC32dn(j, r)   0
 #define QC32up(j, r)   SPH_C32(0xFFFFFFFF)
 #define QC32dn(j, r)   ((sph_u32)(r) ^ SPH_T32(~(sph_u32)(j)))
-    
+
 #if SPH_64
 #define C64e(x)     SPH_C64(x)
 #define dec64e_aligned   sph_dec64be_aligned
@@ -161,11 +161,11 @@ typedef struct {
 #define PC64(j, r)  ((sph_u64)((j) + (r)) << 56)
 #define QC64(j, r)  ((sph_u64)(r) ^ SPH_T64(~(sph_u64)(j)))
 #endif
-    
+
 #endif
-    
+
 #if SPH_GROESTL_64
-    
+
     static const sph_u64 T0[] = {
         C64e(0xc632f4a5f497a5c6), C64e(0xf86f978497eb84f8),
         C64e(0xee5eb099b0c799ee), C64e(0xf67a8c8d8cf78df6),
@@ -296,9 +296,9 @@ typedef struct {
         C64e(0x7b3d46cb46f6cb7b), C64e(0xa8b71ffc1f4bfca8),
         C64e(0x6d0c61d661dad66d), C64e(0x2c624e3a4e583a2c)
     };
-    
+
 #if !SPH_SMALL_FOOTPRINT_GROESTL
-    
+
     static const sph_u64 T1[] = {
         C64e(0xc6c632f4a5f497a5), C64e(0xf8f86f978497eb84),
         C64e(0xeeee5eb099b0c799), C64e(0xf6f67a8c8d8cf78d),
@@ -429,7 +429,7 @@ typedef struct {
         C64e(0x7b7b3d46cb46f6cb), C64e(0xa8a8b71ffc1f4bfc),
         C64e(0x6d6d0c61d661dad6), C64e(0x2c2c624e3a4e583a)
     };
-    
+
     static const sph_u64 T2[] = {
         C64e(0xa5c6c632f4a5f497), C64e(0x84f8f86f978497eb),
         C64e(0x99eeee5eb099b0c7), C64e(0x8df6f67a8c8d8cf7),
@@ -560,7 +560,7 @@ typedef struct {
         C64e(0xcb7b7b3d46cb46f6), C64e(0xfca8a8b71ffc1f4b),
         C64e(0xd66d6d0c61d661da), C64e(0x3a2c2c624e3a4e58)
     };
-    
+
     static const sph_u64 T3[] = {
         C64e(0x97a5c6c632f4a5f4), C64e(0xeb84f8f86f978497),
         C64e(0xc799eeee5eb099b0), C64e(0xf78df6f67a8c8d8c),
@@ -691,9 +691,9 @@ typedef struct {
         C64e(0xf6cb7b7b3d46cb46), C64e(0x4bfca8a8b71ffc1f),
         C64e(0xdad66d6d0c61d661), C64e(0x583a2c2c624e3a4e)
     };
-    
+
 #endif
-    
+
     static const sph_u64 T4[] = {
         C64e(0xf497a5c6c632f4a5), C64e(0x97eb84f8f86f9784),
         C64e(0xb0c799eeee5eb099), C64e(0x8cf78df6f67a8c8d),
@@ -824,9 +824,9 @@ typedef struct {
         C64e(0x46f6cb7b7b3d46cb), C64e(0x1f4bfca8a8b71ffc),
         C64e(0x61dad66d6d0c61d6), C64e(0x4e583a2c2c624e3a)
     };
-    
+
 #if !SPH_SMALL_FOOTPRINT_GROESTL
-    
+
     static const sph_u64 T5[] = {
         C64e(0xa5f497a5c6c632f4), C64e(0x8497eb84f8f86f97),
         C64e(0x99b0c799eeee5eb0), C64e(0x8d8cf78df6f67a8c),
@@ -957,7 +957,7 @@ typedef struct {
         C64e(0xcb46f6cb7b7b3d46), C64e(0xfc1f4bfca8a8b71f),
         C64e(0xd661dad66d6d0c61), C64e(0x3a4e583a2c2c624e)
     };
-    
+
     static const sph_u64 T6[] = {
         C64e(0xf4a5f497a5c6c632), C64e(0x978497eb84f8f86f),
         C64e(0xb099b0c799eeee5e), C64e(0x8c8d8cf78df6f67a),
@@ -1088,7 +1088,7 @@ typedef struct {
         C64e(0x46cb46f6cb7b7b3d), C64e(0x1ffc1f4bfca8a8b7),
         C64e(0x61d661dad66d6d0c), C64e(0x4e3a4e583a2c2c62)
     };
-    
+
     static const sph_u64 T7[] = {
         C64e(0x32f4a5f497a5c6c6), C64e(0x6f978497eb84f8f8),
         C64e(0x5eb099b0c799eeee), C64e(0x7a8c8d8cf78df6f6),
@@ -1219,22 +1219,22 @@ typedef struct {
         C64e(0x3d46cb46f6cb7b7b), C64e(0xb71ffc1f4bfca8a8),
         C64e(0x0c61d661dad66d6d), C64e(0x624e3a4e583a2c2c)
     };
-    
+
 #endif
-    
+
 #define DECL_STATE_SMALL \
 sph_u64 H[8];
-    
+
 #define READ_STATE_SMALL(sc)   do { \
 memcpy(H, (sc)->state.wide, sizeof H); \
 } while (0)
-    
+
 #define WRITE_STATE_SMALL(sc)   do { \
 memcpy((sc)->state.wide, H, sizeof H); \
 } while (0)
-    
+
 #if SPH_SMALL_FOOTPRINT_GROESTL
-    
+
 #define RSTT(d, a, b0, b1, b2, b3, b4, b5, b6, b7)   do { \
 t[d] = T0[B64_0(a[b0])] \
 ^ R64(T0[B64_1(a[b1])],  8) \
@@ -1245,9 +1245,9 @@ t[d] = T0[B64_0(a[b0])] \
 ^ R64(T4[B64_6(a[b6])], 16) \
 ^ R64(T4[B64_7(a[b7])], 24); \
 } while (0)
-    
+
 #else
-    
+
 #define RSTT(d, a, b0, b1, b2, b3, b4, b5, b6, b7)   do { \
 t[d] = T0[B64_0(a[b0])] \
 ^ T1[B64_1(a[b1])] \
@@ -1258,9 +1258,9 @@ t[d] = T0[B64_0(a[b0])] \
 ^ T6[B64_6(a[b6])] \
 ^ T7[B64_7(a[b7])]; \
 } while (0)
-    
+
 #endif
-    
+
 #define ROUND_SMALL_P(a, r)   do { \
 sph_u64 t[8]; \
 a[0] ^= PC64(0x00, r); \
@@ -1288,7 +1288,7 @@ a[5] = t[5]; \
 a[6] = t[6]; \
 a[7] = t[7]; \
 } while (0)
-    
+
 #define ROUND_SMALL_Q(a, r)   do { \
 sph_u64 t[8]; \
 a[0] ^= QC64(0x00, r); \
@@ -1316,23 +1316,23 @@ a[5] = t[5]; \
 a[6] = t[6]; \
 a[7] = t[7]; \
 } while (0)
-    
+
 #if SPH_SMALL_FOOTPRINT_GROESTL
-    
+
 #define PERM_SMALL_P(a)   do { \
 int r; \
 for (r = 0; r < 10; r ++) \
 ROUND_SMALL_P(a, r); \
 } while (0)
-    
+
 #define PERM_SMALL_Q(a)   do { \
 int r; \
 for (r = 0; r < 10; r ++) \
 ROUND_SMALL_Q(a, r); \
 } while (0)
-    
+
 #else
-    
+
     /*
      * Apparently, unrolling more than that confuses GCC, resulting in
      * lower performance, even though L1 cache would be no problem.
@@ -1344,7 +1344,7 @@ ROUND_SMALL_P(a, r + 0); \
 ROUND_SMALL_P(a, r + 1); \
 } \
 } while (0)
-    
+
 #define PERM_SMALL_Q(a)   do { \
 int r; \
 for (r = 0; r < 10; r += 2) { \
@@ -1352,9 +1352,9 @@ ROUND_SMALL_Q(a, r + 0); \
 ROUND_SMALL_Q(a, r + 1); \
 } \
 } while (0)
-    
+
 #endif
-    
+
 #define COMPRESS_SMALL   do { \
 sph_u64 g[8], m[8]; \
 size_t u; \
@@ -1367,7 +1367,7 @@ PERM_SMALL_Q(m); \
 for (u = 0; u < 8; u ++) \
 H[u] ^= g[u] ^ m[u]; \
 } while (0)
-    
+
 #define FINAL_SMALL   do { \
 sph_u64 x[8]; \
 size_t u; \
@@ -1376,20 +1376,20 @@ PERM_SMALL_P(x); \
 for (u = 0; u < 8; u ++) \
 H[u] ^= x[u]; \
 } while (0)
-    
+
 #define DECL_STATE_BIG \
 sph_u64 H[16];
-    
+
 #define READ_STATE_BIG(sc)   do { \
 memcpy(H, (sc)->state.wide, sizeof H); \
 } while (0)
-    
+
 #define WRITE_STATE_BIG(sc)   do { \
 memcpy((sc)->state.wide, H, sizeof H); \
 } while (0)
-    
+
 #if SPH_SMALL_FOOTPRINT_GROESTL
-    
+
 #define RBTT(d, a, b0, b1, b2, b3, b4, b5, b6, b7)   do { \
 t[d] = T0[B64_0(a[b0])] \
 ^ R64(T0[B64_1(a[b1])],  8) \
@@ -1400,9 +1400,9 @@ t[d] = T0[B64_0(a[b0])] \
 ^ R64(T4[B64_6(a[b6])], 16) \
 ^ R64(T4[B64_7(a[b7])], 24); \
 } while (0)
-    
+
 #else
-    
+
 #define RBTT(d, a, b0, b1, b2, b3, b4, b5, b6, b7)   do { \
 t[d] = T0[B64_0(a[b0])] \
 ^ T1[B64_1(a[b1])] \
@@ -1413,11 +1413,11 @@ t[d] = T0[B64_0(a[b0])] \
 ^ T6[B64_6(a[b6])] \
 ^ T7[B64_7(a[b7])]; \
 } while (0)
-    
+
 #endif
-    
+
 #if SPH_SMALL_FOOTPRINT_GROESTL
-    
+
 #define ROUND_BIG_P(a, r)   do { \
 sph_u64 t[16]; \
 size_t u; \
@@ -1453,7 +1453,7 @@ RBTT(u + 3, a, u + 3, (u + 4) & 0xF, \
 } \
 memcpy(a, t, sizeof t); \
 } while (0)
-    
+
 #define ROUND_BIG_Q(a, r)   do { \
 sph_u64 t[16]; \
 size_t u; \
@@ -1489,9 +1489,9 @@ RBTT(u + 3, a, (u + 4) & 0xF, (u + 6) & 0xF, \
 } \
 memcpy(a, t, sizeof t); \
 } while (0)
-    
+
 #else
-    
+
 #define ROUND_BIG_P(a, r)   do { \
 sph_u64 t[16]; \
 a[0x0] ^= PC64(0x00, r); \
@@ -1543,7 +1543,7 @@ a[0xD] = t[0xD]; \
 a[0xE] = t[0xE]; \
 a[0xF] = t[0xF]; \
 } while (0)
-    
+
 #define ROUND_BIG_Q(a, r)   do { \
 sph_u64 t[16]; \
 a[0x0] ^= QC64(0x00, r); \
@@ -1595,9 +1595,9 @@ a[0xD] = t[0xD]; \
 a[0xE] = t[0xE]; \
 a[0xF] = t[0xF]; \
 } while (0)
-    
+
 #endif
-    
+
 #define PERM_BIG_P(a)   do { \
 int r; \
 for (r = 0; r < 14; r += 2) { \
@@ -1605,7 +1605,7 @@ ROUND_BIG_P(a, r + 0); \
 ROUND_BIG_P(a, r + 1); \
 } \
 } while (0)
-    
+
 #define PERM_BIG_Q(a)   do { \
 int r; \
 for (r = 0; r < 14; r += 2) { \
@@ -1613,10 +1613,10 @@ ROUND_BIG_Q(a, r + 0); \
 ROUND_BIG_Q(a, r + 1); \
 } \
 } while (0)
-    
+
     /* obsolete
      #if SPH_SMALL_FOOTPRINT_GROESTL
-     
+
      #define COMPRESS_BIG   do { \
      sph_u64 g[16], m[16], *ya; \
      const sph_u64 *yc; \
@@ -1637,10 +1637,10 @@ ROUND_BIG_Q(a, r + 1); \
      H[u] ^= g[u] ^ m[u]; \
      } \
      } while (0)
-     
+
      #else
      */
-    
+
 #define COMPRESS_BIG   do { \
 sph_u64 g[16], m[16]; \
 size_t u; \
@@ -1654,11 +1654,11 @@ for (u = 0; u < 16; u ++) { \
 H[u] ^= g[u] ^ m[u]; \
 } \
 } while (0)
-    
+
     /* obsolete
      #endif
      */
-    
+
 #define FINAL_BIG   do { \
 sph_u64 x[16]; \
 size_t u; \
@@ -1667,9 +1667,9 @@ PERM_BIG_P(x); \
 for (u = 0; u < 16; u ++) \
 H[u] ^= x[u]; \
 } while (0)
-    
+
 #else
-    
+
     static const sph_u32 T0up[] = {
         C32e(0xc632f4a5), C32e(0xf86f9784), C32e(0xee5eb099), C32e(0xf67a8c8d),
         C32e(0xffe8170d), C32e(0xd60adcbd), C32e(0xde16c8b1), C32e(0x916dfc54),
@@ -1736,7 +1736,7 @@ H[u] ^= x[u]; \
         C32e(0x82dc5ec3), C32e(0x29e2cbb0), C32e(0x5ac39977), C32e(0x1e2d3311),
         C32e(0x7b3d46cb), C32e(0xa8b71ffc), C32e(0x6d0c61d6), C32e(0x2c624e3a)
     };
-    
+
     static const sph_u32 T0dn[] = {
         C32e(0xf497a5c6), C32e(0x97eb84f8), C32e(0xb0c799ee), C32e(0x8cf78df6),
         C32e(0x17e50dff), C32e(0xdcb7bdd6), C32e(0xc8a7b1de), C32e(0xfc395491),
@@ -1803,7 +1803,7 @@ H[u] ^= x[u]; \
         C32e(0x5e1fc382), C32e(0xcb52b029), C32e(0x99b4775a), C32e(0x333c111e),
         C32e(0x46f6cb7b), C32e(0x1f4bfca8), C32e(0x61dad66d), C32e(0x4e583a2c)
     };
-    
+
     static const sph_u32 T1up[] = {
         C32e(0xc6c632f4), C32e(0xf8f86f97), C32e(0xeeee5eb0), C32e(0xf6f67a8c),
         C32e(0xffffe817), C32e(0xd6d60adc), C32e(0xdede16c8), C32e(0x91916dfc),
@@ -1870,7 +1870,7 @@ H[u] ^= x[u]; \
         C32e(0x8282dc5e), C32e(0x2929e2cb), C32e(0x5a5ac399), C32e(0x1e1e2d33),
         C32e(0x7b7b3d46), C32e(0xa8a8b71f), C32e(0x6d6d0c61), C32e(0x2c2c624e)
     };
-    
+
     static const sph_u32 T1dn[] = {
         C32e(0xa5f497a5), C32e(0x8497eb84), C32e(0x99b0c799), C32e(0x8d8cf78d),
         C32e(0x0d17e50d), C32e(0xbddcb7bd), C32e(0xb1c8a7b1), C32e(0x54fc3954),
@@ -1937,7 +1937,7 @@ H[u] ^= x[u]; \
         C32e(0xc35e1fc3), C32e(0xb0cb52b0), C32e(0x7799b477), C32e(0x11333c11),
         C32e(0xcb46f6cb), C32e(0xfc1f4bfc), C32e(0xd661dad6), C32e(0x3a4e583a)
     };
-    
+
     static const sph_u32 T2up[] = {
         C32e(0xa5c6c632), C32e(0x84f8f86f), C32e(0x99eeee5e), C32e(0x8df6f67a),
         C32e(0x0dffffe8), C32e(0xbdd6d60a), C32e(0xb1dede16), C32e(0x5491916d),
@@ -2004,7 +2004,7 @@ H[u] ^= x[u]; \
         C32e(0xc38282dc), C32e(0xb02929e2), C32e(0x775a5ac3), C32e(0x111e1e2d),
         C32e(0xcb7b7b3d), C32e(0xfca8a8b7), C32e(0xd66d6d0c), C32e(0x3a2c2c62)
     };
-    
+
     static const sph_u32 T2dn[] = {
         C32e(0xf4a5f497), C32e(0x978497eb), C32e(0xb099b0c7), C32e(0x8c8d8cf7),
         C32e(0x170d17e5), C32e(0xdcbddcb7), C32e(0xc8b1c8a7), C32e(0xfc54fc39),
@@ -2071,7 +2071,7 @@ H[u] ^= x[u]; \
         C32e(0x5ec35e1f), C32e(0xcbb0cb52), C32e(0x997799b4), C32e(0x3311333c),
         C32e(0x46cb46f6), C32e(0x1ffc1f4b), C32e(0x61d661da), C32e(0x4e3a4e58)
     };
-    
+
     static const sph_u32 T3up[] = {
         C32e(0x97a5c6c6), C32e(0xeb84f8f8), C32e(0xc799eeee), C32e(0xf78df6f6),
         C32e(0xe50dffff), C32e(0xb7bdd6d6), C32e(0xa7b1dede), C32e(0x39549191),
@@ -2138,7 +2138,7 @@ H[u] ^= x[u]; \
         C32e(0x1fc38282), C32e(0x52b02929), C32e(0xb4775a5a), C32e(0x3c111e1e),
         C32e(0xf6cb7b7b), C32e(0x4bfca8a8), C32e(0xdad66d6d), C32e(0x583a2c2c)
     };
-    
+
     static const sph_u32 T3dn[] = {
         C32e(0x32f4a5f4), C32e(0x6f978497), C32e(0x5eb099b0), C32e(0x7a8c8d8c),
         C32e(0xe8170d17), C32e(0x0adcbddc), C32e(0x16c8b1c8), C32e(0x6dfc54fc),
@@ -2205,21 +2205,21 @@ H[u] ^= x[u]; \
         C32e(0xdc5ec35e), C32e(0xe2cbb0cb), C32e(0xc3997799), C32e(0x2d331133),
         C32e(0x3d46cb46), C32e(0xb71ffc1f), C32e(0x0c61d661), C32e(0x624e3a4e)
     };
-    
+
 #define DECL_STATE_SMALL \
 sph_u32 H[16];
-    
+
 #define READ_STATE_SMALL(sc)   do { \
 memcpy(H, (sc)->state.narrow, sizeof H); \
 } while (0)
-    
+
 #define WRITE_STATE_SMALL(sc)   do { \
 memcpy((sc)->state.narrow, H, sizeof H); \
 } while (0)
-    
+
 #define XCAT(x, y)    XCAT_(x, y)
 #define XCAT_(x, y)   x ## y
-    
+
 #define RSTT(d0, d1, a, b0, b1, b2, b3, b4, b5, b6, b7)   do { \
 t[d0] = T0up[B32_0(a[b0])] \
 ^ T1up[B32_1(a[b1])] \
@@ -2238,7 +2238,7 @@ t[d1] = T0dn[B32_0(a[b0])] \
 ^ T2up[B32_2(a[b6])] \
 ^ T3up[B32_3(a[b7])]; \
 } while (0)
-    
+
 #define ROUND_SMALL_P(a, r)   do { \
 sph_u32 t[16]; \
 a[0x0] ^= PC32up(0x00, r); \
@@ -2267,7 +2267,7 @@ RSTT(0xC, 0xD, a, 0xC, 0xE, 0x0, 0x2, 0x5, 0x7, 0x9, 0xB); \
 RSTT(0xE, 0xF, a, 0xE, 0x0, 0x2, 0x4, 0x7, 0x9, 0xB, 0xD); \
 memcpy(a, t, sizeof t); \
 } while (0)
-    
+
 #define ROUND_SMALL_Q(a, r)   do { \
 sph_u32 t[16]; \
 a[0x0] ^= QC32up(0x00, r); \
@@ -2296,23 +2296,23 @@ RSTT(0xC, 0xD, a, 0xE, 0x2, 0x6, 0xA, 0xD, 0x1, 0x5, 0x9); \
 RSTT(0xE, 0xF, a, 0x0, 0x4, 0x8, 0xC, 0xF, 0x3, 0x7, 0xB); \
 memcpy(a, t, sizeof t); \
 } while (0)
-    
+
 #if SPH_SMALL_FOOTPRINT_GROESTL
-    
+
 #define PERM_SMALL_P(a)   do { \
 int r; \
 for (r = 0; r < 10; r ++) \
 ROUND_SMALL_P(a, r); \
 } while (0)
-    
+
 #define PERM_SMALL_Q(a)   do { \
 int r; \
 for (r = 0; r < 10; r ++) \
 ROUND_SMALL_Q(a, r); \
 } while (0)
-    
+
 #else
-    
+
 #define PERM_SMALL_P(a)   do { \
 int r; \
 for (r = 0; r < 10; r += 2) { \
@@ -2320,7 +2320,7 @@ ROUND_SMALL_P(a, r + 0); \
 ROUND_SMALL_P(a, r + 1); \
 } \
 } while (0)
-    
+
 #define PERM_SMALL_Q(a)   do { \
 int r; \
 for (r = 0; r < 10; r += 2) { \
@@ -2328,9 +2328,9 @@ ROUND_SMALL_Q(a, r + 0); \
 ROUND_SMALL_Q(a, r + 1); \
 } \
 } while (0)
-    
+
 #endif
-    
+
 #define COMPRESS_SMALL   do { \
 sph_u32 g[16], m[16]; \
 size_t u; \
@@ -2343,7 +2343,7 @@ PERM_SMALL_Q(m); \
 for (u = 0; u < 16; u ++) \
 H[u] ^= g[u] ^ m[u]; \
 } while (0)
-    
+
 #define FINAL_SMALL   do { \
 sph_u32 x[16]; \
 size_t u; \
@@ -2352,20 +2352,20 @@ PERM_SMALL_P(x); \
 for (u = 0; u < 16; u ++) \
 H[u] ^= x[u]; \
 } while (0)
-    
+
 #define DECL_STATE_BIG \
 sph_u32 H[32];
-    
+
 #define READ_STATE_BIG(sc)   do { \
 memcpy(H, (sc)->state.narrow, sizeof H); \
 } while (0)
-    
+
 #define WRITE_STATE_BIG(sc)   do { \
 memcpy((sc)->state.narrow, H, sizeof H); \
 } while (0)
-    
+
 #if SPH_SMALL_FOOTPRINT_GROESTL
-    
+
 #define RBTT(d0, d1, a, b0, b1, b2, b3, b4, b5, b6, b7)   do { \
 sph_u32 fu2 = T0up[B32_2(a[b2])]; \
 sph_u32 fd2 = T0dn[B32_2(a[b2])]; \
@@ -2392,9 +2392,9 @@ t[d1] = T0dn[B32_0(a[b0])] \
 ^ R32u(fu6, fd6) \
 ^ R32u(fu7, fd7); \
 } while (0)
-    
+
 #else
-    
+
 #define RBTT(d0, d1, a, b0, b1, b2, b3, b4, b5, b6, b7)   do { \
 t[d0] = T0up[B32_0(a[b0])] \
 ^ T1up[B32_1(a[b1])] \
@@ -2413,11 +2413,11 @@ t[d1] = T0dn[B32_0(a[b0])] \
 ^ T2up[B32_2(a[b6])] \
 ^ T3up[B32_3(a[b7])]; \
 } while (0)
-    
+
 #endif
-    
+
 #if SPH_SMALL_FOOTPRINT_GROESTL
-    
+
 #define ROUND_BIG_P(a, r)   do { \
 sph_u32 t[32]; \
 size_t u; \
@@ -2477,7 +2477,7 @@ u + 0x06, (u + 0x08) & 0x1F, \
 } \
 memcpy(a, t, sizeof t); \
 } while (0)
-    
+
 #define ROUND_BIG_Q(a, r)   do { \
 sph_u32 t[32]; \
 size_t u; \
@@ -2537,9 +2537,9 @@ RBTT(u + 0x06, (u + 0x07) & 0x1F, a, \
 } \
 memcpy(a, t, sizeof t); \
 } while (0)
-    
+
 #else
-    
+
 #define ROUND_BIG_P(a, r)   do { \
 sph_u32 t[32]; \
 a[0x00] ^= PC32up(0x00, r); \
@@ -2608,7 +2608,7 @@ RBTT(0x1E, 0x1F, a, \
 0x1E, 0x00, 0x02, 0x04, 0x07, 0x09, 0x0B, 0x15); \
 memcpy(a, t, sizeof t); \
 } while (0)
-    
+
 #define ROUND_BIG_Q(a, r)   do { \
 sph_u32 t[32]; \
 a[0x00] ^= QC32up(0x00, r); \
@@ -2677,25 +2677,25 @@ RBTT(0x1E, 0x1F, a, \
 0x00, 0x04, 0x08, 0x14, 0x1F, 0x03, 0x07, 0x0B); \
 memcpy(a, t, sizeof t); \
 } while (0)
-    
+
 #endif
-    
+
 #if SPH_SMALL_FOOTPRINT_GROESTL
-    
+
 #define PERM_BIG_P(a)   do { \
 int r; \
 for (r = 0; r < 14; r ++) \
 ROUND_BIG_P(a, r); \
 } while (0)
-    
+
 #define PERM_BIG_Q(a)   do { \
 int r; \
 for (r = 0; r < 14; r ++) \
 ROUND_BIG_Q(a, r); \
 } while (0)
-    
+
 #else
-    
+
 #define PERM_BIG_P(a)   do { \
 int r; \
 for (r = 0; r < 14; r += 2) { \
@@ -2703,7 +2703,7 @@ ROUND_BIG_P(a, r + 0); \
 ROUND_BIG_P(a, r + 1); \
 } \
 } while (0)
-    
+
 #define PERM_BIG_Q(a)   do { \
 int r; \
 for (r = 0; r < 14; r += 2) { \
@@ -2711,9 +2711,9 @@ ROUND_BIG_Q(a, r + 0); \
 ROUND_BIG_Q(a, r + 1); \
 } \
 } while (0)
-    
+
 #endif
-    
+
 #define COMPRESS_BIG   do { \
 sph_u32 g[32], m[32]; \
 size_t u; \
@@ -2726,7 +2726,7 @@ PERM_BIG_Q(m); \
 for (u = 0; u < 32; u ++) \
 H[u] ^= g[u] ^ m[u]; \
 } while (0)
-    
+
 #define FINAL_BIG   do { \
 sph_u32 x[32]; \
 size_t u; \
@@ -2735,14 +2735,14 @@ PERM_BIG_P(x); \
 for (u = 0; u < 32; u ++) \
 H[u] ^= x[u]; \
 } while (0)
-    
+
 #endif
 
     static void
     groestl_big_init(sph_groestl_big_context *sc, unsigned out_size)
     {
         size_t u;
-        
+
         sc->ptr = 0;
 #if SPH_GROESTL_64
         for (u = 0; u < 15; u ++)
@@ -2770,14 +2770,14 @@ H[u] ^= x[u]; \
         sc->count_low = 0;
 #endif
     }
-    
+
     static void
     groestl_big_core(sph_groestl_big_context *sc, const void *data, size_t len)
     {
         unsigned char *buf;
         size_t ptr;
         DECL_STATE_BIG
-        
+
         buf = sc->buf;
         ptr = sc->ptr;
         if (len < (sizeof sc->buf) - ptr) {
@@ -2786,11 +2786,11 @@ H[u] ^= x[u]; \
             sc->ptr = ptr;
             return;
         }
-        
+
         READ_STATE_BIG(sc);
         while (len > 0) {
             size_t clen;
-            
+
             clen = (sizeof sc->buf) - ptr;
             if (clen > len)
                 clen = len;
@@ -2812,7 +2812,7 @@ H[u] ^= x[u]; \
         WRITE_STATE_BIG(sc);
         sc->ptr = ptr;
     }
-    
+
     static void
     groestl_big_close(sph_groestl_big_context *sc,
                       unsigned ub, unsigned n, void *dst, size_t out_len)
@@ -2827,7 +2827,7 @@ H[u] ^= x[u]; \
 #endif
         unsigned z;
         DECL_STATE_BIG
-        
+
         buf = sc->buf;
         ptr = sc->ptr;
         z = 0x80 >> n;
@@ -2873,32 +2873,31 @@ H[u] ^= x[u]; \
         memcpy(dst, pad + 64 - out_len, out_len);
         groestl_big_init(sc, (unsigned)out_len << 3);
     }
-    
+
     /* see sph_groestl.h */
     void
     sph_groestl512_init(void *cc)
     {
         groestl_big_init(cc, 512);
     }
-    
+
     /* see sph_groestl.h */
     void
     sph_groestl512(void *cc, const void *data, size_t len)
     {
         groestl_big_core(cc, data, len);
     }
-    
+
     /* see sph_groestl.h */
     void
     sph_groestl512_close(void *cc, void *dst)
     {
         groestl_big_close(cc, 0, 0, dst, 64);
     }
-    
+
     /* see sph_groestl.h */
     void
     sph_groestl512_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
     {
         groestl_big_close(cc, ub, n, dst, 64);
     }
-

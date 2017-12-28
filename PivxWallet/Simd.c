@@ -228,7 +228,7 @@ static void
 fft32(unsigned char *x, size_t xs, s32 *q)
 {
     size_t xd;
-    
+
     xd = xs << 1;
     FFT16(0, xd, 0);
     FFT16(xs, xd, 16);
@@ -268,7 +268,7 @@ static void
 fft64(unsigned char *x, size_t xs, s32 *q)
 {
     size_t xd;
-    
+
     xd = xs << 1;
     FFT32(0, xd, 0, label_a);
     FFT32(xs, xd, 32, label_b);
@@ -825,7 +825,7 @@ static void
 one_round_small(u32 *state, u32 *w, int isp, int p0, int p1, int p2, int p3)
 {
     static const int pp4k[] = { 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2 };
-    
+
     STEP2_SMALL(w[ 0], w[ 1], w[ 2], w[ 3], IF,  p0, p1, pp4k[isp + 0]);
     STEP2_SMALL(w[ 4], w[ 5], w[ 6], w[ 7], IF,  p1, p2, pp4k[isp + 1]);
     STEP2_SMALL(w[ 8], w[ 9], w[10], w[11], IF,  p2, p3, pp4k[isp + 2]);
@@ -845,7 +845,7 @@ compress_small(sph_simd_small_context *sc, int last)
     u32 w[32];
     u32 state[16];
     size_t u;
-    
+
     static const size_t wsp[32] = {
         4 << 3,  6 << 3,  0 << 3,  2 << 3,
         7 << 3,  5 << 3,  3 << 3,  1 << 3,
@@ -856,13 +856,13 @@ compress_small(sph_simd_small_context *sc, int last)
         30 << 3, 24 << 3, 25 << 3, 31 << 3,
         27 << 3, 29 << 3, 28 << 3, 26 << 3
     };
-    
+
     x = sc->buf;
     FFT128(0, 1, 0, ll);
     if (last) {
         for (i = 0; i < 128; i ++) {
             s32 tq;
-            
+
             tq = q[i] + yoff_s_f[i];
             tq = REDS2(tq);
             tq = REDS1(tq);
@@ -872,7 +872,7 @@ compress_small(sph_simd_small_context *sc, int last)
     } else {
         for (i = 0; i < 128; i ++) {
             s32 tq;
-            
+
             tq = q[i] + yoff_s_n[i];
             tq = REDS2(tq);
             tq = REDS1(tq);
@@ -880,7 +880,7 @@ compress_small(sph_simd_small_context *sc, int last)
             q[i] = (tq <= 128 ? tq : tq - 257);
         }
     }
-    
+
     for (i = 0; i < 16; i += 4) {
         state[i + 0] = sc->state[i + 0]
         ^ sph_dec32le_aligned(x + 4 * (i + 0));
@@ -891,7 +891,7 @@ compress_small(sph_simd_small_context *sc, int last)
         state[i + 3] = sc->state[i + 3]
         ^ sph_dec32le_aligned(x + 4 * (i + 3));
     }
-    
+
 #define WSREAD(sb, o1, o2, mm)   do { \
 for (u = 0; u < 32; u += 4) { \
 size_t v = wsp[(u >> 2) + (sb)]; \
@@ -905,7 +905,7 @@ w[u + 3] = INNER(q[v + 2 * 3 + (o1)], \
 q[v + 2 * 3 + (o2)], mm); \
 } \
 } while (0)
-    
+
     WSREAD( 0,    0,    1, 185);
     one_round_small(state, w, 0,  3, 23, 17, 27);
     WSREAD( 8,    0,    1, 185);
@@ -914,9 +914,9 @@ q[v + 2 * 3 + (o2)], mm); \
     one_round_small(state, w, 1, 29,  9, 15,  5);
     WSREAD(24, -191, -127, 233);
     one_round_small(state, w, 0,  4, 13, 10, 25);
-    
+
 #undef WSREAD
-    
+
     STEP_SMALL(sc->state[ 0], sc->state[ 1], sc->state[ 2], sc->state[ 3],
                IF,  4, 13, PP4_2_);
     STEP_SMALL(sc->state[ 4], sc->state[ 5], sc->state[ 6], sc->state[ 7],
@@ -925,7 +925,7 @@ q[v + 2 * 3 + (o2)], mm); \
                IF, 10, 25, PP4_1_);
     STEP_SMALL(sc->state[12], sc->state[13], sc->state[14], sc->state[15],
                IF, 25,  4, PP4_2_);
-    
+
     memcpy(sc->state, state, sizeof state);
 }
 
@@ -1059,7 +1059,7 @@ static void
 one_round_big(u32 *state, u32 *w, int isp, int p0, int p1, int p2, int p3)
 {
     static const int pp8k[] = { 1, 6, 2, 3, 5, 7, 4, 1, 6, 2, 3 };
-    
+
     STEP2_BIG(w[ 0], w[ 1], w[ 2], w[ 3], w[ 4], w[ 5], w[ 6], w[ 7],
               IF,  p0, p1, pp8k[isp + 0]);
     STEP2_BIG(w[ 8], w[ 9], w[10], w[11], w[12], w[13], w[14], w[15],
@@ -1087,7 +1087,7 @@ simd_compress_big(sph_simd_big_context *sc, int last)
     u32 w[64];
     u32 state[32];
     size_t u;
-    
+
     static const size_t wbp[32] = {
         4 << 4,  6 << 4,  0 << 4,  2 << 4,
         7 << 4,  5 << 4,  3 << 4,  1 << 4,
@@ -1098,13 +1098,13 @@ simd_compress_big(sph_simd_big_context *sc, int last)
         30 << 4, 24 << 4, 25 << 4, 31 << 4,
         27 << 4, 29 << 4, 28 << 4, 26 << 4
     };
-    
+
     x = sc->buf;
     FFT256(0, 1, 0, ll);
     if (last) {
         for (i = 0; i < 256; i ++) {
             s32 tq;
-            
+
             tq = q[i] + yoff_b_f[i];
             tq = REDS2(tq);
             tq = REDS1(tq);
@@ -1114,7 +1114,7 @@ simd_compress_big(sph_simd_big_context *sc, int last)
     } else {
         for (i = 0; i < 256; i ++) {
             s32 tq;
-            
+
             tq = q[i] + yoff_b_n[i];
             tq = REDS2(tq);
             tq = REDS1(tq);
@@ -1122,7 +1122,7 @@ simd_compress_big(sph_simd_big_context *sc, int last)
             q[i] = (tq <= 128 ? tq : tq - 257);
         }
     }
-    
+
     for (i = 0; i < 32; i += 8) {
         state[i + 0] = sc->state[i + 0]
         ^ sph_dec32le_aligned(x + 4 * (i + 0));
@@ -1141,7 +1141,7 @@ simd_compress_big(sph_simd_big_context *sc, int last)
         state[i + 7] = sc->state[i + 7]
         ^ sph_dec32le_aligned(x + 4 * (i + 7));
     }
-    
+
 #define WBREAD(sb, o1, o2, mm)   do { \
 for (u = 0; u < 64; u += 8) { \
 size_t v = wbp[(u >> 3) + (sb)]; \
@@ -1163,7 +1163,7 @@ w[u + 7] = INNER(q[v + 2 * 7 + (o1)], \
 q[v + 2 * 7 + (o2)], mm); \
 } \
 } while (0)
-    
+
     WBREAD( 0,    0,    1, 185);
     one_round_big(state, w, 0,  3, 23, 17, 27);
     WBREAD( 8,    0,    1, 185);
@@ -1172,9 +1172,9 @@ q[v + 2 * 7 + (o2)], mm); \
     one_round_big(state, w, 2, 29,  9, 15,  5);
     WBREAD(24, -383, -255, 233);
     one_round_big(state, w, 3,  4, 13, 10, 25);
-    
+
 #undef WBREAD
-    
+
     STEP_BIG(
              sc->state[ 0], sc->state[ 1], sc->state[ 2], sc->state[ 3],
              sc->state[ 4], sc->state[ 5], sc->state[ 6], sc->state[ 7],
@@ -1191,7 +1191,7 @@ q[v + 2 * 7 + (o2)], mm); \
              sc->state[24], sc->state[25], sc->state[26], sc->state[27],
              sc->state[28], sc->state[29], sc->state[30], sc->state[31],
              IF, 25,  4, PP8_0_);
-    
+
     memcpy(sc->state, state, sizeof state);
 }
 
@@ -1275,17 +1275,17 @@ simd_compress_big(sph_simd_big_context *sc, int last)
 #if SPH_SIMD_NOCOPY
     sph_u32 saved[32];
 #endif
-    
+
 #if SPH_SIMD_NOCOPY
     memcpy(saved, sc->state, sizeof saved);
 #endif
-    
+
     x = sc->buf;
     FFT256(0, 1, 0, ll);
     if (last) {
         for (i = 0; i < 256; i ++) {
             s32 tq;
-            
+
             tq = q[i] + yoff_b_f[i];
             tq = REDS2(tq);
             tq = REDS1(tq);
@@ -1295,7 +1295,7 @@ simd_compress_big(sph_simd_big_context *sc, int last)
     } else {
         for (i = 0; i < 256; i ++) {
             s32 tq;
-            
+
             tq = q[i] + yoff_b_n[i];
             tq = REDS2(tq);
             tq = REDS1(tq);
@@ -1336,7 +1336,7 @@ simd_compress_big(sph_simd_big_context *sc, int last)
     D5 ^= sph_dec32le_aligned(x + 116);
     D6 ^= sph_dec32le_aligned(x + 120);
     D7 ^= sph_dec32le_aligned(x + 124);
-    
+
     ONE_ROUND_BIG(0_, 0,  3, 23, 17, 27);
     ONE_ROUND_BIG(1_, 1, 28, 19, 22,  7);
     ONE_ROUND_BIG(2_, 2, 29,  9, 15,  5);
@@ -1431,7 +1431,7 @@ static void
 init_big(void *cc, const u32 *iv)
 {
     sph_simd_big_context *sc;
-    
+
     sc = cc;
     memcpy(sc->state, iv, sizeof sc->state);
     sc->count_low = sc->count_high = 0;
@@ -1442,11 +1442,11 @@ static void
 update_big(void *cc, const void *data, size_t len)
 {
     sph_simd_big_context *sc;
-    
+
     sc = cc;
     while (len > 0) {
         size_t clen;
-        
+
         clen = (sizeof sc->buf) - sc->ptr;
         if (clen > len)
             clen = len;
@@ -1480,7 +1480,7 @@ finalize_big(void *cc, unsigned ub, unsigned n, void *dst, size_t dst_len)
     sph_simd_big_context *sc;
     unsigned char *d;
     size_t u;
-    
+
     sc = cc;
     if (sc->ptr > 0 || n > 0) {
         memset(sc->buf + sc->ptr, 0,
@@ -1521,6 +1521,3 @@ sph_simd512_close(void *cc, void *dst)
 {
     sph_simd512_addbits_and_close(cc, 0, 0, dst);
 }
-
-
-

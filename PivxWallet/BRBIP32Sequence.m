@@ -72,7 +72,7 @@ static void CKDpriv(UInt256 *k, UInt256 *c, uint32_t i)
 {
     uint8_t buf[sizeof(BRECPoint) + sizeof(i)];
     UInt512 I;
-    
+
     if (i & BIP32_HARD) {
         buf[0] = 0;
         *(UInt256 *)&buf[1] = *k;
@@ -82,10 +82,10 @@ static void CKDpriv(UInt256 *k, UInt256 *c, uint32_t i)
     *(uint32_t *)&buf[sizeof(BRECPoint)] = CFSwapInt32HostToBig(i);
 
     HMAC(&I, SHA512, sizeof(UInt512), c, sizeof(*c), buf, sizeof(buf)); // I = HMAC-SHA512(c, k|P(k) || i)
-    
+
     BRSecp256k1ModAdd(k, (UInt256 *)&I); // k = IL + k (mod n)
     *c = *(UInt256 *)&I.u8[sizeof(UInt256)]; // c = IR
-    
+
     memset(buf, 0, sizeof(buf));
     memset(&I, 0, sizeof(I));
 }
@@ -110,15 +110,15 @@ static void CKDpub(BRECPoint *K, UInt256 *c, uint32_t i)
 
     uint8_t buf[sizeof(*K) + sizeof(i)];
     UInt512 I;
-    
+
     *(BRECPoint *)buf = *K;
     *(uint32_t *)&buf[sizeof(*K)] = CFSwapInt32HostToBig(i);
 
     HMAC(&I, SHA512, sizeof(UInt512), c, sizeof(*c), buf, sizeof(buf)); // I = HMAC-SHA512(c, P(K) || i)
-    
+
     *c = *(UInt256 *)&I.u8[sizeof(UInt256)]; // c = IR
     BRSecp256k1PointAdd(K, (UInt256 *)&I); // K = P(IL) + K
-    
+
     memset(buf, 0, sizeof(buf));
     memset(&I, 0, sizeof(I));
 }
@@ -180,22 +180,22 @@ static BOOL deserialize(NSString * string, uint8_t * depth, uint32_t * fingerpri
     if (purpose && purpose != 44) return nil; //currently only support purpose 0 and 44
     NSMutableData *mpk = [NSMutableData secureData];
     UInt512 I;
-    
+
     HMAC(&I, SHA512, sizeof(UInt512), BIP32_SEED_KEY, strlen(BIP32_SEED_KEY), seed.bytes, seed.length);
-    
+
     UInt256 secret = *(UInt256 *)&I, chain = *(UInt256 *)&I.u8[sizeof(UInt256)];
-    
+
     [mpk appendBytes:[BRKey keyWithSecret:secret compressed:YES].hash160.u32 length:4];
-    
+
     if (purpose == 44) {
         CKDpriv(&secret, &chain, 44 | BIP32_HARD); // purpose 44H
         CKDpriv(&secret, &chain, 119 | BIP32_HARD); // pivx 119H
     }
     CKDpriv(&secret, &chain, 0 | BIP32_HARD); // account 0H
-    
+
     [mpk appendBytes:&chain length:sizeof(chain)];
     [mpk appendData:[BRKey keyWithSecret:secret compressed:YES].publicKey];
-    
+
     return mpk;
 }
 
@@ -211,7 +211,7 @@ static BOOL deserialize(NSString * string, uint8_t * depth, uint32_t * fingerpri
     HMAC(&I, SHA512, sizeof(UInt512), BIP32_SEED_KEY, strlen(BIP32_SEED_KEY), seed.bytes, seed.length);
 
     UInt256 secret = *(UInt256 *)&I, chain = *(UInt256 *)&I.u8[sizeof(UInt256)];
-    
+
     if (purpose == 44) {
         CKDpriv(&secret, &chain, 44 | BIP32_HARD); // purpose 44H
         CKDpriv(&secret, &chain, 119 | BIP32_HARD); // pivx 119H
@@ -251,12 +251,12 @@ static BOOL deserialize(NSString * string, uint8_t * depth, uint32_t * fingerpri
 
     NSMutableArray *a = [NSMutableArray arrayWithCapacity:n.count];
     UInt512 I;
-    
+
     HMAC(&I, SHA512, sizeof(UInt512), BIP32_SEED_KEY, strlen(BIP32_SEED_KEY), seed.bytes, seed.length);
-    
+
     UInt256 secret = *(UInt256 *)&I, chain = *(UInt256 *)&I.u8[sizeof(UInt256)];
     uint8_t version = DASH_PRIVKEY;
-    
+
 #if DASH_TESTNET
     version = DASH_PRIVKEY_TEST;
 #endif
@@ -271,7 +271,7 @@ static BOOL deserialize(NSString * string, uint8_t * depth, uint32_t * fingerpri
     for (NSNumber *i in n) {
         NSMutableData *privKey = [NSMutableData secureDataWithCapacity:34];
         UInt256 s = secret, c = chain;
-        
+
         CKDpriv(&s, &c, i.unsignedIntValue); // nth key in chain
 
         [privKey appendBytes:&version length:1];
@@ -288,22 +288,22 @@ static BOOL deserialize(NSString * string, uint8_t * depth, uint32_t * fingerpri
 - (NSString *)authPrivateKeyFromSeed:(NSData *)seed
 {
     if (! seed) return nil;
-    
+
     UInt512 I;
-    
+
     HMAC(&I, SHA512, sizeof(UInt512), BIP32_SEED_KEY, strlen(BIP32_SEED_KEY), seed.bytes, seed.length);
-    
+
     UInt256 secret = *(UInt256 *)&I, chain = *(UInt256 *)&I.u8[sizeof(UInt256)];
     uint8_t version = DASH_PRIVKEY;
-    
+
 #if DASH_TESTNET
     version = DASH_PRIVKEY_TEST;
 #endif
-    
+
     // path m/1H/0 (same as copay uses for bitauth)
     CKDpriv(&secret, &chain, 1 | BIP32_HARD);
     CKDpriv(&secret, &chain, 0);
-    
+
     NSMutableData *privKey = [NSMutableData secureDataWithCapacity:34];
 
     [privKey appendBytes:&version length:1];
@@ -317,18 +317,18 @@ static BOOL deserialize(NSString * string, uint8_t * depth, uint32_t * fingerpri
 {
     NSUInteger len = [uri lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
     NSMutableData *data = [NSMutableData dataWithCapacity:sizeof(n) + len];
-    
+
     [data appendUInt32:n];
     [data appendBytes:uri.UTF8String length:len];
 
     UInt256 hash = data.SHA256;
     UInt512 I;
-    
+
     HMAC(&I, SHA512, sizeof(UInt512), BIP32_SEED_KEY, strlen(BIP32_SEED_KEY), seed.bytes, seed.length);
-    
+
     UInt256 secret = *(UInt256 *)&I, chain = *(UInt256 *)&I.u8[sizeof(UInt256)];
     uint8_t version = DASH_PRIVKEY;
-    
+
 #if DASH_TESTNET
     version = DASH_PRIVKEY_TEST;
 #endif
@@ -340,7 +340,7 @@ static BOOL deserialize(NSString * string, uint8_t * depth, uint32_t * fingerpri
     CKDpriv(&secret, &chain, CFSwapInt32LittleToHost(hash.u32[3]) | BIP32_HARD); // m/13H/aH/bH/cH/dH
 
     NSMutableData *privKey = [NSMutableData secureDataWithCapacity:34];
-    
+
     [privKey appendBytes:&version length:1];
     [privKey appendBytes:&secret length:sizeof(secret)];
     [privKey appendBytes:"\x01" length:1]; // specifies compressed pubkey format
@@ -365,7 +365,7 @@ static BOOL deserialize(NSString * string, uint8_t * depth, uint32_t * fingerpri
 - (NSString *)serializedMasterPublicKey:(NSData *)masterPublicKey depth:(NSUInteger)depth
 {
     if (masterPublicKey.length < 36) return nil;
-    
+
     uint32_t fingerprint = CFSwapInt32BigToHost(*(const uint32_t *)masterPublicKey.bytes);
     UInt256 chain = *(UInt256 *)((const uint8_t *)masterPublicKey.bytes + 4);
     BRECPoint pubKey = *(BRECPoint *)((const uint8_t *)masterPublicKey.bytes + 36);

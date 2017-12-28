@@ -26,7 +26,7 @@
 import WatchKit
 
 class BRAWTransactionRowControl: NSObject {
-    
+
     @IBOutlet var statusIcon: WKInterfaceImage! {
         didSet {
             statusIcon.setImage(nil)
