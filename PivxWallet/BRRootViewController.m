@@ -855,7 +855,7 @@
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:NSLocalizedString(@"WARNING", nil)
                                      message:[NSString stringWithFormat:@"\n%@\n\n%@\n\n%@\n",
-                                              [NSLocalizedString(@"\nDO NOT let anyone see your recovery\nphrase or they can spend your PIVX.\n", nil)
+                                              [NSLocalizedString(@"\nDO NOT let anyone see your recovery\nphrase or they can spend your PIV.\n", nil)
                                                stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]],
                                               [NSLocalizedString(@"\nNEVER type your recovery phrase into\npassword managers or elsewhere.\nOther devices may be infected.\n", nil)
                                                stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]],
@@ -1167,7 +1167,7 @@
 
     [defs setDouble:now forKey:BACKUP_DIALOG_TIME_KEY];
     UIAlertController * alert = [UIAlertController
-                                 alertControllerWithTitle:(first) ? NSLocalizedString(@"you received PIVX!", nil) : NSLocalizedString(@"IMPORTANT", nil)
+                                 alertControllerWithTitle:(first) ? NSLocalizedString(@"you received PIV!", nil) : NSLocalizedString(@"IMPORTANT", nil)
                                  message:[NSString stringWithFormat:NSLocalizedString(@"\n%@\n\nif you ever lose your phone, you will need it to recover your wallet", nil),
                                           (first) ? NSLocalizedString(@"next, write down your recovery phrase", nil) :
                                           NSLocalizedString(@"WRITE DOWN YOUR RECOVERY PHRASE", nil)]

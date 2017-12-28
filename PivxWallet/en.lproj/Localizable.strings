@@ -1,9 +1,8 @@
-
 /* No comment provided by engineer. */
 " and " = " and ";
 
 /* No comment provided by engineer. */
-"%@ is for 'mPIV'. %@ = 1 PIV." = "%@ is for 'mPIV'. %@ = 1 PIV.";
+"%@ is for 'mPIV'. %@ = 1 PIV." = "%1$@ is for 'mPIV'. %2$@ = 1 PIV.";
 
 /* No comment provided by engineer. */
 "%@ is not allowed to access the camera" = "%@ is not allowed to access the camera";
@@ -51,7 +50,7 @@
 "\nallow camera access in\nSettings->Privacy->Camera->%@" = "\nallow camera access in\nSettings->Privacy->Camera->%@";
 
 /* No comment provided by engineer. */
-"\nDO NOT let anyone see your recovery\nphrase or they can spend your PIV.\n" = "\nDO NOT let anyone see your recovery\nphrase or they can spend your PIVX.\n";
+"\nDO NOT let anyone see your recovery\nphrase or they can spend your PIV.\n" = "\nDO NOT let anyone see your recovery\nphrase or they can spend your PIV.\n";
 
 /* No comment provided by engineer. */
 "\nDO NOT take a screenshot.\nScreenshots are visible to other apps\nand devices.\n" = "\nDO NOT take a screenshot.\nScreenshots are visible to other apps\nand devices.\n";
@@ -69,7 +68,7 @@
 "\ntry again in %d %@" = "\ntry again in %1$d %2$@";
 
 /* No comment provided by engineer. */
-"about" = "About";
+"about" = "about";
 
 /* No comment provided by engineer. */
 "always require passcode" = "always require passcode";
@@ -84,7 +83,7 @@
 "Application %@ is requesting an address so it can pay you.  Would you like to authorize this?" = "Application %@ is requesting an address so it can pay you.  Would you like to authorize this?";
 
 /* No comment provided by engineer. */
-"Application %@ would like to receive your Master Public Key.  This can be used to keep track of your wallet, this can not be used to move your PIV." = "Application %@ would like to receive your Master Public Key.  This can be used to keep track of your wallet, this can not be used to move your PIVX.";
+"Application %@ would like to receive your Master Public Key.  This can be used to keep track of your wallet, this can not be used to move your PIVX." = "Application %@ would like to receive your Master Public Key.  This can be used to keep track of your wallet, this can not be used to move your PIVX.";
 
 /* No comment provided by engineer. */
 "bad password, try again" = "bad password, try again";
@@ -123,7 +122,7 @@
 "change" = "change";
 
 /* No comment provided by engineer. */
-"change passcode" = "Change Passcode";
+"change passcode" = "change passcode";
 
 /* No comment provided by engineer. */
 "change payment amount?" = "change payment amount?";
@@ -144,16 +143,13 @@
 "clear trusted node?" = "clear trusted node?";
 
 /* No comment provided by engineer. */
-"clipboard doesn't contain a valid pivx address" = "clipboard doesn't contain a valid pivx address";
+"clipboard doesn't contain a valid PIVX address" = "clipboard doesn't contain a valid PIVX address";
 
 /* No comment provided by engineer. */
 "close app" = "close app";
 
 /* Confirm */
 "Confirm" = "Confirm";
-
-/* confirm */
-"confirm" = "confirm";
 
 /* No comment provided by engineer. */
 "confirmed in block #%d" = "confirmed in block #%d";
@@ -189,28 +185,10 @@
 "couldn't transmit payment to PIVX network" = "couldn't transmit payment to PIVX network";
 
 /* No comment provided by engineer. */
-"PIVX address" = "PIVX address";
+"DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIV)." = "DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIV).";
 
 /* No comment provided by engineer. */
-"PIVX addresses can also be copied to the clipboard. A PIVX address always starts with 'X' or '7'." = "PIVX addresses can also be copied to the clipboard. A PIVX address always starts with 'X' or '7'.";
-
-/* No comment provided by engineer. */
-"PIVX network fee" = "PIVX network fee";
-
-/* No comment provided by engineer. */
-"PIVX payments can't be less than %@" = "PIVX payments can't be less than %@";
-
-/* No comment provided by engineer. */
-"PIVX transaction not signed" = "PIVX transaction not signed";
-
-/* No comment provided by engineer. */
-"PIVX transaction outputs can't be less than %@" = "PIVX transaction outputs can't be less than %@";
-
-/* No comment provided by engineer. */
-"DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIV)." = "DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIVX).";
-
-/* No comment provided by engineer. */
-"DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIV). Wipe this wallet immediately and restore on a secure device." = "DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIVX). Wipe this wallet immediately and restore on a secure device.";
+"DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIV). Wipe this wallet immediately and restore on a secure device." = "DEVICE SECURITY COMPROMISED\nAny 'jailbreak' app can access any other app's keychain data (and steal your PIV). Wipe this wallet immediately and restore on a secure device.";
 
 /* No comment provided by engineer. */
 "do it later" = "do it later";
@@ -228,7 +206,7 @@
 "enable" = "enable";
 
 /* No comment provided by engineer. */
-"enable receive notifications" = "Enable Receive Notifications";
+"enable receive notifications" = "enable receive notifications";
 
 /* No comment provided by engineer. */
 "enter" = "enter";
@@ -288,7 +266,7 @@
 "INVALID" = "INVALID";
 
 /* No comment provided by engineer. */
-"Let others scan this QR code to get your PIVX address. Anyone can send PIV to your wallet by transferring them to your address." = "Let others scan this QR code to get your PIVX address. Anyone can send PIV to your wallet by transferring them to your address.";
+"Let others scan this QR code to get your PIVX address. Anyone can send PIVX to your wallet by transferring them to your address." = "Let others scan this QR code to get your PIVX address. Anyone can send PIVX to your wallet by transferring them to your address.";
 
 /* No comment provided by engineer. */
 "minute" = "minute";
@@ -315,16 +293,13 @@
 "no peers found" = "no peers found";
 
 /* No comment provided by engineer. */
-"not a pivx QR code" = "not a pivx QR code";
+"not a PIVX QR code" = "not a PIVX QR code";
 
 /* No comment provided by engineer. */
 "not a valid bitcoin address" = "not a valid bitcoin address";
 
 /* No comment provided by engineer. */
 "not a valid PIVX address" = "not a valid PIVX address";
-
-/* No comment provided by engineer. */
-"not a valid pivx address" = "not a valid pivx address";
 
 /* No comment provided by engineer. */
 "not a valid private key" = "not a valid private key";
@@ -334,9 +309,6 @@
 
 /* No comment provided by engineer. */
 "ok" = "ok";
-
-/* No comment provided by engineer. */
-"OK" = "OK";
 
 /* No comment provided by engineer. */
 "passcode" = "passcode";
@@ -351,7 +323,7 @@
 "password protected key" = "password protected key";
 
 /* No comment provided by engineer. */
-"pay" = "Pay";
+"pay" = "pay";
 
 /* No comment provided by engineer. */
 "payee identity isn't certified" = "payee identity isn't certified";
@@ -366,13 +338,31 @@
 "pending" = "pending";
 
 /* No comment provided by engineer. */
+"PIVX address" = "PIVX address";
+
+/* No comment provided by engineer. */
+"PIVX addresses can also be copied to the clipboard.\nA PIVX address always starts with 'D' or '6'." = "PIVX addresses can also be copied to the clipboard.\nA PIVX address always starts with 'D' or '6'.";
+
+/* No comment provided by engineer. */
+"PIVX network fee" = "PIVX network fee";
+
+/* No comment provided by engineer. */
+"PIVX payments can't be less than %@" = "PIVX payments can't be less than %@";
+
+/* No comment provided by engineer. */
+"PIVX transaction not signed" = "PIVX transaction not signed";
+
+/* No comment provided by engineer. */
+"PIVX transaction outputs can't be less than %@" = "PIVX transaction outputs can't be less than %@";
+
+/* No comment provided by engineer. */
 "please enter pin to upgrade wallet" = "please enter pin to upgrade wallet";
 
 /* No comment provided by engineer. */
-"rate: %@ = %@\nupdated: %@\nblock #%d of %d\nconnected peers: %d\ndl peer: %@" = "rate: %@ = %@\nupdated: %@\nblock #%d of %d\nconnected peers: %d\ndl peer: %@";
+"rate: %@ = %@\nupdated: %@\nblock #%d of %d\nconnected peers: %d\ndl peer: %@" = "rate: %1$@ = %2$@\nupdated: %3$@\nblock #%4$d of %5$d\nconnected peers: %6$d\ndl peer: %7$@";
 
 /* No comment provided by engineer. */
-"Receive PIV at this address: %@" = "Receive PIV at this address: %@";
+"Receive PIVX at this address: %@" = "Receive PIVX at this address: %@";
 
 /* No comment provided by engineer. */
 "received" = "received";
@@ -381,7 +371,10 @@
 "received %@ (%@)" = "received %1$@ (%2$@)";
 
 /* No comment provided by engineer. */
-"recovery phrase" = "Recovery Phrase";
+"recovery phrase" = "recovery phrase";
+
+/* Recovery phrase */
+"Recovery phrase" = "Recovery phrase";
 
 /* No comment provided by engineer. */
 "recovery phrase doesn't match" = "recovery phrase doesn't match";
@@ -411,7 +404,7 @@
 "rescan" = "rescan";
 
 /* No comment provided by engineer. */
-"rescan blockchain" = "Rescan Blockchain";
+"rescan blockchain" = "rescan blockchain";
 
 /* No comment provided by engineer. */
 "rescan blockchain if you think you may have missing transactions, or are having trouble sending (rescanning can take several minutes)" = "rescan blockchain if you think you may have missing transactions, or are having trouble sending (rescanning can take several minutes)";
@@ -420,10 +413,13 @@
 "reset" = "reset";
 
 /* No comment provided by engineer. */
+"restore" = "restore";
+
+/* No comment provided by engineer. */
 "retry" = "retry";
 
 /* No comment provided by engineer. */
-"Scan someone else's QR code to get their pivx address. You can send a payment to anyone with an address." = "Scan someone else's QR code to get their pivx address. You can send a payment to anyone with an address.";
+"Scan someone else's QR code to get their PIVX address.\nYou can send a payment to anyone with an address." = "Scan someone else's QR code to get their PIVX address.\nYou can send a payment to anyone with an address.";
 
 /* No comment provided by engineer. */
 "Screenshots are visible to other apps and devices. Generate a new recovery phrase and keep it secret." = "Screenshots are visible to other apps and devices. Generate a new recovery phrase and keep it secret.";
@@ -444,7 +440,7 @@
 "send" = "send";
 
 /* No comment provided by engineer. */
-"Send %@ (%@) from this private key into your wallet? The PIVX network will receive a fee of %@ (%@)." = "Send %1$@ (%2$@) from this private key into your wallet? The PIVX network will receive a fee of %3$@ (%4$@).";
+"Send %@ (%@) from this private key into your wallet?\nThe PIVX network will receive a fee of %@ (%@)." = "Send %1$@ (%2$@) from this private key into your wallet?\nThe PIVX network will receive a fee of %3$@ (%4$@).";
 
 /* No comment provided by engineer. */
 "send address as email" = "send address as email";
@@ -555,7 +551,7 @@
 "to: %@ (via Shapeshift)" = "to: %@ (via Shapeshift)";
 
 /* No comment provided by engineer. */
-"touch id limit" = "Touch id limit";
+"touch id limit" = "touch id limit";
 
 /* No comment provided by engineer. */
 "touch id spending limit" = "touch id spending limit";
@@ -580,9 +576,6 @@
 
 /* No comment provided by engineer. */
 "turn device passcode on" = "turn device passcode on";
-
-/* No comment provided by engineer. */
-"Unable to get new qr code" = "Unable to get new qr code";
 
 /* No comment provided by engineer. */
 "unexpected response from %@" = "unexpected response from %@";
@@ -640,6 +633,9 @@
 
 /* No comment provided by engineer. */
 "you received PIV!" = "you received PIV!";
+
+/* No comment provided by engineer. */
+"YOUR WALLET IS LOCKED" = "YOUR WALLET IS LOCKED";
 
 /* No comment provided by engineer. */
 "Your wallet may be out of sync.\nThis can often be fixed by rescanning the blockchain." = "Your wallet may be out of sync.\nThis can often be fixed by rescanning the blockchain.";

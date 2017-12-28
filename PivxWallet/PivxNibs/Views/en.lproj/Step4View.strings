@@ -2,5 +2,5 @@
 /* Class = "UILabel"; text = "TRUSTED NODES FEDERATION"; ObjectID = "9RG-nq-fSw"; */
 "9RG-nq-fSw.text" = "TRUSTED NODES FEDERATION";
 
-/* Class = "UILabel"; text = "Trusted nodes federation make \nlight PoS wallets possible, \nyou can relay on them \nor create your own trusted node."; ObjectID = "acG-Rs-tKE"; */
-"acG-Rs-tKE.text" = "Trusted nodes federation make \nlight PoS wallets possible, \nyou can relay on them \nor create your own trusted node.";
+/* Class = "UILabel"; text = "Trusted nodes federation make \nlight wallets possible, \nyou can relay on them \nor create your own trusted node."; ObjectID = "acG-Rs-tKE"; */
+"acG-Rs-tKE.text" = "Trusted nodes federation make \nlight wallets possible, \nyou can relay on them \nor create your own trusted node.";

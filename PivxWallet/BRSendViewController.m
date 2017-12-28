@@ -391,7 +391,7 @@ static NSString *sanitizeString(NSString *s)
 
                 if (error) {
                     UIAlertController * alert = [UIAlertController
-                                                 alertControllerWithTitle:NSLocalizedString(@"couldn't transmit payment to pivx network", nil)
+                                                 alertControllerWithTitle:NSLocalizedString(@"couldn't transmit payment to PIVX network", nil)
                                                  message:error.localizedDescription
                                                  preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction* okButton = [UIAlertAction
@@ -473,7 +473,7 @@ static NSString *sanitizeString(NSString *s)
         }
         else {
             UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:NSLocalizedString(@"not a valid pivx address", nil)
+                                         alertControllerWithTitle:NSLocalizedString(@"not a valid PIVX address", nil)
                                          message:request.paymentAddress
                                          preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* okButton = [UIAlertAction
@@ -777,7 +777,7 @@ static NSString *sanitizeString(NSString *s)
         else if (amount < TX_MIN_OUTPUT_AMOUNT) {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:NSLocalizedString(@"couldn't make payment", nil)
-                                         message:[NSString stringWithFormat:NSLocalizedString(@"pivx payments can't be less than %@", nil),
+                                         message:[NSString stringWithFormat:NSLocalizedString(@"PIVX payments can't be less than %@", nil),
                                                   [manager stringForDashAmount:TX_MIN_OUTPUT_AMOUNT]]
                                          preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* okButton = [UIAlertAction
@@ -796,7 +796,7 @@ static NSString *sanitizeString(NSString *s)
         else if (outputTooSmall) {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:NSLocalizedString(@"couldn't make payment", nil)
-                                         message:[NSString stringWithFormat:NSLocalizedString(@"pivx transaction outputs can't be less than %@",
+                                         message:[NSString stringWithFormat:NSLocalizedString(@"PIVX transaction outputs can't be less than %@",
                                                                                               nil), [manager stringForDashAmount:TX_MIN_OUTPUT_AMOUNT]]
                                          preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* okButton = [UIAlertAction
@@ -942,7 +942,7 @@ static NSString *sanitizeString(NSString *s)
         else if (outputTooSmall) {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:NSLocalizedString(@"couldn't make payment", nil)
-                                         message:[NSString stringWithFormat:NSLocalizedString(@"pivx transaction outputs can't be less than %@",
+                                         message:[NSString stringWithFormat:NSLocalizedString(@"PIVX transaction outputs can't be less than %@",
                                                                                               nil), [manager stringForDashAmount:TX_MIN_OUTPUT_AMOUNT]]
                                          preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* okButton = [UIAlertAction
@@ -976,7 +976,7 @@ static NSString *sanitizeString(NSString *s)
 
         if (amount > 0 && amount < self.amount) {
             UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:NSLocalizedString(@"insufficient funds for pivx network fee", nil)
+                                         alertControllerWithTitle:NSLocalizedString(@"insufficient funds for PIVX network fee", nil)
                                          message:[NSString stringWithFormat:NSLocalizedString(@"reduce payment amount by\n%@ (%@)?", nil),
                                                   [manager stringForDashAmount:self.amount - amount],
                                                   [manager localCurrencyStringForDashAmount:self.amount - amount]]
@@ -1004,7 +1004,7 @@ static NSString *sanitizeString(NSString *s)
         }
         else {
             UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:NSLocalizedString(@"insufficient funds for pivx network fee", nil)
+                                         alertControllerWithTitle:NSLocalizedString(@"insufficient funds for PIVX network fee", nil)
                                          message:nil
                                          preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* okButton = [UIAlertAction
@@ -1059,7 +1059,7 @@ static NSString *sanitizeString(NSString *s)
             if (!signedTransaction) {
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"couldn't make payment", nil)
-                                             message:NSLocalizedString(@"error signing pivx transaction", nil)
+                                             message:NSLocalizedString(@"error signing PIVX transaction", nil)
                                              preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction* okButton = [UIAlertAction
                                            actionWithTitle:NSLocalizedString(@"ok", nil)
@@ -1248,7 +1248,7 @@ static NSString *sanitizeString(NSString *s)
                 for (NSNumber *amt in tx.outputAmounts) amount += amt.unsignedLongLongValue;
                 self.sweepTx = tx;
 
-                NSString *alertFmt = NSLocalizedString(@"Send %@ (%@) from this private key into your wallet?\nThe pivx network will receive a fee of %@ (%@).", nil);
+                NSString *alertFmt = NSLocalizedString(@"Send %@ (%@) from this private key into your wallet?\nThe PIVX network will receive a fee of %@ (%@).", nil);
                 NSString *alertMsg = [NSString stringWithFormat:alertFmt, [manager stringForDashAmount:amount],
                                       [manager localCurrencyStringForDashAmount:amount], [manager stringForDashAmount:fee],
                                       [manager localCurrencyStringForDashAmount:fee]];
@@ -1519,7 +1519,7 @@ static NSString *sanitizeString(NSString *s)
     }
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@""
-                                 message:NSLocalizedString(@"clipboard doesn't contain a valid pivx address", nil)
+                                 message:NSLocalizedString(@"clipboard doesn't contain a valid PIVX address", nil)
                                  preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* okButton = [UIAlertAction
                                actionWithTitle:NSLocalizedString(@"ok", nil)
@@ -1946,9 +1946,9 @@ static NSString *sanitizeString(NSString *s)
                                  else {
                                      self.scanController.cameraGuide.image = [UIImage imageNamed:@"cameraguide-red"];
                                      if (([request.scheme isEqual:@"pivx"] && request.paymentAddress.length > 1) ||
-                                         [request.paymentAddress hasPrefix:@"X"] || [request.paymentAddress hasPrefix:@"7"]) {
+                                         [request.paymentAddress hasPrefix:@"D"] || [request.paymentAddress hasPrefix:@"6"]) {
                                          self.scanController.message.text = [NSString stringWithFormat:@"%@:\n%@",
-                                                                             NSLocalizedString(@"not a valid pivx address", nil),
+                                                                             NSLocalizedString(@"not a valid PIVX address", nil),
                                                                              request.paymentAddress];
                                      } else if (([request.scheme isEqual:@"bitcoin"] && request.paymentAddress.length > 1) ||
                                                 [request.paymentAddress hasPrefix:@"1"] || [request.paymentAddress hasPrefix:@"3"]) {
@@ -1956,7 +1956,7 @@ static NSString *sanitizeString(NSString *s)
                                                                              NSLocalizedString(@"not a valid bitcoin address", nil),
                                                                              request.paymentAddress];
                                      }
-                                     else self.scanController.message.text = NSLocalizedString(@"not a pivx QR code", nil);
+                                     else self.scanController.message.text = NSLocalizedString(@"not a PIVX QR code", nil);
 
                                      [self performSelector:@selector(resetQRGuide) withObject:nil afterDelay:0.35];
                                      [BREventManager saveEvent:@"send:unsuccessful_bip73"];

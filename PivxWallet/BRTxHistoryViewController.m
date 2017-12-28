@@ -534,7 +534,7 @@ static NSString *dateFormat(NSString *template)
 
                 if (indexPath.row == 0) {
                     EmptyTableCell *tran = [tableView dequeueReusableCellWithIdentifier:self.emptyIdentifier forIndexPath:indexPath];
-                    [tran configureWithTitle:@"YOUR WALLET IS LOCKED" image:@"imgWalletLocked"];
+                    [tran configureWithTitle:NSLocalizedString(@"YOUR WALLET IS LOCKED", nil) image:@"imgWalletLocked"];
                     return tran;
                 }
             }
