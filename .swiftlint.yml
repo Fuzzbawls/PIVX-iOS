@@ -2,10 +2,9 @@ disabled_rules:
     - colon
     - comma
     - identifier_name
+    - type_name
 excluded:
     - Pods
-type_name:
-    severity: warning
 force_cast:
     severity: warning
 line_length:
