@@ -35,8 +35,8 @@
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIp-cT-azs">
                     <rect key="frame" x="20" y="551.5" width="335" height="39.5"/>
-                    <string key="text">Already very fast, PIVX transactions 
-using SwiftTX are instant with ZERO.</string>
+                    <string key="text">Already very fast, PIVX transactions
+using SwiftX are instant.</string>
                     <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="17"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
