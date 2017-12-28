@@ -10,5 +10,5 @@ before_install:
     - brew install swiftlint || true
 script:
     - set -o pipefail
-    - xcodebuild -project PivxWallet.xcodeproj -scheme pivxwallet -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.1' ONLY_ACTIVE_ARCH=NO
+    - xcodebuild -workspace PivxWallet.xcworkspace -scheme pivxwallet -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.1' ONLY_ACTIVE_ARCH=NO
     - swiftlint
