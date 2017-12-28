@@ -59,7 +59,7 @@
 static NSString *sanitizeString(NSString *s)
 {
     NSMutableString *sane = [NSMutableString stringWithString:(s) ? s : @""];
-    
+
     CFStringTransform((CFMutableStringRef)sane, NULL, kCFStringTransformToUnicodeName, NO);
     return sane;
 }
@@ -100,15 +100,15 @@ static NSString *sanitizeString(NSString *s)
     self.scanButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.clipboardButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.inClipboardTextView = FALSE;
-    
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.scanButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
     self.clipboardButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
 #pragma clang diagnostic pop
-    
+
     self.clipboardText.textContainerInset = UIEdgeInsetsMake(8.0, 0.0, 0.0, 0.0);
-    
+
     self.clipboardObserver =
     [[NSNotificationCenter defaultCenter] addObserverForName:UIPasteboardChangedNotification object:nil queue:nil
                                                   usingBlock:^(NSNotification *note) {
@@ -117,7 +117,7 @@ static NSString *sanitizeString(NSString *s)
                                                       }
                                                       else [self updateClipboardText];
                                                   }];
-    
+
     FBShimmeringView *shimmeringView = [[FBShimmeringView alloc] initWithFrame:CGRectMake(0, self.shapeshiftView.frame.origin.y, self.view.frame.size.width, self.shapeshiftView.frame.size.height)];
     [self.view addSubview:shimmeringView];
     [self.shapeshiftView removeFromSuperview];
@@ -131,12 +131,12 @@ static NSString *sanitizeString(NSString *s)
     shimmeringView.shimmeringHighlightLength = 1.0f;
     shimmeringView.shimmeringAnimationOpacity = 0.8;
     self.shapeshiftView = shimmeringView;
-    
+
     FBShimmeringView *shimmeringInnerLabelView = [[FBShimmeringView alloc] initWithFrame:self.shapeshiftLabel.frame];
     [self.shapeshiftLabel removeFromSuperview];
     [shimmeringInnerLabelView addSubview:self.shapeshiftLabel];
     shimmeringInnerLabelView.contentView = self.shapeshiftLabel;
-    
+
     shimmeringInnerLabelView.shimmering = YES;
     shimmeringInnerLabelView.shimmeringSpeed = 100;
     shimmeringInnerLabelView.shimmeringPauseDuration = 0.8;
@@ -144,7 +144,7 @@ static NSString *sanitizeString(NSString *s)
     [self.shapeshiftView addSubview:shimmeringInnerLabelView];
     NSArray * shapeshiftsInProgress = [DSShapeshiftEntity shapeshiftsInProgress];
     if (![shapeshiftsInProgress count]) {
-        
+
         self.shapeshiftView.hidden = TRUE;
     } else {
         for (DSShapeshiftEntity * shapeshift in shapeshiftsInProgress) {
@@ -152,10 +152,10 @@ static NSString *sanitizeString(NSString *s)
             [self startObservingShapeshift:shapeshift];
         }
     }
-    
+
     self.sendInstantly = [[NSUserDefaults standardUserDefaults] boolForKey:SEND_INSTANTLY_KEY];
     [self.instantSwitch setOn:self.sendInstantly];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -184,10 +184,10 @@ static NSString *sanitizeString(NSString *s)
     if (self.inClipboardTextView) {
         NSDictionary *info  = notification.userInfo;
         NSValue      *value = info[UIKeyboardFrameEndUserInfoKey];
-        
+
         CGRect rawFrame      = [value CGRectValue];
         CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
-        
+
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [UIView animateWithDuration:0.35 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 self.view.center = CGPointMake(self.view.center.x, (self.view.bounds.size.height - keyboardFrame.size.height)/2.0 - 50);
@@ -221,7 +221,7 @@ static NSString *sanitizeString(NSString *s)
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     if (! self.scanController) {
         self.scanController = [self.storyboard instantiateViewControllerWithIdentifier:@"ScanViewController"];
     }
@@ -262,7 +262,7 @@ static NSString *sanitizeString(NSString *s)
                                      handler:^(UIAlertAction * action) {
                                          [self handleURL:self.url];
                                      }];
-        
+
         [alert addAction:cancelButton];
         [alert addAction:copyButton];
         [self presentViewController:alert animated:YES completion:nil];
@@ -275,9 +275,9 @@ static NSString *sanitizeString(NSString *s)
           objectsPassingTest:^BOOL(id obj, BOOL *stop) {
               return [manager.wallet addressIsUsed:obj];
           }].allObjects componentsJoinedByString:@"\n"];
-        
+
         return YES;
-        
+
     }
 }
 
@@ -287,7 +287,7 @@ static NSString *sanitizeString(NSString *s)
                withAttributes:@{@"scheme": (url.scheme ? url.scheme : @"(null)"),
                                 @"host": (url.host ? url.host : @"(null)"),
                                 @"path": (url.path ? url.path : @"(null)")}];
-    
+
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     if ([url.scheme isEqual:@"pivxwallet"]) {
         if ([url.host isEqual:@"scanqr"] || [url.path isEqual:@"/scanqr"]) { // scan qr
@@ -301,7 +301,7 @@ static NSString *sanitizeString(NSString *s)
                     [dictionary setObject:paramArray[1] forKey:paramArray[0]];
                 }
             }
-            
+
             if (dictionary[@"request"] && dictionary[@"sender"] && (!dictionary[@"account"] || [dictionary[@"account"] isEqualToString:@"0"])) {
                 if ([dictionary[@"request"] isEqualToString:@"masterPublicKey"]) {
                     [manager authenticateWithPrompt:[NSString stringWithFormat:NSLocalizedString(@"Application %@ would like to receive your Master Public Key.  This can be used to keep track of your wallet, this can not be used to move your PIVX.",nil),dictionary[@"sender"]] andTouchId:NO alertIfLockout:YES completion:^(BOOL authenticatedOrSuccess,BOOL cancelled) {
@@ -311,7 +311,7 @@ static NSString *sanitizeString(NSString *s)
                             NSString * masterPublicKeyNoPurposeSerialized = [seq serializedMasterPublicKey:manager.extendedBIP32PublicKey depth:BIP32_PURPOSE_ACCOUNT_DEPTH];
                             NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@://callback=%@&masterPublicKeyBIP32=%@&masterPublicKeyBIP44=%@&account=%@&source=pivxwallet",dictionary[@"sender"],dictionary[@"request"],masterPublicKeyNoPurposeSerialized,masterPublicKeySerialized,@"0"]];
                             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
-                                
+
                             }];
                         }
                     }];
@@ -320,12 +320,12 @@ static NSString *sanitizeString(NSString *s)
                         if (authenticatedOrSuccess) {
                             NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@://callback=%@&address=%@&source=pivxwallet",dictionary[@"sender"],dictionary[@"request"],manager.wallet.receiveAddress]];
                             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
-                                
+
                             }];
                         }
                     }];
                 }
-                
+
             }
         } else if ([url.host hasPrefix:@"pay"] || [url.path isEqual:@"/pay"]) {
             NSMutableArray * array = [[url.host componentsSeparatedByString:@"&"] mutableCopy];
@@ -373,22 +373,22 @@ static NSString *sanitizeString(NSString *s)
 - (void)handleFile:(NSData *)file
 {
     BRPaymentProtocolRequest *request = [BRPaymentProtocolRequest requestWithData:file];
-    
+
     if (request) {
         [self confirmProtocolRequest:request];
         return;
     }
-    
+
     // TODO: reject payments that don't match requested amounts/scripts, implement refunds
     BRPaymentProtocolPayment *payment = [BRPaymentProtocolPayment paymentWithData:file];
-    
+
     if (payment.transactions.count > 0) {
         for (BRTransaction *tx in payment.transactions) {
             [(id)self.parentViewController.parentViewController startActivityWithTimeout:30];
-            
+
             [[BRPeerManager sharedInstance] publishTransaction:tx completion:^(NSError *error) {
                 [(id)self.parentViewController.parentViewController stopActivityWithSuccess:(! error)];
-                
+
                 if (error) {
                     UIAlertController * alert = [UIAlertController
                                                  alertControllerWithTitle:NSLocalizedString(@"couldn't transmit payment to pivx network", nil)
@@ -402,26 +402,26 @@ static NSString *sanitizeString(NSString *s)
                     [alert addAction:okButton];
                     [self presentViewController:alert animated:YES completion:nil];
                 }
-                
+
                 [self.view addSubview:[[[BRBubbleView
                                          viewWithText:(payment.memo.length > 0 ? payment.memo : NSLocalizedString(@"received", nil))
                                          center:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2)] popIn]
                                        popOutAfterDelay:(payment.memo.length > 0 ? 3.0 : 2.0)]];
             }];
         }
-        
+
         return;
     }
-    
+
     BRPaymentProtocolACK *ack = [BRPaymentProtocolACK ackWithData:file];
-    
+
     if (ack) {
         if (ack.memo.length > 0) {
             [self.view addSubview:[[[BRBubbleView viewWithText:ack.memo
                                                         center:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2)] popIn]
                                    popOutAfterDelay:3.0]];
         }
-        
+
         return;
     }
     UIAlertController * alert = [UIAlertController
@@ -435,7 +435,7 @@ static NSString *sanitizeString(NSString *s)
                                }];
     [alert addAction:okButton];
     [self presentViewController:alert animated:YES completion:nil];
-    
+
 }
 
 
@@ -445,7 +445,7 @@ static NSString *sanitizeString(NSString *s)
 {
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     NSString *prompt = (isSecure && name.length > 0) ? LOCK @" " : @"";
-    
+
     //BUG: XXX limit the length of name and memo to avoid having the amount clipped
     if (! isSecure && self.request.errorMessage.length > 0) prompt = [prompt stringByAppendingString:REDX @" "];
     if (name.length > 0) prompt = [prompt stringByAppendingString:sanitizeString(name)];
@@ -454,14 +454,14 @@ static NSString *sanitizeString(NSString *s)
     if (memo.length > 0) prompt = [prompt stringByAppendingFormat:@"\n\n%@", sanitizeString(memo)];
     prompt = [prompt stringByAppendingFormat:NSLocalizedString(@"\n\n     amount %@ (%@)", nil),
               [manager stringForDashAmount:amount - fee], [manager localCurrencyStringForDashAmount:amount - fee]];
-    
+
     if (fee > 0) {
         prompt = [prompt stringByAppendingFormat:NSLocalizedString(@"\nnetwork fee +%@ (%@)", nil),
                   [manager stringForDashAmount:fee], [manager localCurrencyStringForDashAmount:fee]];
         prompt = [prompt stringByAppendingFormat:NSLocalizedString(@"\n         total %@ (%@)", nil),
                   [manager stringForDashAmount:amount], [manager localCurrencyStringForDashAmount:amount]];
     }
-    
+
     return prompt;
 }
 
@@ -488,11 +488,11 @@ static NSString *sanitizeString(NSString *s)
     }
     else if (request.r.length > 0) { // payment protocol over HTTP
         [(id)self.parentViewController.parentViewController startActivityWithTimeout:20.0];
-        
+
         [BRPaymentRequest fetch:request.r scheme:request.scheme timeout:20.0 completion:^(BRPaymentProtocolRequest *req, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [(id)self.parentViewController.parentViewController stopActivityWithSuccess:(! error)];
-                
+
                 if (error && ! ([request.paymentAddress isValidBitcoinAddress] || [request.paymentAddress isValidDashAddress])) {
                     UIAlertController * alert = [UIAlertController
                                                  alertControllerWithTitle:NSLocalizedString(@"couldn't make payment", nil)
@@ -529,7 +529,7 @@ static NSString *sanitizeString(NSString *s)
     BRTransaction *tx = nil;
     uint64_t amount = 0, fee = 0;
     BOOL valid = protoReq.isValid, outputTooSmall = NO;
-    
+
     if (! valid && [protoReq.errorMessage isEqual:NSLocalizedString(@"request expired", nil)]) {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:NSLocalizedString(@"bad payment request", nil)
@@ -545,9 +545,9 @@ static NSString *sanitizeString(NSString *s)
         [self cancel:nil];
         return;
     }
-    
+
     //TODO: check for duplicates of already paid requests
-    
+
     if (self.amount == 0) {
         for (NSNumber *outputAmount in protoReq.details.outputAmounts) {
             if (outputAmount.unsignedLongLongValue > 0 && outputAmount.unsignedLongLongValue < TX_MIN_OUTPUT_AMOUNT) {
@@ -557,7 +557,7 @@ static NSString *sanitizeString(NSString *s)
         }
     }
     else amount = self.amount;
-    
+
     if ([currency isEqualToString:@"pivx"]) {
         NSString *address = [NSString addressWithScriptPubKey:protoReq.details.outputScripts.firstObject];
         if ([manager.wallet containsAddress:address]) {
@@ -607,7 +607,7 @@ static NSString *sanitizeString(NSString *s)
             self.request = protoReq;
             self.scheme = currency;
             self.associatedShapeshift = shapeshift;
-            
+
             if (requiresInstantValue) {
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"instant payment", nil)
@@ -618,7 +618,7 @@ static NSString *sanitizeString(NSString *s)
                                                actionWithTitle:NSLocalizedString(@"cancel", nil)
                                                style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action) {
-                                                   
+
                                                }];
                 UIAlertAction* enableButton = [UIAlertAction
                                                actionWithTitle:NSLocalizedString(@"enable", nil)
@@ -628,12 +628,12 @@ static NSString *sanitizeString(NSString *s)
                                                    [self.instantSwitch setOn:TRUE animated:TRUE];
                                                    [self confirmProtocolRequest:self.request currency:self.scheme associatedShapeshift:self.associatedShapeshift wantsInstant:TRUE requiresInstantValue:TRUE];
                                                }];
-                
+
                 [alert addAction:ignoreButton];
                 [alert addAction:enableButton];
                 [self presentViewController:alert animated:YES completion:nil];
             } else {
-                
+
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"instant payment", nil)
                                              message:NSLocalizedString(@"request is for an instant payment but you have disabled instant payments",
@@ -653,13 +653,13 @@ static NSString *sanitizeString(NSString *s)
                                                    [self.instantSwitch setOn:TRUE animated:TRUE];
                                                    [self confirmProtocolRequest:self.request currency:self.scheme associatedShapeshift:self.associatedShapeshift wantsInstant:TRUE requiresInstantValue:requiresInstantValue];
                                                }];
-                
+
                 [alert addAction:ignoreButton];
                 [alert addAction:enableButton];
                 [self presentViewController:alert animated:YES completion:nil];
             }
             return;
-            
+
         } else if (amount > manager.wallet.balance && amount != UINT64_MAX) {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:NSLocalizedString(@"insufficient funds", nil)
@@ -670,7 +670,7 @@ static NSString *sanitizeString(NSString *s)
                                        style:UIAlertActionStyleCancel
                                        handler:^(UIAlertAction * action) {
                                        }];
-            
+
             [alert addAction:okButton];
             [self presentViewController:alert animated:YES completion:nil];
             [self cancel:nil];
@@ -697,7 +697,7 @@ static NSString *sanitizeString(NSString *s)
                                               handler:^(UIAlertAction * action) {
                                                   [self confirmProtocolRequest:self.request currency:self.scheme associatedShapeshift:self.associatedShapeshift wantsInstant:wantsInstant requiresInstantValue:requiresInstantValue];
                                               }];
-                
+
                 [alert addAction:cancelButton];
                 [alert addAction:retryButton];
                 [self presentViewController:alert animated:YES completion:nil];
@@ -719,7 +719,7 @@ static NSString *sanitizeString(NSString *s)
                                                handler:^(UIAlertAction * action) {
                                                    [self confirmProtocolRequest:self.request currency:self.scheme associatedShapeshift:self.associatedShapeshift wantsInstant:FALSE requiresInstantValue:requiresInstantValue];
                                                }];
-                
+
                 [alert addAction:cancelButton];
                 [alert addAction:enableButton];
                 [self presentViewController:alert animated:YES completion:nil];
@@ -731,7 +731,7 @@ static NSString *sanitizeString(NSString *s)
             self.scheme = currency;
             self.okIdentity = protoReq.commonName;
             self.associatedShapeshift = shapeshift;
-            
+
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:NSLocalizedString(@"payee identity isn't certified", nil)
                                          message:protoReq.errorMessage
@@ -748,17 +748,17 @@ static NSString *sanitizeString(NSString *s)
                                            handler:^(UIAlertAction * action) {
                                                [self cancelOrChangeAmount];
                                            }];
-            
+
             [alert addAction:ignoreButton];
             [alert addAction:cancelButton];
             [self presentViewController:alert animated:YES completion:nil];
-            
+
             return;
         }
         else if (amount == 0 || amount == UINT64_MAX) {
             BRAmountViewController *amountController = [self.storyboard
                                                         instantiateViewControllerWithIdentifier:@"AmountViewController"];
-            
+
             amountController.delegate = self;
             self.request = protoReq;
             self.scheme = currency;
@@ -787,10 +787,10 @@ static NSString *sanitizeString(NSString *s)
                                        actionWithTitle:NSLocalizedString(@"ok", nil)
                                        style:UIAlertActionStyleCancel
                                        handler:^(UIAlertAction * action) {
-                                           
+
                                        }];
-            
-            
+
+
             [alert addAction:okButton];
             [self presentViewController:alert animated:YES completion:nil];
             [self cancel:nil];
@@ -806,21 +806,21 @@ static NSString *sanitizeString(NSString *s)
                                        actionWithTitle:NSLocalizedString(@"ok", nil)
                                        style:UIAlertActionStyleCancel
                                        handler:^(UIAlertAction * action) {
-                                           
+
                                        }];
-            
-            
+
+
             [alert addAction:okButton];
             [self presentViewController:alert animated:YES completion:nil];
             [self cancel:nil];
             return;
         }
-        
+
         self.request = protoReq;
         self.scheme = @"pivx";
-        
+
         if (self.amount == 0) {
-            
+
             if (shapeshift) {
                 tx = [manager.wallet transactionForAmounts:protoReq.details.outputAmounts
                                            toOutputScripts:protoReq.details.outputScripts withFee:YES isInstant:wantsInstant toShapeshiftAddress:shapeshift.withdrawalAddress];
@@ -840,7 +840,7 @@ static NSString *sanitizeString(NSString *s)
                                            toOutputScripts:@[protoReq.details.outputScripts.firstObject] withFee:YES isInstant:wantsInstant toShapeshiftAddress:nil];
             }
         }
-        
+
         if (tx) {
             amount = [manager.wallet amountSentByTransaction:tx] - [manager.wallet amountReceivedFromTransaction:tx];
             fee = [manager.wallet feeForTransaction:tx];
@@ -852,18 +852,18 @@ static NSString *sanitizeString(NSString *s)
             fee += (manager.wallet.balance - amount) % 100;
             amount += fee;
         }
-        
+
         for (NSData *script in protoReq.details.outputScripts) {
             NSString *addr = [NSString addressWithScriptPubKey:script];
-            
+
             if (! addr) addr = NSLocalizedString(@"unrecognized address", nil);
             if ([address rangeOfString:addr].location != NSNotFound) continue;
             address = [address stringByAppendingFormat:@"%@%@", (address.length > 0) ? @", " : @"", addr];
         }
-        
+
         NSString *prompt = [self promptForAmount:amount fee:fee address:address name:protoReq.commonName
                                             memo:protoReq.details.memo isSecure:(valid && ! [protoReq.pkiType isEqual:@"none"])];
-        
+
         // to avoid the frozen pincode keyboard bug, we need to make sure we're scheduled normally on the main runloop
         // rather than a dispatch_async queue
         CFRunLoopPerformBlock([[NSRunLoop mainRunLoop] getCFRunLoop], kCFRunLoopCommonModes, ^{
@@ -894,7 +894,7 @@ static NSString *sanitizeString(NSString *s)
                                            handler:^(UIAlertAction * action) {
                                                [self cancelOrChangeAmount];
                                            }];
-            
+
             [alert addAction:ignoreButton];
             [alert addAction:cancelButton];
             [self presentViewController:alert animated:YES completion:nil];
@@ -933,10 +933,10 @@ static NSString *sanitizeString(NSString *s)
                                        actionWithTitle:NSLocalizedString(@"ok", nil)
                                        style:UIAlertActionStyleCancel
                                        handler:^(UIAlertAction * action) {
-                                           
+
                                        }];
-            
-            
+
+
             [alert addAction:okButton];
             [self presentViewController:alert animated:YES completion:nil];
             [self cancel:nil];
@@ -952,10 +952,10 @@ static NSString *sanitizeString(NSString *s)
                                        actionWithTitle:NSLocalizedString(@"ok", nil)
                                        style:UIAlertActionStyleCancel
                                        handler:^(UIAlertAction * action) {
-                                           
+
                                        }];
-            
-            
+
+
             [alert addAction:okButton];
             [self presentViewController:alert animated:YES completion:nil];
             [self cancel:nil];
@@ -971,12 +971,12 @@ static NSString *sanitizeString(NSString *s)
 -(void)insufficientFundsForTransaction:(BRTransaction *)tx forAmount:(uint64_t)amount {
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     uint64_t fuzz = [manager amountForLocalCurrencyString:[manager localCurrencyStringForDashAmount:1]]*2;
-    
+
     // if user selected an amount equal to or below wallet balance, but the fee will bring the total above the
     // balance, offer to reduce the amount to available funds minus fee
     if (self.amount <= manager.wallet.balance + fuzz && self.amount > 0) {
         int64_t amount = [manager.wallet maxOutputAmountUsingInstantSend:tx.isInstant];
-        
+
         if (amount > 0 && amount < self.amount) {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:NSLocalizedString(@"insufficient funds for pivx network fee", nil)
@@ -998,8 +998,8 @@ static NSString *sanitizeString(NSString *s)
                                            handler:^(UIAlertAction * action) {
                                                [self confirmProtocolRequest:self.request currency:self.scheme associatedShapeshift:self.associatedShapeshift];
                                            }];
-            
-            
+
+
             [alert addAction:cancelButton];
             [alert addAction:reduceButton];
             [self presentViewController:alert animated:YES completion:nil];
@@ -1014,10 +1014,10 @@ static NSString *sanitizeString(NSString *s)
                                        actionWithTitle:NSLocalizedString(@"ok", nil)
                                        style:UIAlertActionStyleCancel
                                        handler:^(UIAlertAction * action) {
-                                           
+
                                        }];
-            
-            
+
+
             [alert addAction:okButton];
             [self presentViewController:alert animated:YES completion:nil];
         }
@@ -1031,7 +1031,7 @@ static NSString *sanitizeString(NSString *s)
                                    actionWithTitle:NSLocalizedString(@"ok", nil)
                                    style:UIAlertActionStyleCancel
                                    handler:^(UIAlertAction * action) {
-                                       
+
                                    }];
         [alert addAction:okButton];
         [self presentViewController:alert animated:YES completion:nil];
@@ -1042,7 +1042,7 @@ static NSString *sanitizeString(NSString *s)
 {
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     __block BOOL previouslyWasAuthenticated = manager.didAuthenticate;
-    
+
     if (! tx) { // tx is nil if there were insufficient wallet funds
         if (manager.didAuthenticate) {
             [self insufficientFundsForTransaction:tx forAmount:amount];
@@ -1057,7 +1057,7 @@ static NSString *sanitizeString(NSString *s)
             }];
         }
     } else {
-        
+
         [manager.wallet signTransaction:tx withPrompt:prompt completion:^(BOOL signedTransaction) {
             if (!signedTransaction) {
                 UIAlertController * alert = [UIAlertController
@@ -1068,27 +1068,27 @@ static NSString *sanitizeString(NSString *s)
                                            actionWithTitle:NSLocalizedString(@"ok", nil)
                                            style:UIAlertActionStyleCancel
                                            handler:^(UIAlertAction * action) {
-                                               
+
                                            }];
                 [alert addAction:okButton];
                 [self presentViewController:alert animated:YES completion:nil];
             } else {
-                
+
                 if (! previouslyWasAuthenticated) manager.didAuthenticate = NO;
-                
+
                 if (! tx.isSigned) { // double check
                     [self cancelOrChangeAmount];
                     return;
                 }
-                
+
                 if (self.navigationController.topViewController != self.parentViewController.parentViewController) {
                     [self.navigationController popToRootViewControllerAnimated:YES];
                 }
-                
+
                 __block BOOL waiting = YES, sent = NO;
-                
+
                 [(id)self.parentViewController.parentViewController startActivityWithTimeout:30.0];
-                
+
                 [[BRPeerManager sharedInstance] publishTransaction:tx completion:^(NSError *error) {
                     if (error) {
                         if (! waiting && ! sent) {
@@ -1100,7 +1100,7 @@ static NSString *sanitizeString(NSString *s)
                                                        actionWithTitle:NSLocalizedString(@"ok", nil)
                                                        style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
-                                                           
+
                                                        }];
                             [alert addAction:okButton];
                             [self presentViewController:alert animated:YES completion:nil];
@@ -1111,7 +1111,7 @@ static NSString *sanitizeString(NSString *s)
                     else if (! sent) { //TODO: show full screen sent dialog with tx info, "you sent b10,000 to bob"
                         if (tx.associatedShapeshift) {
                             [self startObservingShapeshift:tx.associatedShapeshift];
-                            
+
                         }
                         sent = YES;
                         tx.timestamp = [NSDate timeIntervalSinceReferenceDate];
@@ -1121,46 +1121,46 @@ static NSString *sanitizeString(NSString *s)
                                                popOutAfterDelay:2.0]];
                         [(id)self.parentViewController.parentViewController stopActivityWithSuccess:YES];
                         [(id)self.parentViewController.parentViewController ping];
-                        
-                        
+
+
                         if (self.request.callbackScheme) {
                             NSURL * callback = [NSURL URLWithString:[self.request.callbackScheme
                                                                      stringByAppendingFormat:@"://callback=payack&address=%@&txid=%@",address,
                                                                      [NSString hexWithData:[NSData dataWithBytes:tx.txHash.u8
                                                                                                           length:sizeof(UInt256)].reverse]]];
                             [[UIApplication sharedApplication] openURL:callback options:@{} completionHandler:^(BOOL success) {
-                                
+
                             }];
                         }
-                        
+
                         [self reset:nil];
                     }
-                    
+
                     waiting = NO;
                 }];
-                
+
                 if (self.request.details.paymentURL.length > 0) {
                     uint64_t refundAmount = 0;
                     NSMutableData *refundScript = [NSMutableData data];
-                    
+
                     [refundScript appendScriptPubKeyForAddress:manager.wallet.receiveAddress];
-                    
+
                     for (NSNumber *amt in self.request.details.outputAmounts) {
                         refundAmount += amt.unsignedLongLongValue;
                     }
-                    
+
                     // TODO: keep track of commonName/memo to associate them with outputScripts
                     BRPaymentProtocolPayment *payment =
                     [[BRPaymentProtocolPayment alloc] initWithMerchantData:self.request.details.merchantData
                                                               transactions:@[tx] refundToAmounts:@[@(refundAmount)] refundToScripts:@[refundScript] memo:nil];
-                    
+
                     NSLog(@"posting payment to: %@", self.request.details.paymentURL);
-                    
+
                     [BRPaymentRequest postPayment:payment scheme:@"pivx" to:self.request.details.paymentURL timeout:20.0
                                        completion:^(BRPaymentProtocolACK *ack, NSError *error) {
                                            dispatch_async(dispatch_get_main_queue(), ^{
                                                [(id)self.parentViewController.parentViewController stopActivityWithSuccess:(! error)];
-                                               
+
                                                if (error) {
                                                    if (! waiting && ! sent) {
                                                        UIAlertController * alert = [UIAlertController
@@ -1171,7 +1171,7 @@ static NSString *sanitizeString(NSString *s)
                                                                                   actionWithTitle:NSLocalizedString(@"ok", nil)
                                                                                   style:UIAlertActionStyleCancel
                                                                                   handler:^(UIAlertAction * action) {
-                                                                                      
+
                                                                                   }];
                                                        [alert addAction:okButton];
                                                        [self presentViewController:alert animated:YES completion:nil];
@@ -1195,13 +1195,13 @@ static NSString *sanitizeString(NSString *s)
                                                                                                 [NSString hexWithData:[NSData dataWithBytes:tx.txHash.u8
                                                                                                                                      length:sizeof(UInt256)].reverse]]];
                                                        [[UIApplication sharedApplication] openURL:callback options:@{} completionHandler:^(BOOL success) {
-                                                           
+
                                                        }];
                                                    }
-                                                   
+
                                                    [self reset:nil];
                                                }
-                                               
+
                                                waiting = NO;
                                            });
                                        }];
@@ -1215,22 +1215,22 @@ static NSString *sanitizeString(NSString *s)
 - (void)confirmSweep:(NSString *)privKey
 {
     BRWalletManager *manager = [BRWalletManager sharedInstance];
-    
+
     if (! [privKey isValidDashPrivateKey] && ! [privKey isValidDashBIP38Key]) return;
-    
+
     BRBubbleView *statusView = [BRBubbleView viewWithText:NSLocalizedString(@"checking private key balance...", nil)
                                                    center:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2)];
-    
+
     statusView.font = [UIFont systemFontOfSize:15.0];
     statusView.customView = [[UIActivityIndicatorView alloc]
                              initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [(id)statusView.customView startAnimating];
     [self.view addSubview:[statusView popIn]];
-    
+
     [manager sweepPrivateKey:privKey withFee:YES completion:^(BRTransaction *tx, uint64_t fee, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [statusView popOut];
-            
+
             if (error) {
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:@""
@@ -1247,7 +1247,7 @@ static NSString *sanitizeString(NSString *s)
             }
             else if (tx) {
                 uint64_t amount = fee;
-                
+
                 for (NSNumber *amt in tx.outputAmounts) amount += amt.unsignedLongLongValue;
                 self.sweepTx = tx;
 
@@ -1255,7 +1255,7 @@ static NSString *sanitizeString(NSString *s)
                 NSString *alertMsg = [NSString stringWithFormat:alertFmt, [manager stringForDashAmount:amount],
                                       [manager localCurrencyStringForDashAmount:amount], [manager stringForDashAmount:fee],
                                       [manager localCurrencyStringForDashAmount:fee]];
-                
+
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:@""
                                              message:alertMsg
@@ -1272,16 +1272,16 @@ static NSString *sanitizeString(NSString *s)
                                                style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action) {
                                                    [(id)self.parentViewController.parentViewController startActivityWithTimeout:30];
-                                                   
+
                                                    [[BRPeerManager sharedInstance] publishTransaction:self.sweepTx completion:^(NSError *error) {
                                                        [(id)self.parentViewController.parentViewController stopActivityWithSuccess:(! error)];
-                                                       
+
                                                        if (error) {
                                                            UIAlertController * alert = [UIAlertController
                                                                                         alertControllerWithTitle:NSLocalizedString(@"couldn't sweep balance", nil)
                                                                                         message:error.localizedDescription
                                                                                         preferredStyle:UIAlertControllerStyleAlert];
-                                                           
+
                                                            UIAlertAction* okButton = [UIAlertAction
                                                                                       actionWithTitle:NSLocalizedString(@"ok", nil)
                                                                                       style:UIAlertActionStyleCancel
@@ -1292,13 +1292,13 @@ static NSString *sanitizeString(NSString *s)
                                                            [self cancel:nil];
                                                            return;
                                                        }
-                                                       
+
                                                        [self.view addSubview:[[[BRBubbleView viewWithText:NSLocalizedString(@"swept!", nil)
                                                                                                    center:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2)]
                                                                                popIn] popOutAfterDelay:2.0]];
                                                        [self reset:nil];
                                                    }];
-                                                   
+
                                                }];
                 [alert addAction:amountButton];
                 [alert addAction:cancelButton];
@@ -1312,22 +1312,22 @@ static NSString *sanitizeString(NSString *s)
 - (void)showBalance:(NSString *)address
 {
     if (! [address isValidBitcoinAddress]) return;
-    
+
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     BRBubbleView *statusView = [BRBubbleView viewWithText:NSLocalizedString(@"checking address balance...", nil)
                                                    center:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2)];
-    
+
     statusView.font = [UIFont systemFontOfSize:15.0];
     statusView.customView = [[UIActivityIndicatorView alloc]
                              initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [(id)statusView.customView startAnimating];
     [self.view addSubview:[statusView popIn]];
-    
+
     [manager utxosForAddresses:@[address]
                     completion:^(NSArray *utxos, NSArray *amounts, NSArray *scripts, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [statusView popOut];
-                            
+
                             if (error) {
                                 UIAlertController * alert = [UIAlertController
                                                              alertControllerWithTitle:NSLocalizedString(@"couldn't check address balance", nil)
@@ -1343,13 +1343,13 @@ static NSString *sanitizeString(NSString *s)
                             }
                             else {
                                 uint64_t balance = 0;
-                                
+
                                 for (NSNumber *amt in amounts) balance += amt.unsignedLongLongValue;
-                                
+
                                 NSString *alertMsg = [NSString stringWithFormat:NSLocalizedString(@"%@\n\nbalance: %@ (%@)", nil),
                                                       address, [manager stringForDashAmount:balance],
                                                       [manager localCurrencyStringForDashAmount:balance]];
-                                
+
                                 UIAlertController * alert = [UIAlertController
                                                              alertControllerWithTitle:@""
                                                              message:alertMsg
@@ -1383,7 +1383,7 @@ static NSString *sanitizeString(NSString *s)
                                        actionWithTitle:NSLocalizedString(@"change",nil)
                                        style:UIAlertActionStyleDefault
                                        handler:^(UIAlertAction * action) {
-                                           
+
                                        }];
         [alert addAction:cancelButton];
         [alert addAction:changeButton];
@@ -1402,12 +1402,12 @@ static NSString *sanitizeString(NSString *s)
 {
     [self.clipboardText resignFirstResponder];
     if (self.tipView.alpha < 0.5) return [(id)self.parentViewController.parentViewController nextTip];
-    
+
     BRBubbleView *tipView = self.tipView;
-    
+
     self.tipView = nil;
     [tipView popOut];
-    
+
     if ([tipView.text hasPrefix:SCAN_TIP]) {
         self.tipView = [BRBubbleView viewWithText:CLIPBOARD_TIP
                                          tipPoint:CGPointMake(self.clipboardButton.center.x, self.clipboardButton.center.y + 10.0)
@@ -1421,7 +1421,7 @@ static NSString *sanitizeString(NSString *s)
         self.showTips = NO;
         [(id)self.parentViewController.parentViewController tip:self];
     }
-    
+
     return YES;
 }
 
@@ -1440,18 +1440,18 @@ static NSString *sanitizeString(NSString *s)
         UIImage *img = [UIPasteboard generalPasteboard].image;
         NSMutableOrderedSet *set = [NSMutableOrderedSet orderedSet];
         NSCharacterSet *separators = [NSCharacterSet alphanumericCharacterSet].invertedSet;
-        
+
         if (str) {
             [set addObject:str];
             [set addObjectsFromArray:[str componentsSeparatedByCharactersInSet:separators]];
         }
-        
+
         if (img) {
             @synchronized ([CIContext class]) {
                 CIContext *context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@(YES)}];
-                
+
                 if (! context) context = [CIContext context];
-                
+
                 for (CIQRCodeFeature *qr in [[CIDetector detectorOfType:CIDetectorTypeQRCode context:context
                                                                 options:nil] featuresInImage:[CIImage imageWithCGImage:img.CGImage]]) {
                     [set addObject:[qr.messageString
@@ -1459,10 +1459,10 @@ static NSString *sanitizeString(NSString *s)
                 }
             }
         }
-        
+
         for (NSString *s in set) {
             BRPaymentRequest *req = [BRPaymentRequest requestWithString:s];
-            
+
             if ([req.paymentAddress isValidBitcoinAddress]) {
                 text = (req.label.length > 0) ? sanitizeString(req.label) : req.paymentAddress;
                 break;
@@ -1472,10 +1472,10 @@ static NSString *sanitizeString(NSString *s)
                 break;
             }
         }
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             CGFloat textWidth = [text sizeWithAttributes:@{NSFontAttributeName:self.clipboardText.font}].width + 12;
-            
+
             self.clipboardText.text = text;
             if (textWidth < self.clipboardButton.bounds.size.width ) textWidth = self.clipboardButton.bounds.size.width;
             if (textWidth > self.view.bounds.size.width - 16.0) textWidth = self.view.bounds.size.width - 16.0;
@@ -1489,16 +1489,16 @@ static NSString *sanitizeString(NSString *s)
 {
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     NSUInteger i = 0;
-    
+
     for (NSString *str in array) {
         BRPaymentRequest *req = [BRPaymentRequest requestWithString:str];
         NSData *data = str.hexToData.reverse;
-        
+
         i++;
-        
+
         // if the clipboard contains a known txHash, we know it's not a hex encoded private key
         if (data.length == sizeof(UInt256) && [manager.wallet transactionForHash:*(UInt256 *)data.bytes]) continue;
-        
+
         if ([req.paymentAddress isValidDashAddress] || [str isValidDashPrivateKey] || [str isValidDashBIP38Key] ||
             (req.r.length > 0 && [req.scheme isEqual:@"pivx:"])) {
             [self performSelector:@selector(confirmRequest:) withObject:req afterDelay:0.1];// delayed to show highlight
@@ -1516,7 +1516,7 @@ static NSString *sanitizeString(NSString *s)
                     else [self confirmProtocolRequest:req];
                 });
             }];
-            
+
             return;
         }
     }
@@ -1587,7 +1587,7 @@ static NSString *sanitizeString(NSString *s)
 
 
 -(void)startObservingShapeshift:(DSShapeshiftEntity*)shapeshift {
-    
+
     [shapeshift addObserver:self forKeyPath:@"shapeshiftStatus" options:NSKeyValueObservingOptionNew context:nil];
     [shapeshift routinelyCheckStatusAtInterval:10];
     self.shapeshiftView.hidden = FALSE;
@@ -1599,12 +1599,12 @@ static NSString *sanitizeString(NSString *s)
 - (IBAction)tip:(id)sender
 {
     if ([self nextTip]) return;
-    
+
     if (! [sender isKindOfClass:[UIGestureRecognizer class]] || ! [[sender view] isKindOfClass:[UILabel class]]) {
         if (! [sender isKindOfClass:[UIViewController class]]) return;
         self.showTips = YES;
     }
-    
+
     self.tipView = [BRBubbleView viewWithText:SCAN_TIP
                                      tipPoint:CGPointMake(self.scanButton.center.x, self.scanButton.center.y - 10.0)
                                  tipDirection:BRBubbleTipDirectionDown];
@@ -1640,24 +1640,24 @@ static NSString *sanitizeString(NSString *s)
 {
     if ([self nextTip]) return;
     [BREventManager saveEvent:@"send:pay_clipboard"];
-    
+
     NSString *str = [[UIPasteboard generalPasteboard].string
                      stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     UIImage *img = [UIPasteboard generalPasteboard].image;
     NSMutableOrderedSet *set = [NSMutableOrderedSet orderedSet];
     NSCharacterSet *separators = [NSCharacterSet alphanumericCharacterSet].invertedSet;
-    
+
     if (str) {
         [set addObject:str];
         [set addObjectsFromArray:[str componentsSeparatedByCharactersInSet:separators]];
     }
-    
+
     if (img) {
         @synchronized ([CIContext class]) {
             CIContext *context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@(YES)}];
-            
+
             if (! context) context = [CIContext context];
-            
+
             for (CIQRCodeFeature *qr in [[CIDetector detectorOfType:CIDetectorTypeQRCode context:context options:nil]
                                          featuresInImage:[CIImage imageWithCGImage:img.CGImage]]) {
                 [set addObject:[qr.messageString
@@ -1665,7 +1665,7 @@ static NSString *sanitizeString(NSString *s)
             }
         }
     }
-    
+
     [sender setEnabled:NO];
     self.clearClipboard = YES;
     [self payFirstFromArray:set.array];
@@ -1677,14 +1677,14 @@ static NSString *sanitizeString(NSString *s)
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
     [BREventManager saveEvent:@"send:reset"];
-    
+
     if (self.clearClipboard) [UIPasteboard generalPasteboard].string = @"";
     self.request = nil;
     self.shapeshiftRequest = nil;
     self.scheme = nil;
     self.associatedShapeshift = nil;
     [self cancel:sender];
-    
+
 }
 
 - (IBAction)cancel:(id)sender
@@ -1760,14 +1760,14 @@ static NSString *sanitizeString(NSString *s)
             completionBlock();
         }
     }];
-    
+
 }
 
 - (void)amountViewController:(BRAmountViewController *)amountViewController shapeshiftBitcoinAmount:(uint64_t)amount approximateDashAmount:(uint64_t)dashAmount
 {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     hud.label.text       = NSLocalizedString(@"Starting Shapeshift!", nil);
-    
+
     [self verifyShapeshiftAmountIsInBounds:dashAmount completionBlock:^{
         //we know the exact amount of bitcoins we want to send
         BRWalletManager *m = [BRWalletManager sharedInstance];
@@ -1778,7 +1778,7 @@ static NSString *sanitizeString(NSString *s)
             [hud hideAnimated:TRUE];
             if (error) {
                 NSLog(@"shapeshiftBitcoinAmount Error %@",error);
-                
+
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"shapeshift failed", nil)
                                              message:error.localizedDescription
@@ -1800,9 +1800,9 @@ static NSString *sanitizeString(NSString *s)
                 uint64_t depositAmount = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%@",depositAmountNumber]] decimalNumberByMultiplyingByPowerOf10:8]
                                           unsignedLongLongValue];
                 self.amount = depositAmount;
-                
+
                 DSShapeshiftEntity * shapeshift = [DSShapeshiftEntity registerShapeshiftWithInputAddress:depositAddress andWithdrawalAddress:withdrawalAddress withStatus:eShapeshiftAddressStatus_Unused fixedAmountOut:depositAmountNumber amountIn:depositAmountNumber];
-                
+
                 BRPaymentRequest * request = [BRPaymentRequest requestWithString:[NSString stringWithFormat:@"pivx:%@?amount=%llu&label=%@&message=Shapeshift to %@",depositAddress,depositAmount,sanitizeString(self.shapeshiftRequest.commonName),withdrawalAddress]];
                 [self confirmProtocolRequest:request.protocolRequest currency:@"pivx" associatedShapeshift:shapeshift];
             }
@@ -1824,7 +1824,7 @@ static NSString *sanitizeString(NSString *s)
         self.amount = amount;
         DSShapeshiftEntity * shapeshift = [DSShapeshiftEntity unusedShapeshiftHavingWithdrawalAddress:address];
         NSString * depositAddress = shapeshift.inputAddress;
-        
+
         if (shapeshift) {
             [hud hideAnimated:TRUE];
             BRPaymentRequest * request = [BRPaymentRequest requestWithString:[NSString stringWithFormat:@"pivx:%@?amount=%llu&label=%@&message=Shapeshift to %@",depositAddress,self.amount,sanitizeString(self.request.commonName),address]];
@@ -1869,24 +1869,24 @@ static NSString *sanitizeString(NSString *s)
 {
     for (AVMetadataMachineReadableCodeObject *codeObject in metadataObjects) {
         if (! [codeObject.type isEqual:AVMetadataObjectTypeQRCode]) continue;
-        
+
         [BREventManager saveEvent:@"send:scanned_qr"];
-        
+
         NSString *addr = [codeObject.stringValue stringByTrimmingCharactersInSet:
                           [NSCharacterSet whitespaceAndNewlineCharacterSet]];
         BRPaymentRequest *request = [BRPaymentRequest requestWithString:addr];
         if ((request.isValid) || [addr isValidBitcoinPrivateKey] || [addr isValidDashPrivateKey] || [addr isValidDashBIP38Key]) {
             self.scanController.cameraGuide.image = [UIImage imageNamed:@"cameraguide-green"];
             [self.scanController stop];
-            
+
             [BREventManager saveEvent:@"send:valid_qr_scan"];
-            
+
             if (request.r.length > 0) { // start fetching payment protocol request right away
                 [BRPaymentRequest fetch:request.r scheme:request.scheme timeout:5.0
                              completion:^(BRPaymentProtocolRequest *req, NSError *error) {
                                  dispatch_async(dispatch_get_main_queue(), ^{
                                      if (error) request.r = nil;
-                                     
+
                                      if (error && ! request.isValid) {
                                          UIAlertController * alert = [UIAlertController
                                                                       alertControllerWithTitle:NSLocalizedString(@"couldn't make payment", nil)
@@ -1902,11 +1902,11 @@ static NSString *sanitizeString(NSString *s)
                                          [self cancel:nil];
                                          // continue here and handle the invalid request inside confirmRequest:
                                      }
-                                     
+
                                      [self.navigationController dismissViewControllerAnimated:YES completion:^{
                                          [self resetQRGuide];
                                      }];
-                                     
+
                                      if (error) {
                                          [BREventManager saveEvent:@"send:unsuccessful_qr_payment_protocol_fetch"];
                                          [self confirmRequest:request]; // payment protocol fetch failed, so use standard request
@@ -1934,15 +1934,15 @@ static NSString *sanitizeString(NSString *s)
                          completion:^(BRPaymentProtocolRequest *req, NSError *error) { // check to see if it's a BIP73 url
                              dispatch_async(dispatch_get_main_queue(), ^{
                                  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resetQRGuide) object:nil];
-                                 
+
                                  if (req) {
                                      self.scanController.cameraGuide.image = [UIImage imageNamed:@"cameraguide-green"];
                                      [self.scanController stop];
-                                     
+
                                      [self.navigationController dismissViewControllerAnimated:YES completion:^{
                                          [self resetQRGuide];
                                      }];
-                                     
+
                                      [BREventManager saveEvent:@"send:successful_bip73"];
                                      [self confirmProtocolRequest:req];
                                  }
@@ -1960,14 +1960,14 @@ static NSString *sanitizeString(NSString *s)
                                                                              request.paymentAddress];
                                      }
                                      else self.scanController.message.text = NSLocalizedString(@"not a pivx QR code", nil);
-                                     
+
                                      [self performSelector:@selector(resetQRGuide) withObject:nil afterDelay:0.35];
                                      [BREventManager saveEvent:@"send:unsuccessful_bip73"];
                                  }
                              });
                          }];
         }
-        
+
         break;
     }
 }
@@ -2001,7 +2001,7 @@ static NSString *sanitizeString(NSString *s)
         [textView resignFirstResponder];
         return NO;
     }
-    
+
     if (text.length > 0 || range.length > 0) self.useClipboard = NO;
     return YES;
 }
@@ -2023,9 +2023,9 @@ static NSString *sanitizeString(NSString *s)
     *from = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIImageView *img = self.scanButton.imageView;
     UIView *guide = self.scanController.cameraGuide;
-    
+
     [self.scanController.view layoutIfNeeded];
-    
+
     if (to == self.scanController) {
         [containerView addSubview:to.view];
         to.view.frame = from.view.frame;
@@ -2033,12 +2033,12 @@ static NSString *sanitizeString(NSString *s)
         guide.transform = CGAffineTransformMakeScale(img.bounds.size.width/guide.bounds.size.width,
                                                      img.bounds.size.height/guide.bounds.size.height);
         guide.alpha = 0;
-        
+
         [UIView animateWithDuration:0.1 animations:^{
             img.alpha = 0.0;
             guide.alpha = 1.0;
         }];
-        
+
         [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8
               initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
                   to.view.center = from.view.center;
@@ -2046,7 +2046,7 @@ static NSString *sanitizeString(NSString *s)
                   img.alpha = 1.0;
                   [transitionContext completeTransition:YES];
               }];
-        
+
         [UIView animateWithDuration:0.8 delay:0.15 usingSpringWithDamping:0.5 initialSpringVelocity:0
                             options:UIViewAnimationOptionCurveEaseOut animations:^{
                                 guide.transform = CGAffineTransformIdentity;
@@ -2057,7 +2057,7 @@ static NSString *sanitizeString(NSString *s)
     else {
         [containerView insertSubview:to.view belowSubview:from.view];
         [self cancel:nil];
-        
+
         [UIView animateWithDuration:0.8 delay:0.0 usingSpringWithDamping:0.5 initialSpringVelocity:0
                             options:UIViewAnimationOptionCurveEaseIn animations:^{
                                 guide.transform = CGAffineTransformMakeScale(img.bounds.size.width/guide.bounds.size.width,
@@ -2067,7 +2067,7 @@ static NSString *sanitizeString(NSString *s)
                                 guide.transform = CGAffineTransformIdentity;
                                 guide.alpha = 1.0;
                             }];
-        
+
         [UIView animateWithDuration:[self transitionDuration:transitionContext] - 0.15 delay:0.15
                             options:UIViewAnimationOptionCurveEaseIn animations:^{
                                 from.view.center = CGPointMake(from.view.center.x, containerView.frame.size.height*3/2);

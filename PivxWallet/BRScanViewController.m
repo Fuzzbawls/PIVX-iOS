@@ -49,7 +49,7 @@
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 
     if (! device.hasTorch) self.toolbar.items = @[self.toolbar.items[0]];
-    
+
     [self.toolbar setBackgroundImage:[UIImage new] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     [self.toolbar setShadowImage:[UIImage new] forToolbarPosition:UIToolbarPositionAny];
 }
@@ -90,19 +90,19 @@
     AVCaptureMetadataOutput *output = [AVCaptureMetadataOutput new];
 
     if (error) NSLog(@"%@", error.localizedDescription);
-    
+
     if ([device lockForConfiguration:&error]) {
         if (device.isAutoFocusRangeRestrictionSupported) {
             device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionNear;
         }
-        
+
         if ([device isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
             device.focusMode = AVCaptureFocusModeContinuousAutoFocus;
         }
-        
+
         [device unlockForConfiguration];
     }
-    
+
     self.session = [AVCaptureSession new];
     if (input) [self.session addInput:input];
     [self.session addOutput:output];

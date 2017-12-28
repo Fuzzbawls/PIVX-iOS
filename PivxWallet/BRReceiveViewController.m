@@ -63,7 +63,7 @@
     [super viewDidLoad];
 
     [self addCloseButton];
-    
+
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     BRPaymentRequest *req;
 
@@ -76,12 +76,12 @@
             _qrImage = [[UIImage imageWithData:[self.groupDefs objectForKey:APP_GROUP_QR_IMAGE_KEY]]
                         resize:self.qrView.bounds.size withInterpolationQuality:kCGInterpolationNone];
         }
-        
+
         self.qrView.image = _qrImage;
         [self.addressButton setTitle:req.paymentAddress forState:UIControlStateNormal];
     }
     else [self.addressButton setTitle:nil forState:UIControlStateNormal];
-    
+
     if (req.amount > 0) {
         BRWalletManager *manager = [BRWalletManager sharedInstance];
         NSMutableAttributedString * attributedDashString = [[manager attributedStringForDashAmount:req.amount withTintColor:[UIColor whiteColor] useSignificantDigits:FALSE] mutableCopy];
@@ -111,7 +111,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self hideTips];
-    
+
     [super viewWillDisappear:animated];
 }
 
@@ -135,17 +135,17 @@
         BRWalletManager *manager = [BRWalletManager sharedInstance];
         BRPaymentRequest *req = self.paymentRequest;
         UIImage *image = nil;
-        
+
         if ([req.data isEqual:[self.groupDefs objectForKey:APP_GROUP_REQUEST_DATA_KEY]]) {
             image = [UIImage imageWithData:[self.groupDefs objectForKey:APP_GROUP_QR_IMAGE_KEY]];
         }
-        
+
         if (! image && req.data) {
             image = [UIImage imageWithQRCodeData:req.data color:[CIColor colorWithRed:0.0 green:0.0 blue:0.0]];
         }
-        
+
         self.qrImage = [image resize:qrViewBounds withInterpolationQuality:kCGInterpolationNone];
-        
+
         if (req.amount == 0) {
             if (req.isValid) {
                 [self.groupDefs setObject:UIImagePNGRepresentation(image) forKey:APP_GROUP_QR_IMAGE_KEY];
@@ -167,7 +167,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             self.qrView.image = self.qrImage;
             [self.addressButton setTitle:self.paymentAddress forState:UIControlStateNormal];
-            
+
             if (req.amount > 0) {
                 BRWalletManager *manager = [BRWalletManager sharedInstance];
                 NSMutableAttributedString * attributedDashString = [[manager attributedStringForDashAmount:req.amount withTintColor:[UIColor whiteColor] useSignificantDigits:FALSE] mutableCopy];
@@ -175,7 +175,7 @@
                                           [manager localCurrencyStringForDashAmount:req.amount]];
                 [attributedDashString appendAttributedString:[[NSAttributedString alloc] initWithString:titleString attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
                 self.label.attributedText = attributedDashString;
-                
+
                 if (! self.balanceObserver) {
                     self.balanceObserver =
                         [[NSNotificationCenter defaultCenter] addObserverForName:BRWalletBalanceChangedNotification
@@ -183,7 +183,7 @@
                             [self checkRequestStatus];
                         }];
                 }
-                
+
                 if (! self.txStatusObserver) {
                     self.txStatusObserver =
                         [[NSNotificationCenter defaultCenter] addObserverForName:BRPeerManagerTxStatusNotification
@@ -201,7 +201,7 @@
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     BRPaymentRequest *req = self.paymentRequest;
     uint64_t total = 0, fuzz = [manager amountForLocalCurrencyString:[manager localCurrencyStringForDashAmount:1]]*2;
-    
+
     if (! [manager.wallet addressIsUsed:self.paymentAddress]) return;
 
     for (BRTransaction *tx in manager.wallet.allTransactions) {
@@ -209,7 +209,7 @@
         if (tx.blockHeight == TX_UNCONFIRMED &&
             [[BRPeerManager sharedInstance] relayCountForTransaction:tx.txHash] < PEER_MAX_CONNECTIONS) continue;
         total += [manager.wallet amountReceivedFromTransaction:tx];
-                 
+
         if (total + fuzz >= req.amount) {
             UIView *view = self.navigationController.presentingViewController.view;
 
@@ -304,7 +304,7 @@
                                 [UIPasteboard generalPasteboard].string = (self.paymentRequest.amount > 0) ? self.paymentRequest.string :
                                 self.paymentAddress;
                                 NSLog(@"\n\nCOPIED PAYMENT REQUEST/ADDRESS:\n\n%@", [UIPasteboard generalPasteboard].string);
-                                
+
                                 [self.view addSubview:[[[BRBubbleView viewWithText:NSLocalizedString(@"copied", nil)
                                                                             center:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0 - 130.0)] popIn]
                                                        popOutAfterDelay:2.0]];
@@ -340,7 +340,7 @@
                                                                    }];
                                         [alert addAction:okButton];
                                         [self presentViewController:alert animated:YES completion:nil];
-                                        
+
                                     }
                                 }]];
     }
@@ -351,18 +351,18 @@
                                 NSLocalizedString(@"send address as message", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                                     if ([MFMessageComposeViewController canSendText]) {
                                         MFMessageComposeViewController *composeController = [MFMessageComposeViewController new];
-                                        
+
                                         if ([MFMessageComposeViewController canSendSubject]) {
                                             composeController.subject = NSLocalizedString(@"PIVX address", nil);
                                         }
-                                        
+
                                         composeController.body = self.paymentRequest.string;
-                                        
+
                                         if ([MFMessageComposeViewController canSendAttachments]) {
                                             [composeController addAttachmentData:UIImagePNGRepresentation(self.qrView.image)
                                                                   typeIdentifier:(NSString *)kUTTypePNG filename:@"qr.png"];
                                         }
-                                        
+
                                         composeController.messageComposeDelegate = self;
                                         [self.navigationController presentViewController:composeController animated:YES completion:nil];
                                         composeController.view.backgroundColor = [UIColor colorWithPatternImage:
@@ -391,16 +391,16 @@
         [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"request an amount", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             UINavigationController *amountNavController = [self.storyboard
                                                            instantiateViewControllerWithIdentifier:@"AmountNav"];
-            
+
             ((BRAmountViewController *)amountNavController.topViewController).delegate = self;
             [self.navigationController presentViewController:amountNavController animated:YES completion:nil];
             [BREventManager saveEvent:@"receive:request_amount"];
                                 }]];
     }
     [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        
+
     }]];
-    
+
     // Present action sheet.
     [self presentViewController:actionSheet animated:YES completion:nil];
 }
@@ -426,7 +426,7 @@ error:(NSError *)error
 - (void)amountViewController:(BRAmountViewController *)amountViewController selectedAmount:(uint64_t)amount
 {
     BRWalletManager *manager = [BRWalletManager sharedInstance];
-    
+
     if (amount < manager.wallet.minOutputAmount) {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:NSLocalizedString(@"amount too small", nil)
@@ -448,7 +448,7 @@ error:(NSError *)error
     UINavigationController *navController = (UINavigationController *)self.navigationController.presentedViewController;
     BRReceiveViewController *receiveController = [self.storyboard
                                                   instantiateViewControllerWithIdentifier:@"RequestViewController"];
-    
+
     receiveController.paymentRequest = self.paymentRequest;
     receiveController.paymentRequest.amount = amount;
     receiveController.view.backgroundColor = self.parentViewController.parentViewController.view.backgroundColor;
@@ -473,7 +473,7 @@ error:(NSError *)error
                      *from = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 
     [containerView addSubview:to.view];
-    
+
     [UIView transitionFromView:from.view toView:to.view duration:[self transitionDuration:transitionContext]
     options:UIViewAnimationOptionTransitionFlipFromLeft completion:^(BOOL finished) {
         [from.view removeFromSuperview];

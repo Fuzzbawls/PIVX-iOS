@@ -1,4 +1,4 @@
-# Pivx Wallet
+# PIVX Wallet
 ----------------------------------
 ![alt text](https://github.com/PIVX-Project/PIVX-Android/blob/master/banner/Feature%20Image.jpg)
 

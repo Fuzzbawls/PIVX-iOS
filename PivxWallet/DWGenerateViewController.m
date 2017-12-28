@@ -28,26 +28,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+
     self.generateButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.generateButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
 #pragma clang diagnostic pop
-    
-    
+
+
     NSTextAttachment *noEye = [NSTextAttachment new], *noKey = [NSTextAttachment new];
     NSMutableAttributedString *s = [[NSMutableAttributedString alloc]
                                     initWithAttributedString:self.warningLabel.attributedText];
-    
+
     noEye.image = [UIImage imageNamed:@"no-eye"];
     [s replaceCharactersInRange:[s.string rangeOfString:@"%no-eye%"]
            withAttributedString:[NSAttributedString attributedStringWithAttachment:noEye]];
     noKey.image = [UIImage imageNamed:@"no-key"];
     [s replaceCharactersInRange:[s.string rangeOfString:@"%no-key%"]
            withAttributedString:[NSAttributedString attributedStringWithAttachment:noKey]];
-    
+
     [s replaceCharactersInRange:[s.string rangeOfString:@"WARNING"] withString:NSLocalizedString(@"WARNING", nil)];
     [s replaceCharactersInRange:[s.string rangeOfString:@"\nDO NOT let anyone see your recovery\n"
                                  "phrase or they can spend your PIV.\n"]
@@ -60,7 +60,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     [self.navigationController setNavigationBarHidden:FALSE animated:FALSE];
     UIColor *color = [UIColor rgb:85 green:71 blue:108 alpha:1];
     //UIColor *color = [UIColor colorWithRed:85.0f/255.0f green:71.0f/255.0f blue:188/255.0f alpha:1.0f];
@@ -97,7 +97,7 @@
 
 -(IBAction)generateRecoveryPhrase:(id)sender {
     [BREventManager saveEvent:@"welcome:generate"];
-    
+
     if (! [BRWalletManager sharedInstance].passcodeEnabled) {
         [BREventManager saveEvent:@"welcome:passcode_disabled"];
         UIAlertController * alert = [UIAlertController
@@ -113,13 +113,13 @@
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
-    
+
     [self.navigationController.navigationBar.topItem setHidesBackButton:YES animated:YES];
     [sender setEnabled:NO];
     self.seedNav = [self.storyboard instantiateViewControllerWithIdentifier:@"SeedNav"];
     self.warningLabel.hidden = self.showButton.hidden = NO;
     self.warningLabel.alpha = self.showButton.alpha = 0.0;
-    
+
     [UIView animateWithDuration:0.5 animations:^{
         self.warningLabel.alpha = self.showButton.alpha = 1.0;
         self.navigationController.navigationBar.topItem.titleView.alpha = 0.33*0.5;
@@ -131,7 +131,7 @@
 - (IBAction)show:(id)sender
 {
     [BREventManager saveEvent:@"welcome:show"];
-    
+
     [self.navigationController presentViewController:self.seedNav animated:YES completion:^{
         self.warningLabel.hidden = self.showButton.hidden = YES;
         self.navigationController.navigationBar.topItem.titleView.alpha = 1.0;
