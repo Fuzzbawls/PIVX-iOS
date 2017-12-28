@@ -2268,6 +2268,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -2291,6 +2292,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -2313,6 +2315,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
@@ -2336,6 +2339,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -2579,6 +2583,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -2600,6 +2605,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -2803,6 +2809,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -2826,6 +2833,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
