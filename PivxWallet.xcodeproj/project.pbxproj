@@ -15,6 +15,7 @@
 		0C27065D1FF4F4C200E8B4E0 /* Donation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C27065F1FF4F4C200E8B4E0 /* Donation.xib */; };
 		0C2706621FF4F4D200E8B4E0 /* Menu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C2706641FF4F4D200E8B4E0 /* Menu.xib */; };
 		0C2706671FF4F4DD00E8B4E0 /* Setup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C2706691FF4F4DD00E8B4E0 /* Setup.xib */; };
+		0C27067E1FF4F79E00E8B4E0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0C2706801FF4F79E00E8B4E0 /* Localizable.strings */; };
 		220128D31C753C670001CAC1 /* BRSocketHelpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 220128D11C753C670001CAC1 /* BRSocketHelpers.c */; };
 		2204604E1B9F61E600D07B61 /* BREventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204604D1B9F61E600D07B61 /* BREventManager.m */; };
 		2204604F1B9F61E600D07B61 /* BREventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204604D1B9F61E600D07B61 /* BREventManager.m */; };
@@ -256,6 +257,8 @@
 		0C2706661FF4F4D500E8B4E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Menu.strings; sourceTree = "<group>"; };
 		0C2706681FF4F4DD00E8B4E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Setup.xib; sourceTree = "<group>"; };
 		0C27066B1FF4F4E100E8B4E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Setup.strings; sourceTree = "<group>"; };
+		0C27069C1FF4F7C700E8B4E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0C27069D1FF4F7CC00E8B4E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		220128D11C753C670001CAC1 /* BRSocketHelpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BRSocketHelpers.c; sourceTree = "<group>"; };
 		220128D21C753C670001CAC1 /* BRSocketHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSocketHelpers.h; sourceTree = "<group>"; };
 		2204604C1B9F61E600D07B61 /* BREventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BREventManager.h; sourceTree = "<group>"; };
@@ -304,12 +307,6 @@
 		6BD745B21FE56EE500B94848 /* BRPivxUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRPivxUtils.h; sourceTree = "<group>"; };
 		6BD745B31FE56EE500B94848 /* BRPivxUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRPivxUtils.m; sourceTree = "<group>"; };
 		738E43B4B5613FDC48BBDAE6 /* Pods_pivxwallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pivxwallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7509C1101AF3720100D03FD5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
-		7509C1121AF3720100D03FD5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		7511E8C91AE5FF240025F1B3 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
-		7511E8CB1AE5FF240025F1B3 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		7511E8CD1AE5FF2D0025F1B3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
-		7511E8CF1AE5FF2D0025F1B3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		751B2B5B1B68911700EA87FB /* BRTxHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BRTxHistoryViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7525B617192453840041C0F2 /* BRNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRNavigationBar.h; sourceTree = "<group>"; };
 		7525B618192453840041C0F2 /* BRNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRNavigationBar.m; sourceTree = "<group>"; };
@@ -453,8 +450,6 @@
 		75F2E0D51BEAA6A400EAE861 /* BRTxMetadataEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRTxMetadataEntity.m; sourceTree = "<group>"; };
 		75F747501BF41A9F006A6BE8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BREventConfirmView.xib; sourceTree = "<group>"; };
 		75F747521BF41AD0006A6BE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BREventConfirmView.strings; sourceTree = "<group>"; };
-		75FD2FAF1BFAB97000D56BBA /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BREventConfirmView.strings; sourceTree = "<group>"; };
-		75FD2FB11BFAB97200D56BBA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BREventConfirmView.strings; sourceTree = "<group>"; };
 		84F68C881975E9E2002FC300 /* BRScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRScanViewController.h; sourceTree = "<group>"; };
 		84F68C891975E9E2002FC300 /* BRScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRScanViewController.m; sourceTree = "<group>"; };
 		AA1BBFB053AE437B7EE96F8D /* Pods-pivxwallet.testflight.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pivxwallet.testflight.xcconfig"; path = "Pods/Target Support Files/Pods-pivxwallet/Pods-pivxwallet.testflight.xcconfig"; sourceTree = "<group>"; };
@@ -504,7 +499,6 @@
 		FB021E5A1E4DEFE800D17638 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		FB248B5C1F73803100405AE0 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		FB248B621F79BB7C00405AE0 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
-		FB4311221FA2D45100784EBC /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/BREventConfirmView.strings; sourceTree = "<group>"; };
 		FB6DD3811F7FA48500BC1E4D /* pivxwallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pivxwallet.entitlements; sourceTree = "<group>"; };
 		FB9CC26F1F8E27B80079309F /* DWGenerateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DWGenerateViewController.h; sourceTree = "<group>"; };
 		FB9CC2701F8E27B80079309F /* DWGenerateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DWGenerateViewController.m; sourceTree = "<group>"; };
@@ -1110,6 +1104,7 @@
 		BAE12BE81B2DEE7F00895CC5 /* TodayExtension */ = {
 			isa = PBXGroup;
 			children = (
+				0C2706801FF4F79E00E8B4E0 /* Localizable.strings */,
 				BAE12C041B2DEEF700895CC5 /* BRTodayViewController.h */,
 				BAE12C051B2DEEF700895CC5 /* BRTodayViewController.m */,
 				75ABFB681B55BB2300B0B5CC /* MainInterface.storyboard */,
@@ -1457,6 +1452,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7568FB5A1B5B5EC10000B652 /* Images.xcassets in Resources */,
+				0C27067E1FF4F79E00E8B4E0 /* Localizable.strings in Resources */,
 				BA54D3CE1B2EA74000C9CB28 /* Media.xcassets in Resources */,
 				75ABFB661B55BB2300B0B5CC /* MainInterface.storyboard in Resources */,
 			);
@@ -1788,14 +1784,20 @@
 			path = PivxNibs/Controllers;
 			sourceTree = "<group>";
 		};
+		0C2706801FF4F79E00E8B4E0 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0C27069C1FF4F7C700E8B4E0 /* Base */,
+				0C27069D1FF4F7CC00E8B4E0 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		755FC9EF1BF1DF1B00164ABB /* BREventConfirmView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				75F747501BF41A9F006A6BE8 /* Base */,
 				75F747521BF41AD0006A6BE8 /* en */,
-				75FD2FAF1BFAB97000D56BBA /* fr */,
-				75FD2FB11BFAB97200D56BBA /* ja */,
-				FB4311221FA2D45100784EBC /* es */,
 			);
 			name = BREventConfirmView.xib;
 			sourceTree = "<group>";
@@ -1804,9 +1806,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				757E09981ADB8EEB006FD352 /* en */,
-				7511E8CB1AE5FF240025F1B3 /* fr */,
-				7511E8CF1AE5FF2D0025F1B3 /* ja */,
-				7509C1121AF3720100D03FD5 /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1835,9 +1834,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				75D5F3DD191EC270004AB296 /* Base */,
-				7511E8C91AE5FF240025F1B3 /* fr */,
-				7511E8CD1AE5FF2D0025F1B3 /* ja */,
-				7509C1101AF3720100D03FD5 /* es */,
 				75BDCC381CE2FC7000AAFA22 /* en */,
 			);
 			name = Main.storyboard;
