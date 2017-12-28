@@ -14,6 +14,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5D567A5064CC31414035042F39B74F90"
+               BuildableName = "Pods_pivxwallet.framework"
+               BlueprintName = "Pods-pivxwallet"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1D826447CE01EBC17A3E6A9873E2F6EE"
+               BuildableName = "SlideMenuControllerSwift.framework"
+               BlueprintName = "SlideMenuControllerSwift"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "75D5F3BD191EC270004AB296"
                BuildableName = "pivxwallet.app"
                BlueprintName = "pivxwallet"
