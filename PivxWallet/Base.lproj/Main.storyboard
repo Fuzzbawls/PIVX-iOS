@@ -1906,7 +1906,7 @@ a global community comprised of creators, innovators, and technology enthusiasts
                                     <label opaque="NO" clipsSubviews="YES" tag="411" contentMode="left" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="uvz-hk-Nr4">
                                         <rect key="frame" x="76" y="20" width="263" height="82"/>
                                         <gestureRecognizers/>
-                                        <string key="text">Pivx wallet v%ver%%net%
+                                        <string key="text">PIVX wallet v%ver%%net%
 copyright © 2017 The PIVX Developers
 Forked from breadwallet.
 This app is open source:</string>
